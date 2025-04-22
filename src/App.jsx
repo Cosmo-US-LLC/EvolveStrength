@@ -1,6 +1,7 @@
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import "./App.css";
 import Layout from "./components/desktop/Layout";
+import EvolveStrengthHome from "./components/mobile";
 
 function App() {
   return (
@@ -12,7 +13,7 @@ function App() {
             element={
               <>
                 {/* <div className="max-lg:hidden">sdf</div> */}
-                <div className="lg:hidden">{/** */}</div>
+                <div className="lg:hidden"><EvolveStrengthHome/></div>
               </>
             }
           />
