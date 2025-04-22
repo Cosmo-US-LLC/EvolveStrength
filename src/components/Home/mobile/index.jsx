@@ -4,8 +4,7 @@ import MobileHero from './mobileHero'
 function EvolveStrengthHome() {
   return (
     <div>
-      {/* <MobileHero/> */}
-      asdasdasd
+      <MobileHero/>
     </div>
   )
 }

@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
-import NavBarDesktop from "../desktop/NavBarDesktop";
+import NavBarDesktop from "../Home/desktop/NavBarDesktop";
 
 const Layout = () => {
   return (

@@ -1,12 +1,12 @@
 // src/components/MobileHero.jsx
 import React from "react";
-// import heroImage from "../../assets/mobile/evolve-strength.webp";
+import heroImage from "../../../assets/mobile/evolve-strength.webp";
 
 const MobileHero = () => {
   return (
     <div
       className="min-h-screen bg-cover bg-center flex flex-col justify-between"
-    //   style={{ backgroundImage: `url(${heroImage})` }}
+      style={{ backgroundImage: `url(${heroImage})` }}
     >
       {/* Logo */}
       <div className="p-6">
