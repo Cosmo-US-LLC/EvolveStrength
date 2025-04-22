@@ -1,9 +1,8 @@
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import "./App.css";
+import Layout from "./components/desktop/Layout";
 
 function App() {
-  useFavicon();
-
   return (
     <Router>
       <Routes>
@@ -12,8 +11,8 @@ function App() {
             path="/"
             element={
               <>
-                <div className="max-lg:hidden">{/** Desktop Component */}</div>
-                <div className="lg:hidden">{/** Mobile Component */}</div>
+                {/* <div className="max-lg:hidden">sdf</div> */}
+                <div className="lg:hidden">{/** */}</div>
               </>
             }
           />
