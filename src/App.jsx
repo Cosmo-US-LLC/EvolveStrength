@@ -7,13 +7,15 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route element={<Layout />} >
+        <Route element={<Layout />}>
           <Route
             path="/"
             element={
               <>
-                {/* <div className="max-lg:hidden">sdf</div> */}
-                <div className="lg:hidden"><EvolveStrengthHome/></div>
+                <div className="max-lg:hidden">sdf</div>
+                <div className="lg:hidden">
+                  <EvolveStrengthHome />
+                </div>
               </>
             }
           />
