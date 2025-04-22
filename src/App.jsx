@@ -1,7 +1,6 @@
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import "./App.css";
-import Layout from "./components/desktop/Layout";
-import EvolveStrengthHome from "./components/mobile";
+import Layout from "./components/Layout";
 
 function App() {
   return (
