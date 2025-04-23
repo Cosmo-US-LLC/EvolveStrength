@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Listbox } from "@headlessui/react";
-import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import locations from "../../../utils/locations";
 import location_bg from "../../../assets/desktop/location_bg.webp";
 import ChevronDownFilled from "../../../assets/desktop/chevron-down-filled.svg";
@@ -68,6 +67,9 @@ function LocationDesktop() {
             </Listbox.Options>
           </div>
         </Listbox>
+        <button className="button mt-6 bg-[#2DDE28] text-black text-[16px] font-medium w-[139px] h-[42px]">
+          TAKE A TOUR
+        </button>
       </div>
     </div>
   );
