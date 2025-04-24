@@ -3,6 +3,8 @@ import "./App.css";
 import Layout from "./components/Layout";
 import EvolveStrengthHome from "./components/Home/mobile";
 import LocationDesktop from "./components/Home/desktop";
+import MembershipDesktop from "./components/Membership/desktop";
+import AboutYourself from "./components/AboutYourself";
 
 function App() {
   return (
@@ -18,6 +20,26 @@ function App() {
                 </div>
                 <div className="lg:hidden">
                   <EvolveStrengthHome />
+                </div>
+              </>
+            }
+          />
+          <Route
+            path="/membership"
+            element={
+              <>
+                <div className="max-lg:hidden">
+                  <MembershipDesktop />
+                </div>
+              </>
+            }
+          />
+          <Route
+            path="/about-yourself"
+            element={
+              <>
+                <div className="max-lg:hidden">
+                  <AboutYourself />
                 </div>
               </>
             }

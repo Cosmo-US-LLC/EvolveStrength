@@ -3,9 +3,15 @@ import { Listbox } from "@headlessui/react";
 import locations from "../../../utils/locations";
 import location_bg from "../../../assets/desktop/location_bg.webp";
 import ChevronDownFilled from "../../../assets/desktop/chevron-down-filled.svg";
+import { useNavigate } from "react-router-dom";
 
 function LocationDesktop() {
   const [selectedLocation, setSelectedLocation] = useState(locations[0]);
+  const navigate = useNavigate();
+
+  const handleTakeTour = () => {
+    navigate(`/membership?location=${selectedLocation.postal_code}`);
+  };
 
   return (
     <div className="relative h-screen w-full overflow-hidden">
@@ -67,7 +73,10 @@ function LocationDesktop() {
             </Listbox.Options>
           </div>
         </Listbox>
-        <button className="button mt-6 bg-[#2DDE28] text-black text-[16px] font-medium w-[139px] h-[42px]">
+        <button
+          onClick={handleTakeTour}
+          className="button mt-6 bg-[#2DDE28] text-black text-[16px] font-medium w-[139px] h-[42px]"
+        >
           TAKE A TOUR
         </button>
       </div>
