@@ -5,6 +5,11 @@ import EvolveStrengthHome from "./components/Home/mobile";
 import LocationDesktop from "./components/Home/desktop";
 import MembershipDesktop from "./components/Membership/desktop";
 import AboutYourself from "./components/AboutYourself";
+import LocationDetails from "./components/Home/mobile/LocationDetails";
+import MemberDetails from "./components/Home/mobile/MemberDetails";
+import MemberPayment from "./components/Home/mobile/MemberPayment";
+import ConfirmationPage from "./components/Home/mobile/ConfirmationPage";
+import MembershipPlan from "./components/Home/mobile/MembershipPlan";
 
 function App() {
   return (
@@ -44,6 +49,11 @@ function App() {
               </>
             }
           />
+          <Route path="/location-details" element={<LocationDetails />} />
+          <Route path="/membership-plan" element={<MembershipPlan />} />
+          <Route path="/member-details" element={<MemberDetails />} />
+          <Route path="/member-Payment" element={<MemberPayment />} />
+          <Route path="/confirmation" element={<ConfirmationPage />} />
         </Route>
       </Routes>
     </Router>

@@ -1,0 +1,153 @@
+import React, { useContext, useState } from "react";
+import StepIndicator from "./common/StepIndicator";
+import MembershipVancouver from "./common/MembershipVancouver";
+import { useNavigate } from "react-router-dom";
+
+const MembershipPlan = () => {
+  const [selectedPlan, setSelectedPlan] = useState("monthly");
+  const navigate = useNavigate();
+
+  return (
+    <div className="min-h-screen bg-black text-white px-4 pt-6 pb-10 flex flex-col gap-8">
+      <StepIndicator
+        step={1}
+        totalSteps={3}
+        title="Choose Your Plan"
+        subtitle="Pick the membership that fits you best and choose your start date."
+      />
+
+      <MembershipVancouver />
+
+      <div className="flex flex-col">
+        <span className="text-white font-kanit text-[42px] font-[700] leading-[42px] uppercase">
+          Your membership at
+        </span>
+
+        <span className="text-[#2DDE28] font-kanit text-[42px] font-[800] leading-[42px] uppercase">
+          Vancouver, The PosT
+        </span>
+      </div>
+
+      <div className="flex flex-col">
+        <p className="mb-2 text-white text-[16px] font-normal leading-[25.2px]">
+          Choose your pricing plan
+        </p>
+
+        <div className="flex border border-white overflow-hidden p-1">
+          <button
+            onClick={() => setSelectedPlan("monthly")}
+            className={`flex items-center justify-center gap-[10px]
+              h-[38px] px-[10px] py-[10px] flex-1
+              text-[14px] font-medium leading-[25.2px]
+              uppercase transition-all
+              ${
+                selectedPlan === "monthly"
+                  ? "bg-[#2DDE28] text-black"
+                  : "text-white bg-transparent"
+              }`}
+          >
+            MONTH TO MONTH
+          </button>
+
+          <button
+            onClick={() => setSelectedPlan("yearly")}
+            className={`flex items-center justify-center gap-[10px]
+              h-[38px] px-[10px] py-[10px] flex-1
+              text-[14px] font-normal leading-[25.2px]
+              uppercase transition-all
+              ${
+                selectedPlan === "yearly"
+                  ? "bg-[#2DDE28] text-black"
+                  : "text-white bg-transparent"
+              }`}
+          >
+            1 YEAR CONTRACT
+          </button>
+        </div>
+      </div>
+
+      <div className=" ">
+        {selectedPlan === "monthly" ? (
+          <>
+            <p className="text-white font-kanit text-[16px] font-semibold leading-[16px] uppercase mb-1">
+              BI-WEEKLY
+            </p>
+
+            <p className="text-[#2DDE28]  text-[50px] font-medium leading-[68px] mb-2">
+              $34.99
+            </p>
+
+            <p className="text-[#999999]  text-[16px] font-normal leading-[24px] mb-4">
+              Experience personalized training, group classes, and essential
+              resources.
+            </p>
+          </>
+        ) : (
+          <>
+            <p className="text-white font-kanit text-[16px] font-semibold leading-[16px] uppercase mb-1">
+              YEARLY
+            </p>
+
+            <p className="text-[#2DDE28]  text-[50px] font-medium leading-[68px] mb-2">
+              $899.00
+            </p>
+
+            <p className="text-[#999999]  text-[16px] font-normal leading-[24px] mb-4">
+              Best value — save more with an annual commitment.
+            </p>
+          </>
+        )}
+        <hr className="border-white/20 mb-4" />
+        <ul className="space-y-4">
+          {[
+            "$0 Enrollment Fee",
+            "$0 Maintenance fee",
+            "Personalized assessment",
+            "Access to all locations",
+          ].map((item, idx) => (
+            <li key={idx} className="flex items-start gap-3">
+              <div className="h-5 w-5 flex items-center justify-center">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <circle
+                    cx="12"
+                    cy="12"
+                    r="11"
+                    stroke="#999999"
+                    strokeWidth="1.5"
+                  />
+                  <path
+                    d="M8 12.5L11 15.5L16 9.5"
+                    stroke="#B5B4B4"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </div>
+              <span className="text-[#999999] text-[16px] font-normal leading-[24px]">
+                {item}
+              </span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <button
+        onClick={() => navigate("/member-details")}
+        className="flex items-center justify-center h-[42px] pt-[12.801px] pb-[13.199px] w-full 
+             bg-[#2DDE28] text-black text-center text-[16px] font-medium leading-[16px] 
+             uppercase   transition-all hover:opacity-90 active:scale-[0.98]"
+      >
+        Continue
+      </button>
+    </div>
+  );
+};
+
+export default MembershipPlan;
