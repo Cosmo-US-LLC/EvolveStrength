@@ -4,14 +4,38 @@ import UpDownArrow from "../../../assets/mobile/up-down-arrow.svg";
 import { useNavigate } from "react-router-dom";
 
 const locations = [
-  { name: "VANCOUVER, THE POST", address: "#310 652, homer street" },
-  { name: "CALGARY, DOWNTOWN", address: "#125 4th Ave SW" },
-  { name: "EDMONTON, SOUTH", address: "#501 23rd Street" },
-  { name: "SASKATOON CENTRAL", address: "#78 Main Blvd" },
-  { name: "REGINA EAST", address: "#22 Queen St" },
-  { name: "WINNIPEG CORE", address: "#199 City Center Dr" },
-  { name: "TORONTO WEST", address: "#88 King St W" },
-  { name: "MONTREAL MIDTOWN", address: "#9 Rue Sainte-Catherine" },
+  {
+    name: "Edmonton Downtown",
+    address: "# 12328 102 ave nw Edmonton, Alberta, T5N 0L",
+  },
+  {
+    name: "Edmonton South",
+    address: "# 4825 89 St NW Edmonton, Alberta, T6E 5K1",
+  },
+  {
+    name: "Edmonton North",
+    address: "# 13457 149 St Edmonton, Alberta, T5L 2T3",
+  },
+  {
+    name: "Calgary Royal Oak",
+    address: "# 8888 Country Hills Blvd NW #600 Calgary, Alberta, T3G 5T4",
+  },
+  {
+    name: "Calgary Sunridge",
+    address: "# 2985 23 Ave NE Unit#125 Calgary, Alberta, T1Y 7L3",
+  },
+  {
+    name: "Calgary Seton",
+    address: "# 710-19587 Seton Crescent SE Calgary, Alberta, T3M 2T5",
+  },
+  {
+    name: "Burnaby Brentwood",
+    address: "# 1920 Willingdon Ave #3105 Burnaby, British Columbia, V5C 0K3",
+  },
+  {
+    name: "Vancouver Post",
+    address: "# 658 Homer St Vancouver, British Columbia, V6B 2R4",
+  },
 ];
 
 const MobileHero = () => {
@@ -65,10 +89,15 @@ const MobileHero = () => {
                     setSelected(location);
                     setIsOpen(false);
                   }}
-                  className="p-4 border-b border-gray-700 hover:bg-green-500 hover:text-black transition-all"
+                  className="p-4 border-b flex flex-col gap-2 border-gray-700 hover:bg-green-500 hover:text-black transition-all"
                 >
-                  <div className="font-bold text-sm">{location.name}</div>
-                  <div className="text-xs">{location.address}</div>
+                  <div className="text-[#2DDE28] text-[14px] font-[800] leading-[14.815px] uppercase ">
+                    {location.name}
+                  </div>
+
+                  <div className="text-white text-[12px] font-normal leading-[14.815px] capitalize  ">
+                    {location.address}
+                  </div>
                 </div>
               ))}
             </div>
