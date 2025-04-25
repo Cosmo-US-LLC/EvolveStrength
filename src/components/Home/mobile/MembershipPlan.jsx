@@ -8,7 +8,7 @@ const MembershipPlan = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-black text-white px-4 pt-6 pb-10 flex flex-col gap-8">
+    <div className="min-h-screen bg-black text-white px-4 pt-[80px] pb-[30px] flex flex-col gap-8">
       <StepIndicator
         step={1}
         totalSteps={3}
@@ -19,17 +19,17 @@ const MembershipPlan = () => {
       <MembershipVancouver />
 
       <div className="flex flex-col">
-        <span className="text-white font-kanit text-[42px] font-[700] leading-[42px] uppercase">
+        <span className="text-white font-[kanit] text-[44px] font-[700] leading-[42px] uppercase">
           Your membership at
         </span>
 
-        <span className="text-[#2DDE28] font-kanit text-[42px] font-[800] leading-[42px] uppercase">
+        <span className="text-[#2DDE28] font-[kanit] text-[50px] font-[700] leading-[42px] uppercase">
           Vancouver, The PosT
         </span>
       </div>
 
       <div className="flex flex-col">
-        <p className="mb-2 text-white text-[16px] font-normal leading-[25.2px]">
+        <p className="mb-2 text-white text-[16px] font-[vazirmatn] font-normal leading-[25.2px]">
           Choose your pricing plan
         </p>
 
@@ -38,7 +38,7 @@ const MembershipPlan = () => {
             onClick={() => setSelectedPlan("monthly")}
             className={`flex items-center justify-center gap-[10px]
               h-[38px] px-[10px] py-[10px] flex-1
-              text-[14px] font-medium leading-[25.2px]
+              text-[14px] font-[vazirmatn] font-medium leading-[25.2px]
               uppercase transition-all
               ${
                 selectedPlan === "monthly"
@@ -53,7 +53,7 @@ const MembershipPlan = () => {
             onClick={() => setSelectedPlan("yearly")}
             className={`flex items-center justify-center gap-[10px]
               h-[38px] px-[10px] py-[10px] flex-1
-              text-[14px] font-normal leading-[25.2px]
+              text-[14px] font-[vazirmatn] font-normal leading-[25.2px]
               uppercase transition-all
               ${
                 selectedPlan === "yearly"
@@ -69,30 +69,30 @@ const MembershipPlan = () => {
       <div className=" ">
         {selectedPlan === "monthly" ? (
           <>
-            <p className="text-white font-kanit text-[16px] font-semibold leading-[16px] uppercase mb-1">
+            <p className="text-white font-[kanit] text-[16px] font-[600] leading-[16px] uppercase mb-1">
               BI-WEEKLY
             </p>
 
-            <p className="text-[#2DDE28]  text-[50px] font-medium leading-[68px] mb-2">
+            <p className="text-[#2DDE28] font-[vazirmatn] text-[50px] font-[500] leading-[68px] mb-2">
               $34.99
             </p>
 
-            <p className="text-[#999999]  text-[16px] font-normal leading-[24px] mb-4">
+            <p className="text-[#999999] font-[vazirmatn] text-[16px] font-normal leading-[24px] mb-4">
               Experience personalized training, group classes, and essential
               resources.
             </p>
           </>
         ) : (
           <>
-            <p className="text-white font-kanit text-[16px] font-semibold leading-[16px] uppercase mb-1">
+            <p className="text-white font-[kanit] text-[16px] font-[600] leading-[16px] uppercase mb-1">
               YEARLY
             </p>
 
-            <p className="text-[#2DDE28]  text-[50px] font-medium leading-[68px] mb-2">
+            <p className="text-[#2DDE28] font-[vazirmatn] text-[50px] font-[500] leading-[68px] mb-2">
               $899.00
             </p>
 
-            <p className="text-[#999999]  text-[16px] font-normal leading-[24px] mb-4">
+            <p className="text-[#999999] font-[vazirmatn] text-[16px] font-normal leading-[24px] mb-4">
               Best value — save more with an annual commitment.
             </p>
           </>
@@ -130,7 +130,7 @@ const MembershipPlan = () => {
                   />
                 </svg>
               </div>
-              <span className="text-[#999999] text-[16px] font-normal leading-[24px]">
+              <span className="text-[#999999] font-[vazirmatn] text-[16px] font-normal leading-[24px]">
                 {item}
               </span>
             </li>
@@ -141,7 +141,7 @@ const MembershipPlan = () => {
       <button
         onClick={() => navigate("/member-details")}
         className="flex items-center justify-center h-[42px] pt-[12.801px] pb-[13.199px] w-full 
-             bg-[#2DDE28] text-black text-center text-[16px] font-medium leading-[16px] 
+             bg-[#2DDE28] text-black text-center font-[kanit] text-[16px] font-medium leading-[16px] 
              uppercase   transition-all hover:opacity-90 active:scale-[0.98]"
       >
         Continue
