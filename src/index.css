@@ -1,1 +1,19 @@
 @import "tailwindcss";
+
+
+
+@font-face {
+    font-family: 'Kanit';
+    src: url('./assets/fonts/Kanit/Kanit-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+  }
+  
+   
+  @font-face {
+    font-family: 'Vazirmatn';
+    src: url('./assets/fonts/Vazirmatn/static/Vazirmatn-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+  }
+  

@@ -45,28 +45,28 @@ const MobileHero = () => {
 
   return (
     <div
-      className="min-h-screen pt-[60px] bg-cover bg-center bg-no-repeat flex flex-col justify-center"
+      className="min-h-screen bg-cover bg-center bg-no-repeat flex flex-col justify-center"
       style={{ backgroundImage: `url(${heroImage})` }}
     >
-      <div className="text-white text-center font-kanit text-[50px] leading-[42px] font-bold uppercase px-6 mb-8">
+      <div className="text-white text-center font-[kanit] font-[700] text-[50px] leading-[42px] uppercase px-6 mb-8">
         SELECT
         <br />
         LOCATION
       </div>
 
-      <div className="px-6 pb-10 flex flex-col justify-center items-center">
+      <div className="px-6  flex flex-col justify-center items-center">
         <div className="relative w-full max-w-xs">
           <div
             onClick={() => setIsOpen(!isOpen)}
-            className="flex items-center justify-between w-[325px] px-5 py-3 
-               border border-white/40 bg-black/30 rounded-md 
-               backdrop-blur-[15.4455px] text-white mb-4 cursor-pointer"
+            className="flex items-center justify-between w-[322px] px-3 py-3 
+               border border-[#FFFFFF66] bg-[#0000004F] 
+               backdrop-blur-[15.4455px] text-white mb-2 cursor-pointer"
           >
-            <div className="flex flex-col gap-2">
-              <div className="text-[#2DDE28]   text-[16px] leading-[14.815px] font-extrabold uppercase">
+            <div className="flex flex-col gap-1">
+              <div className="text-[#2DDE28] font-[vazirmatn] font-[800]  text-[16px] leading-[14.815px] uppercase">
                 {selected.name}
               </div>
-              <div className="text-white  text-[12px] leading-[14.815px] font-normal lowercase">
+              <div className="text-[#FFFFFF] font-[vazirmatn] font-[400] text-[12px] leading-[14.815px] lowercase">
                 {selected.address}
               </div>
             </div>
@@ -81,7 +81,7 @@ const MobileHero = () => {
           </div>
 
           {isOpen && (
-            <div className="absolute z-10 w-full max-h-[200px] overflow-y-auto bg-black bg-opacity-90 text-white rounded-md shadow-md">
+            <div className="absolute z-10 w-full max-h-[200px] overflow-y-auto bg-black bg-opacity-90 border border-[#FFFFFF66] text-white shadow-md">
               {locations.map((location, index) => (
                 <div
                   key={index}
@@ -89,13 +89,13 @@ const MobileHero = () => {
                     setSelected(location);
                     setIsOpen(false);
                   }}
-                  className="p-4 border-b flex flex-col gap-2 border-gray-700 hover:bg-green-500 hover:text-black transition-all"
+                  className="px-3 py-3 border-b flex flex-col gap-[2px] border-gray-700 hover:bg-green-500 hover:text-black transition-all"
                 >
-                  <div className="text-[#2DDE28] text-[14px] font-[800] leading-[14.815px] uppercase ">
+                  <div className="text-[#2DDE28] font-[vazirmatn] text-[14px] font-[800] leading-[14.815px] uppercase ">
                     {location.name}
                   </div>
 
-                  <div className="text-white text-[12px] font-normal leading-[14.815px] capitalize  ">
+                  <div className="text-white font-[vazirmatn] text-[12px] font-normal leading-[14.815px] capitalize  ">
                     {location.address}
                   </div>
                 </div>
@@ -105,7 +105,7 @@ const MobileHero = () => {
         </div>
 
         <button
-          className="flex justify-center items-center w-[139px] h-[42px] px-[15.602px] py-[12.801px] border border-[#2DDE28] bg-[#2DDE28] text-black font-semibold text-sm"
+          className="flex mt-2 justify-center items-center w-[139px] h-[42px] px-[15.602px] py-[12.801px] border border-[#2DDE28] bg-[#2DDE28] text-black font-[kanit] font-[500] text-[16px] uppercase"
           onClick={() => navigate("/location-details")}
         >
           TAKE A TOUR

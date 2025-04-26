@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import calendarIcon from "../../assets/mobile/location-details/calendar.svg";
 
-const TailwindCalendar = () => {
+const TailwindCalendar = (props) => {
+  const { title } = props;
   const today = new Date();
   const [currentDate, setCurrentDate] = useState(today);
   const [selectedDate, setSelectedDate] = useState(null);
@@ -69,14 +70,16 @@ const TailwindCalendar = () => {
   }, []);
 
   return (
-    <div className="w-full mb-6 relative">
-      <label className="text-white text-[16px] font-normal leading-[25.2px] mb-2 block">
-        Choose your start date
-      </label>
+    <div className="w-full mb-4 relative">
+      {title && (
+        <label className="text-[#FFFFFF] text-[16px] font-[vazirmatn] font-normal leading-[25.2px] mb-1 block">
+          Choose your start date
+        </label>
+      )}
 
       <div
         onClick={() => setShowCalendar(true)}
-        className="flex h-[40px] px-[14px] py-[10px] items-center justify-between 
+        className="flex h-[46px] px-[14px] py-[10px] items-center justify-between 
              w-full border border-[#999] bg-[rgba(3,3,3,0.41)] 
              backdrop-blur-[15.9px]  cursor-pointer"
       >
@@ -85,7 +88,7 @@ const TailwindCalendar = () => {
           readOnly
           value={formatDate(selectedDate)}
           placeholder="Pick a date"
-          className="bg-transparent text-white text-sm font-vazirmatn w-full outline-none placeholder-white"
+          className="bg-transparent text-white text-[14px] font-[vazirmatn] w-full outline-none placeholder-[#D8D8D8]"
         />
         <img src={calendarIcon} alt="Calendar Icon" className="h-5 w-5 ml-2" />
       </div>

@@ -36,7 +36,7 @@ const StepIndicator = ({ step, totalSteps, title, subtitle }) => {
           />
         </svg>
 
-        <div className="absolute inset-0 flex flex-col items-center justify-center rounded-full text-white text-[12px] font-vazirmatn leading-tight text-center">
+        <div className="absolute inset-0 flex flex-col items-center justify-center rounded-full text-[#B9B9B9] text-[12px] font-[vazirmatn] leading-tight text-center">
           Step
           <br />
           {step}/{totalSteps}
@@ -44,11 +44,11 @@ const StepIndicator = ({ step, totalSteps, title, subtitle }) => {
       </div>
 
       <div className="flex flex-col justify-center gap-[3px]">
-        <h2 className="text-[#2DDE28] text-[16.062px] font-[600] leading-[21.093px]">
+        <h2 className="text-[#2DDE28] text-[16.062px] font-[600] leading-[21.093px] font-[vazirmatn]">
           {title}
         </h2>
 
-        <p className="text-[#B9B9B9] text-[12px] font-[400] leading-[15.1px] w-[231px]">
+        <p className="text-[#B9B9B9] text-[12px] font-[400] leading-[15.1px] w-[231px] font-[vazirmatn]">
           {subtitle}
         </p>
       </div>

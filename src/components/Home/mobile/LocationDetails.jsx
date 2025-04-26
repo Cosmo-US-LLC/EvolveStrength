@@ -19,13 +19,13 @@ const LocationDetails = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-black text-white px-4 py-4 flex flex-col">
+    <div className="min-h-screen pt-[74px] bg-black text-white px-4 flex flex-col">
       <div>
-        <span className="text-white font-kanit text-[50px] leading-[42px] font-bold uppercase">
+        <span className="text-white font-[kanit] text-[50px] leading-[42px] font-bold uppercase">
           VANCOUVER,
         </span>
         <br />
-        <span className="text-[#2DDE28] font-kanit text-[50px] leading-[42px] font-bold uppercase">
+        <span className="text-[#2DDE28] font-[kanit] text-[50px] leading-[42px] font-bold uppercase">
           THE POST
         </span>
       </div>
@@ -34,7 +34,7 @@ const LocationDetails = () => {
         <div className="w-full">
           <img src={locationImg} alt="Location" className="w-full rounded-md" />
         </div>
-        <div className="text-white font-kanit text-[18px] font-semibold uppercase tracking-[-0.791px]">
+        <div className="text-white font-[kanit] text-[18px] font-[600] uppercase tracking-[-0.791px]">
           Facilities
         </div>
 
@@ -46,7 +46,7 @@ const LocationDetails = () => {
                  border-[0.158px] border-[#3A3A3A] bg-white/5 "
             >
               <img src={item.icon} alt={item.label} className="h-7 w-7" />
-              <span className="text-[#F8F8F8] text-center text-[12px] font-[500] leading-[21.512px] uppercase">
+              <span className="text-[#F8F8F8] font-[vazirmatn] text-center text-[12px] font-[500] leading-[21.512px] uppercase">
                 {item.label}
               </span>
             </li>
@@ -54,13 +54,13 @@ const LocationDetails = () => {
         </ul>
       </div>
 
-      <TailwindCalendar />
+      <TailwindCalendar title="Choose your start date"/>
       <button
         onClick={() => navigate("/membership-plan")}
         className="flex items-center justify-center h-[42px] 
-             px-0 py-[12.801px] border border-[#2DDE28] 
+             px-0 py-[12.801px] border border-[#2DDE28] font-[kanit] 
              bg-[#2DDE28] text-black text-[16px] font-[500] 
-             uppercase mb-6"
+             uppercase mb-5"
       >
         Continue
       </button>
