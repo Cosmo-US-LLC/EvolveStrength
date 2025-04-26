@@ -3,9 +3,15 @@ import about_yourself_bg from "../../assets/desktop/about_yourself_bg.webp";
 import MembershipSummaryBoxDesktop from "../Membership/desktop/MembershipSummaryBoxDesktop";
 import StepperDesktop from "../Stepper/desktop";
 import AboutYourselfForm from "./AboutYourselfForm";
+import { useNavigate } from "react-router-dom";
 
 function AboutYourself() {
   const [selectedPlan, setSelectedPlan] = useState("monthly");
+  const navigate = useNavigate();
+
+  const handleJoinNow = () => {
+    navigate(`/review-and-pay`);
+  };
 
   return (
     <div className="relative h-screen w-full">
@@ -30,7 +36,17 @@ function AboutYourself() {
         <div className="flex flex-row justify-between mt-8">
           <AboutYourselfForm />
           {/* Final Details */}
-          <MembershipSummaryBoxDesktop />
+          <div>
+            <MembershipSummaryBoxDesktop />
+            <div className="flex justify-end items-end mt-6 w-full">
+              <button
+                onClick={handleJoinNow}
+                className="button mt-6 bg-[#2DDE28] text-black text-[16px] font-medium w-[139px] h-[42px]"
+              >
+                Next
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>

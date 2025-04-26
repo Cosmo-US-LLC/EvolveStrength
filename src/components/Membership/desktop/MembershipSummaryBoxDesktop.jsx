@@ -8,10 +8,6 @@ const MembershipSummaryBoxDesktop = () => {
     navigate(`/`);
   };
 
-  const handleJoinNow = () => {
-    navigate(`/about-yourself`);
-  }
-
   return (
     <div className="w-[471px] h-[421px] bg-[#000000]/60 backdrop-blur-[10px] rounded-md p-6">
       <div className="flex justify-between items-center">
@@ -65,14 +61,6 @@ const MembershipSummaryBoxDesktop = () => {
           Please note that any offers or discounts will be displayed on the
           checkout summary page. our offer T&Cs.
         </p>
-      </div>
-      <div className="flex justify-end items-end mt-6 w-full">
-        <button
-          onClick={handleJoinNow}
-          className="button mt-6 bg-[#2DDE28] text-black text-[16px] font-medium w-[139px] h-[42px]"
-        >
-          Join Now
-        </button>
       </div>
     </div>
   );

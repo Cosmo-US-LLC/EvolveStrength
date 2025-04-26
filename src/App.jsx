@@ -10,6 +10,8 @@ import MemberDetails from "./components/Home/mobile/MemberDetails";
 import MemberPayment from "./components/Home/mobile/MemberPayment";
 import ConfirmationPage from "./components/Home/mobile/ConfirmationPage";
 import MembershipPlan from "./components/Home/mobile/MembershipPlan";
+import ReviewAndPay from "./components/Payment/desktop";
+import Congratulations from "./components/Congratulations/desktop";
 
 function App() {
   return (
@@ -45,6 +47,26 @@ function App() {
               <>
                 <div className="max-lg:hidden">
                   <AboutYourself />
+                </div>
+              </>
+            }
+          />
+          <Route
+            path="/review-and-pay"
+            element={
+              <>
+                <div className="max-lg:hidden">
+                  <ReviewAndPay />
+                </div>
+              </>
+            }
+          />
+          <Route
+            path="/congratulations"
+            element={
+              <>
+                <div className="max-lg:hidden">
+                  <Congratulations />
                 </div>
               </>
             }
