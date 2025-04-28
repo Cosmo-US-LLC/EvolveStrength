@@ -2,50 +2,20 @@ import React, { useState } from "react";
 import heroImage from "../../../assets/images/mobile/evolve-strength.webp";
 import UpDownArrow from "../../../assets/images/mobile/up-down-arrow.svg";
 import { useNavigate } from "react-router-dom";
-
-const locations = [
-  {
-    name: "Edmonton Downtown",
-    address: "# 12328 102 ave nw Edmonton, Alberta, T5N 0L",
-  },
-  {
-    name: "Edmonton South",
-    address: "# 4825 89 St NW Edmonton, Alberta, T6E 5K1",
-  },
-  {
-    name: "Edmonton North",
-    address: "# 13457 149 St Edmonton, Alberta, T5L 2T3",
-  },
-  {
-    name: "Calgary Royal Oak",
-    address: "# 8888 Country Hills Blvd NW #600 Calgary, Alberta, T3G 5T4",
-  },
-  {
-    name: "Calgary Sunridge",
-    address: "# 2985 23 Ave NE Unit#125 Calgary, Alberta, T1Y 7L3",
-  },
-  {
-    name: "Calgary Seton",
-    address: "# 710-19587 Seton Crescent SE Calgary, Alberta, T3M 2T5",
-  },
-  {
-    name: "Burnaby Brentwood",
-    address: "# 1920 Willingdon Ave #3105 Burnaby, British Columbia, V5C 0K3",
-  },
-  {
-    name: "Vancouver Post",
-    address: "# 658 Homer St Vancouver, British Columbia, V6B 2R4",
-  },
-];
+import { locations } from "../../../constant/locationsData";
 
 const MobileHero = () => {
   const navigate = useNavigate();
   const [selected, setSelected] = useState(locations[0]);
   const [isOpen, setIsOpen] = useState(false);
 
+  const takeATourHandler = () => {
+    navigate(`/location-details?location=${selected.postalCode}`);
+  };
+
   return (
     <div
-      className="min-h-screen bg-cover bg-center bg-no-repeat flex flex-col justify-center"
+      className="min-h-screen bg-cover bg-no-repeat flex flex-col justify-center sm:bg-center bg-[center_top_10%]"
       style={{ backgroundImage: `url(${heroImage})` }}
     >
       <div className="text-white text-center font-[kanit] font-[700] text-[50px] leading-[42px] uppercase px-6 mb-8">
@@ -64,10 +34,10 @@ const MobileHero = () => {
           >
             <div className="flex flex-col gap-1">
               <div className="text-[#2DDE28] font-[vazirmatn] font-[800]  text-[16px] leading-[14.815px] uppercase">
-                {selected.name}
+                {selected.clubName}
               </div>
-              <div className="text-[#FFFFFF] font-[vazirmatn] font-[400] text-[12px] leading-[14.815px] lowercase">
-                {selected.address}
+              <div className="text-[#FFFFFF] font-[vazirmatn] font-[400] text-[12px] leading-[14.815px] capitalize">
+                {selected.clubAddress}
               </div>
             </div>
 
@@ -92,11 +62,11 @@ const MobileHero = () => {
                   className="px-3 py-3 border-b flex flex-col gap-[2px] border-gray-700 hover:bg-green-500 hover:text-black transition-all"
                 >
                   <div className="text-[#2DDE28] font-[vazirmatn] text-[14px] font-[800] leading-[14.815px] uppercase ">
-                    {location.name}
+                    {location.clubName}
                   </div>
 
                   <div className="text-white font-[vazirmatn] text-[12px] font-normal leading-[14.815px] capitalize  ">
-                    {location.address}
+                    {location.clubAddress}
                   </div>
                 </div>
               ))}
@@ -106,7 +76,7 @@ const MobileHero = () => {
 
         <button
           className="flex mt-2 justify-center items-center w-[139px] h-[42px] px-[15.602px] py-[12.801px] border border-[#2DDE28] bg-[#2DDE28] text-black font-[kanit] font-[500] text-[16px] uppercase"
-          onClick={() => navigate("/location-details")}
+          onClick={takeATourHandler}
         >
           TAKE A TOUR
         </button>

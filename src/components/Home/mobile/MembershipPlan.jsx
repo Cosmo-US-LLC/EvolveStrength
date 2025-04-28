@@ -16,7 +16,7 @@ const MembershipPlan = () => {
         subtitle="Pick the membership that fits you best and choose your start date."
       />
 
-      <MembershipVancouver />
+      <MembershipVancouver step={1}/>
 
       <div className="flex flex-col">
         <span className="text-white font-[kanit] text-[44px] font-[700] leading-[42px] uppercase">
