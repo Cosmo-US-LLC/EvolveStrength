@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import logo from "../../../assets/desktop/logo_navbar.svg";
+import logo from "../../../assets/images/desktop/logo_navbar.svg";
 
 const NavBarDesktop = () => {
   const navigate = useNavigate();

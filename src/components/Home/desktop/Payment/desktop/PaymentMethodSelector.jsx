@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import debit_icon_active from "../../../assets/desktop/debit_icon_active.svg";
-import debit_icon_inactive from "../../../assets/desktop/debit_icon_inactive.svg";
-import credit_icon_active from "../../../assets/desktop/credit_icon_active.svg";
-import credit_icon_inactive from "../../../assets/desktop/credit_icon_inactive.svg";
+import debit_icon_active from "../../../../../assets/images/desktop/debit_icon_active.svg";
+import debit_icon_inactive from "../../../../../assets/images/desktop/debit_icon_inactive.svg";
+import credit_icon_active from "../../../../../assets/images/desktop/credit_icon_active.svg";
+import credit_icon_inactive from "../../../../../assets/images/desktop/credit_icon_inactive.svg";
 
 const PaymentMethodSelector = ({ selectedPlan, setSelectedPlan }) => {
 

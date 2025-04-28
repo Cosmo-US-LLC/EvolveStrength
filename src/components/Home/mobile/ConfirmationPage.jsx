@@ -1,5 +1,5 @@
 import React from "react";
-import successImage from "../../../assets/mobile/Congratulations/congratulations-to-back.webp";
+import successImage from "../../../assets/images/mobile/Congratulations/congratulations-to-back.webp";
 import { useNavigate } from "react-router-dom";
 
 const ConfirmationPage = () => {

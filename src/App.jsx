@@ -3,15 +3,15 @@ import "./App.css";
 import Layout from "./components/Layout";
 import EvolveStrengthHome from "./components/Home/mobile";
 import LocationDesktop from "./components/Home/desktop";
-import MembershipDesktop from "./components/Membership/desktop";
-import AboutYourself from "./components/AboutYourself";
+import MembershipDesktop from "./components/Home/desktop/Membership/desktop";
+import AboutYourself from "./components/Home/desktop/AboutYourself";
 import LocationDetails from "./components/Home/mobile/LocationDetails";
 import MemberDetails from "./components/Home/mobile/MemberDetails";
 import MemberPayment from "./components/Home/mobile/MemberPayment";
 import ConfirmationPage from "./components/Home/mobile/ConfirmationPage";
 import MembershipPlan from "./components/Home/mobile/MembershipPlan";
-import ReviewAndPay from "./components/Payment/desktop";
-import Congratulations from "./components/Congratulations/desktop";
+import ReviewAndPay from "./components/Home/desktop/Payment/desktop";
+import Congratulations from "./components/Home/desktop/Congratulations";
 
 function App() {
   return (

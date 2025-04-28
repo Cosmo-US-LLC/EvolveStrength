@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import heroImage from "../../../assets/mobile/evolve-strength.webp";
-import UpDownArrow from "../../../assets/mobile/up-down-arrow.svg";
+import heroImage from "../../../assets/images/mobile/evolve-strength.webp";
+import UpDownArrow from "../../../assets/images/mobile/up-down-arrow.svg";
 import { useNavigate } from "react-router-dom";
 
 const locations = [
