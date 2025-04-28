@@ -1,11 +1,11 @@
 import React from "react";
-import locationImg from "../../../assets/mobile/location-details/evolve-strength-bg.webp";
+import locationImg from "../../../assets/images/mobile/location-details/evolve-strength-bg.webp";
 
-import healthWellnessIcon from "../../../assets/mobile/location-details/health&wellness.svg";
-import personalTrainersIcon from "../../../assets/mobile/location-details/personal-trainers.svg";
-import equipmentIcon from "../../../assets/mobile/location-details/equipment.svg";
-import locationIcon from "../../../assets/mobile/location-details/location.svg";
-import TailwindCalendar from "../../Utils/TailwindCalendar";
+import healthWellnessIcon from "../../../assets/images/mobile/location-details/health&wellness.svg";
+import personalTrainersIcon from "../../../assets/images/mobile/location-details/personal-trainers.svg";
+import equipmentIcon from "../../../assets/images/mobile/location-details/equipment.svg";
+import locationIcon from "../../../assets/images/mobile/location-details/location.svg";
+import TailwindCalendar from "../../../utils/TailwindCalendar";
 
 import { useNavigate } from "react-router-dom";
 

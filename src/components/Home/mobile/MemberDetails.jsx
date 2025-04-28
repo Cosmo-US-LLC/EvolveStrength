@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import StepIndicator from "./common/StepIndicator";
 import MembershipVancouver from "./common/MembershipVancouver";
-import calendarIcon from "../../../assets/mobile/location-details/calendar.svg";
-import dropdownIcon from "../../../assets/mobile/member-ship/up-down-arrow.svg";
+import calendarIcon from "../../../assets/images/mobile/location-details/calendar.svg";
+import dropdownIcon from "../../../assets/images/mobile/member-ship/up-down-arrow.svg";
 import { useNavigate } from "react-router-dom";
-import TailwindCalendar from "../../Utils/TailwindCalendar";
+import TailwindCalendar from "../../../utils/TailwindCalendar";
 
 const MemberDetails = () => {
   const [isOpen, setIsOpen] = useState(false);

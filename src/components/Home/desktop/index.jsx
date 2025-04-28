@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Listbox } from "@headlessui/react";
 import locations from "../../../utils/locations";
-import location_bg from "../../../assets/desktop/location_bg.webp";
-import ChevronDownFilled from "../../../assets/desktop/chevron-down-filled.svg";
+import location_bg from "../../../assets/images/desktop/location_bg.webp";
+import ChevronDownFilled from "../../../assets/images/desktop/chevron-down-filled.svg";
 import { useNavigate } from "react-router-dom";
 
 function LocationDesktop() {

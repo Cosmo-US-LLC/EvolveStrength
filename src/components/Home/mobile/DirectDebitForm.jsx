@@ -1,8 +1,8 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import visaIcon from "../../../assets/mobile/payment/dabit1.svg";
-import mcIcon from "../../../assets/mobile/payment/dabit2.svg";
-import lockIcon from "../../../assets/mobile/payment/dabit3.svg";
+import visaIcon from "../../../assets/images/mobile/payment/dabit1.svg";
+import mcIcon from "../../../assets/images/mobile/payment/dabit2.svg";
+import lockIcon from "../../../assets/images/mobile/payment/dabit3.svg";
 
 const DirectDebitForm = () => {
   const navigate = useNavigate();

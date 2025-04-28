@@ -1,16 +1,16 @@
 import React from "react";
-import membership_step_1 from "../../../assets/desktop/membership_step_1.svg";
-import membership_step_2_inactive from "../../../assets/desktop/membership_step_2_inactive.svg";
-import membership_step_3_inactive from "../../../assets/desktop/membership_step_3_inactive.svg";
-import membership_step_2_active from "../../../assets/desktop/membership_step_2_active.svg";
-import membership_step_3_active from "../../../assets/desktop/membership_step_3_active.svg";
+import membership_step_1 from "../../../../assets/images/desktop/membership_bg.webp";
+import membership_step_2_inactive from "../../../../assets/images/desktop/membership_step_2_inactive.svg";
+import membership_step_3_inactive from "../../../../assets/images/desktop/membership_step_3_inactive.svg";
+import membership_step_2_active from "../../../../assets/images/desktop/membership_step_2_active.svg";
+import membership_step_3_active from "../../../../assets/images/desktop/membership_step_3_active.svg";
 
 function StepperDesktop({ stepNumber = 1 }) {
   return (
     <div className="fixed top-[88px] h-[143px] w-full bg-[#000000]/60 backdrop-blur-[20px] z-10">
       <div className="flex flex-row items-center justify-center  max-w-[1280px] mx-auto p-4">
         <div className="flex flex-col items-start justify-center w-full">
-          <div className="h-[8px] w-full bg-[#2DDE28] mb-4 rounded-l-full" />
+          <div className="h-[8px] w-full bg-[#2DDE28] mb-6 rounded-l-full" />
           <img
             src={membership_step_1}
             alt="membership_step_1"

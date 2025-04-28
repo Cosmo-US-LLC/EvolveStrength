@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import ChevronArrow from "../../../../assets/mobile/member-ship/up-down-arrow.svg";
+import ChevronArrow from "../../../../assets/images/mobile/member-ship/up-down-arrow.svg";
 import { useNavigate } from "react-router-dom";
 
 const MembershipVancouver = () => {

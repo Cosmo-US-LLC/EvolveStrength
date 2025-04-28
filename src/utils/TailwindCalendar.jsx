@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import calendarIcon from "../../assets/mobile/location-details/calendar.svg";
+import calendarIcon from "../assets/images/mobile/location-details/calendar.svg";
 
 const TailwindCalendar = (props) => {
   const { title } = props;
