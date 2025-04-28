@@ -1,8 +1,8 @@
 import React from "react";
 
 const StepIndicator = ({ step, totalSteps, title, subtitle }) => {
-  const radius = 18;
-  const stroke = 6.5;
+  const radius = 19;
+  const stroke = 5.5;
   const circumference = 2 * Math.PI * radius;
   const progress = (step / totalSteps) * circumference;
 
@@ -36,7 +36,7 @@ const StepIndicator = ({ step, totalSteps, title, subtitle }) => {
           />
         </svg>
 
-        <div className="absolute inset-0 flex flex-col items-center justify-center rounded-full text-[#B9B9B9] text-[12px] font-[vazirmatn] leading-tight text-center">
+        <div className="absolute inset-0 flex flex-col items-center justify-center rounded-full text-[#B9B9B9] text-[10px] font-[vazirmatn] leading-tight text-center">
           Step
           <br />
           {step}/{totalSteps}

@@ -17,34 +17,42 @@ const MemberPayment = () => {
 
       <MembershipVancouver />
 
-      <div className="text-left">
+      <div className="text-left flex flex-row gap-[10px]">
         <span className="text-white font-[kanit] text-[46px] font-[700] leading-[42px] uppercase">
           REVIEW &
-        </span>{" "}
-        <span className="text-[#2DDE28] font-[kanit] text-[50px] font-[700] leading-[42px] uppercase">
+        </span>
+        <span className="text-[#2DDE28] font-[kanit] text-[48px] font-[700] leading-[42px] uppercase">
           PAY
         </span>
       </div>
 
-      <div className="border border-white/40 flex overflow-hidden p-1">
-        <button
-          onClick={() => setPaymentMethod("direct")}
-          className={`w-1/2 py-2 text-[14px] font-[500] font-[vazirmatn] uppercase ${
-            paymentMethod === "direct"
-              ? "bg-[#2DDE28] text-black"
-              : "text-white"
-          }`}
-        >
-          Direct Debit
-        </button>
-        <button
-          onClick={() => setPaymentMethod("card")}
-          className={`w-1/2 py-2 text-[14] font-[500] font-[vazirmatn] uppercase ${
-            paymentMethod === "card" ? "bg-[#2DDE28] text-black" : "text-white"
-          }`}
-        >
-          Card pay
-        </button>
+      <div className="flex flex-col">
+        <p class="text-white font-[Vazirmatn] text-[16px] font-normal leading-[25.2px]">
+          Choose payment Option
+        </p>
+
+        <div className="border border-white/40 flex overflow-hidden p-1">
+          <button
+            onClick={() => setPaymentMethod("direct")}
+            className={`w-1/2 py-2 text-[14px] font-[500] font-[vazirmatn] uppercase ${
+              paymentMethod === "direct"
+                ? "bg-[#2DDE28] text-black"
+                : "text-white"
+            }`}
+          >
+            Direct Debit
+          </button>
+          <button
+            onClick={() => setPaymentMethod("card")}
+            className={`w-1/2 py-2 text-[14] font-[500] font-[vazirmatn] uppercase ${
+              paymentMethod === "card"
+                ? "bg-[#2DDE28] text-black"
+                : "text-white"
+            }`}
+          >
+            Card pay
+          </button>
+        </div>
       </div>
 
       {paymentMethod === "direct" ? <DirectDebitForm /> : <CardPaymentForm />}

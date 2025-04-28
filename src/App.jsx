@@ -12,10 +12,12 @@ import ConfirmationPage from "./components/Home/mobile/ConfirmationPage";
 import MembershipPlan from "./components/Home/mobile/MembershipPlan";
 import ReviewAndPay from "./components/Home/desktop/Payment/desktop";
 import Congratulations from "./components/Home/desktop/Congratulations";
+import ScrollToTop from "./utils/ScrollToTop";
 
 function App() {
   return (
     <Router>
+      <ScrollToTop/>
       <Routes>
         <Route element={<Layout />}>
           <Route
