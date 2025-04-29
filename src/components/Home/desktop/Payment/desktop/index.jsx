@@ -1,7 +1,9 @@
 import React, { useState } from "react";
-import review_and_pay_bg from "../../../assets/desktop/review_and_pay_bg.webp";
+import review_and_pay_bg from "../../../../../assets/images/desktop/review_and_pay_bg.webp";
+ 
 import MembershipSummaryBoxDesktop from "../../Membership/desktop/MembershipSummaryBoxDesktop";
-import StepperDesktop from "../../Stepper/desktop";
+ 
+import StepperDesktop from "../../commen/StepperDesktop";
 import { useNavigate } from "react-router-dom";
 import PaymentMethodSelector from "./PaymentMethodSelector";
 import DebitForm from "./DebitForm";

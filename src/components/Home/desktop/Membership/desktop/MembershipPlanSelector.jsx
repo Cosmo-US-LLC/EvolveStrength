@@ -1,5 +1,5 @@
 import React from "react";
-import check_with_circle from "../../../assets/desktop/check_with_circle.svg";
+import check_with_circle from "../../../../../assets/images/desktop/check_with_circle.svg";
 
 const MembershipPlanSelector = ({ selectedPlan, setSelectedPlan }) => {
   const monthlyPlanBenefits = [

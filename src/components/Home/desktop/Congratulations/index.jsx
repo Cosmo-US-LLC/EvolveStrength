@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import congratulations_bg from "../../../assets/desktop/congratulations_bg.webp";
+import congratulations_bg from "../../../../assets/images/desktop/congratulations_bg.webp";
 
 function Congratulations() {
   const navigate = useNavigate();

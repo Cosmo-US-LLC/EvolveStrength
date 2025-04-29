@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import info_icon from "../../../assets/desktop/info_icon.svg";
-import guarantee_icons from "../../../assets/desktop/guarantee_icons.svg";
+import info_icon from "../../../../../assets/images/desktop/info_icon.svg";
+import guarantee_icons from "../../../../../assets/images/desktop/guarantee_icons.svg";
 
 function DebitForm() {
   const [firstName, setFirstName] = useState("");

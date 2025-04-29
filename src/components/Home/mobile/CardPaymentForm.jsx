@@ -1,9 +1,9 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import visaIcon from "../../../assets/mobile/payment/dabit1.svg";
-import mcIcon from "../../../assets/mobile/payment/credit2.svg";
-import lockIcon from "../../../assets/mobile/payment/credit3.svg";
-import lockIcon2 from "../../../assets/mobile/payment/credit4.svg";
+import visaIcon from "../../../assets/images/mobile/payment/dabit1.svg";
+import mcIcon from "../../../assets/images/mobile/payment/credit2.svg";
+import lockIcon from "../../../assets/images/mobile/payment/credit3.svg";
+import lockIcon2 from "../../../assets/images/mobile/payment/credit4.svg";
 
 const CardPaymentForm = () => {
   const navigate = useNavigate();

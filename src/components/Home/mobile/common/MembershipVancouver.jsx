@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import ChevronArrow from "../../../../assets/mobile/member-ship/up-down-arrow.svg";
+import ChevronArrow from "../../../../assets/images/mobile/member-ship/up-down-arrow.svg";
 import { useNavigate } from "react-router-dom";
 
-const MembershipVancouver = () => {
+const MembershipVancouver = (props) => {
+  console.log(props);
   const navigate = useNavigate();
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(props.step === 1 ? true : false);
 
   return (
     <div

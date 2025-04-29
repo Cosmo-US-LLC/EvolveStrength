@@ -1,5 +1,5 @@
 import React from "react";
-import successImage from "../../../assets/mobile/Congratulations/congratulations-to-back.webp";
+import successImage from "../../../assets/images/mobile/Congratulations/congratulations-to-back.webp";
 import { useNavigate } from "react-router-dom";
 
 const ConfirmationPage = () => {
@@ -35,11 +35,11 @@ const ConfirmationPage = () => {
             </span>
           </div>
           <div className="flex w-[100%] justify-between border-b border-[#808080] pb-2 mb-2">
-            <span className="text-white font-[vazirmatn]  text-[13.834px] leading-[16.601px] capitalize">
+            <span className="text-white font-[vazirmatn] font-[800]  text-[13.834px] leading-[16.601px] capitalize">
               Amount Paid
             </span>
 
-            <span className="text-white font-[vazirmatn] text-[13.834px] leading-[16.601px] capitalize text-right">
+            <span className="text-white font-[vazirmatn] font-[800] text-[13.834px] leading-[16.601px] capitalize text-right">
               $98.66
             </span>
           </div>

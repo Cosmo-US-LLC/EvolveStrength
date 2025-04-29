@@ -1,40 +1,44 @@
 import React, { useState } from "react";
-import about_yourself_bg from "../../assets/desktop/about_yourself_bg.webp";
-import MembershipSummaryBoxDesktop from "../Membership/desktop/MembershipSummaryBoxDesktop";
-import StepperDesktop from "../Stepper/desktop";
-import AboutYourselfForm from "./AboutYourselfForm";
+import membership_bg from "../../../../../assets/images/desktop/membership_bg.webp";
+// import StepperDesktop from "../../Home/desktop/commen/StepperDesktop";
+import StepperDesktop from "../../commen/StepperDesktop";
+import MembershipPlanSelector from "./MembershipPlanSelector";
+import MembershipSummaryBoxDesktop from "./MembershipSummaryBoxDesktop";
 import { useNavigate } from "react-router-dom";
 
-function AboutYourself() {
+function MembershipDesktop() {
   const [selectedPlan, setSelectedPlan] = useState("monthly");
   const navigate = useNavigate();
 
   const handleJoinNow = () => {
-    navigate(`/review-and-pay`);
+    navigate(`/about-yourself`);
   };
 
   return (
     <div className="relative h-screen w-full">
       {/* Fixed Stepper Header */}
-      <StepperDesktop stepNumber={2} />
+      <StepperDesktop stepNumber={1} />
 
       {/* Background Image */}
       <img
-        src={about_yourself_bg}
-        alt="about_yourself_bg"
+        src={membership_bg}
+        alt="membership_bg"
         className="absolute top-0 w-full h-auto -z-10"
       />
 
       <div className="pt-[270px] max-w-[1280px] mx-auto">
         <p className="text-white font-kanit text-[79px] font-bold leading-[68px] uppercase">
-          Tell us about
+          Your membership at
         </p>
         <p className="text-[#2DDE28] font-kanit text-[79px] font-bold leading-[68px] uppercase">
-          yourself
+          Vancouver, The Post
         </p>
         {/* Plan Selector Tabs */}
         <div className="flex flex-row justify-between mt-8">
-          <AboutYourselfForm />
+          <MembershipPlanSelector
+            selectedPlan={selectedPlan}
+            setSelectedPlan={setSelectedPlan}
+          />
           {/* Final Details */}
           <div>
             <MembershipSummaryBoxDesktop />
@@ -43,7 +47,7 @@ function AboutYourself() {
                 onClick={handleJoinNow}
                 className="button mt-6 bg-[#2DDE28] text-black text-[16px] font-medium w-[139px] h-[42px]"
               >
-                Next
+                Join Now
               </button>
             </div>
           </div>
@@ -53,4 +57,4 @@ function AboutYourself() {
   );
 }
 
-export default AboutYourself;
+export default MembershipDesktop;

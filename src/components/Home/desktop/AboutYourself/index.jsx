@@ -1,43 +1,42 @@
 import React, { useState } from "react";
-import membership_bg from "../../../assets/desktop/membership_bg.webp";
-import StepperDesktop from "../../Stepper/desktop";
-import MembershipPlanSelector from "./MembershipPlanSelector";
-import MembershipSummaryBoxDesktop from "./MembershipSummaryBoxDesktop";
+import about_yourself_bg from "../../../../assets/images/desktop/about_yourself_bg.webp";
+// import MembershipSummaryBoxDesktop from "../Membership/desktop/MembershipSummaryBoxDesktop";
+import MembershipSummaryBoxDesktop from "../Membership/desktop/MembershipSummaryBoxDesktop";
+// import StepperDesktop from "../Home/desktop/commen/StepperDesktop";
+import StepperDesktop from "../commen/StepperDesktop";
+import AboutYourselfForm from "./AboutYourselfForm";
 import { useNavigate } from "react-router-dom";
 
-function MembershipDesktop() {
+function AboutYourself() {
   const [selectedPlan, setSelectedPlan] = useState("monthly");
   const navigate = useNavigate();
 
   const handleJoinNow = () => {
-    navigate(`/about-yourself`);
+    navigate(`/review-and-pay`);
   };
 
   return (
     <div className="relative h-screen w-full">
       {/* Fixed Stepper Header */}
-      <StepperDesktop stepNumber={1} />
+      <StepperDesktop stepNumber={2} />
 
       {/* Background Image */}
       <img
-        src={membership_bg}
-        alt="membership_bg"
+        src={about_yourself_bg}
+        alt="about_yourself_bg"
         className="absolute top-0 w-full h-auto -z-10"
       />
 
       <div className="pt-[270px] max-w-[1280px] mx-auto">
         <p className="text-white font-kanit text-[79px] font-bold leading-[68px] uppercase">
-          Your membership at
+          Tell us about
         </p>
         <p className="text-[#2DDE28] font-kanit text-[79px] font-bold leading-[68px] uppercase">
-          Vancouver, The Post
+          yourself
         </p>
         {/* Plan Selector Tabs */}
         <div className="flex flex-row justify-between mt-8">
-          <MembershipPlanSelector
-            selectedPlan={selectedPlan}
-            setSelectedPlan={setSelectedPlan}
-          />
+          <AboutYourselfForm />
           {/* Final Details */}
           <div>
             <MembershipSummaryBoxDesktop />
@@ -46,7 +45,7 @@ function MembershipDesktop() {
                 onClick={handleJoinNow}
                 className="button mt-6 bg-[#2DDE28] text-black text-[16px] font-medium w-[139px] h-[42px]"
               >
-                Join Now
+                Next
               </button>
             </div>
           </div>
@@ -56,4 +55,4 @@ function MembershipDesktop() {
   );
 }
 
-export default MembershipDesktop;
+export default AboutYourself;
