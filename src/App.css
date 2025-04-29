@@ -16,3 +16,23 @@
 .button:hover {
   filter: brightness(95%);
 }
+
+.congratulations_bg{
+  background-image: url(/src/assets/images/desktop/congratulationsBG.webp);  
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: 100% 100%;
+  min-height: 643px;
+}
+
+
+.location-bg {
+  background-image: url('/src/assets/images/desktop/locationBG2.webp');
+  background-size: cover;
+  /* background-position: center; */
+  /* background-position: center; */
+  /* background-position-y: -10px; */
+ 
+  background-repeat: no-repeat;
+ 
+}
