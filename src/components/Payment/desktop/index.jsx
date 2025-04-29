@@ -6,9 +6,11 @@ import { useNavigate } from "react-router-dom";
 import PaymentMethodSelector from "./PaymentMethodSelector";
 import DebitForm from "./DebitForm";
 import CardForm from "./CardForm";
+import Turnstile from "react-turnstile";
 
 function ReviewAndPay() {
   const [selectedPlan, setSelectedPlan] = useState("direct_debit");
+  const [isHuman, setIsHuman] = useState(false);
   const navigate = useNavigate();
 
   const handleJoinNow = () => {
@@ -51,10 +53,19 @@ function ReviewAndPay() {
           {/* Final Details */}
           <div>
             <MembershipSummaryBoxDesktop />
+            <Turnstile
+              sitekey="0x4AAAAAABWSTWCqAhOt104z"
+              onSuccess={() => setIsHuman(true)}
+              onError={() => setIsHuman(false)}
+              onExpire={() => setIsHuman(false)}
+            />
             <div className="flex justify-end items-end mt-6 w-full">
               <button
                 onClick={handleJoinNow}
-                className="button mt-6 bg-[#2DDE28] text-black text-[16px] font-medium w-[139px] h-[42px]"
+                className={`button mt-6 ${
+                  isHuman ? "bg-[#2DDE28]" : "bg-gray-400 cursor-not-allowed"
+                } text-black text-[16px] font-medium w-[139px] h-[42px]`}
+                disabled={!isHuman}
               >
                 PAY NOW
               </button>
