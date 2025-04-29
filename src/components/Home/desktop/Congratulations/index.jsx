@@ -1,42 +1,30 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import congratulations_bg from "../../../../assets/images/desktop/congratulations_bg.webp";
 
 function Congratulations() {
   const navigate = useNavigate();
 
   const handleBackHome = () => {
-    navigate(`/`); // Adjusted for navigating to the home page
+    navigate(`/`);
   };
 
   return (
-    <div className="relative min-h-screen w-full flex justify-center items-center">
-      {/* Background Image */}
-      <div className="absolute w-full h-full -z-10">
-        <img
-          src={congratulations_bg}
-          alt="congratulations_bg"
-          className="object-cover w-full h-full"
-        />
-      </div>
-
-      {/* Centered Box */}
-      <div className="w-[670px] h-[475px] border border-1 border-[#FFFFFF] bg-[#000000]/20 backdrop-blur-[20px] p-6 flex flex-col justify-center items-center text-center">
-        <h1 className="text-[#2DDE28] font-kanit text-[40px] font-bold mb-4">
+    <div className="congratulations_bg flex justify-center items-center">
+      <div className="w-[580px] h-[420px] border border-[#FFFFFF] bg-[#000000]/20 backdrop-blur-[20px] p-6 flex flex-col justify-center items-center text-center">
+        <h1 className="text-[#2DDE28] font-kanit text-[40px] font-bold mb-2">
           CONGRATULATIONS
         </h1>
-        <p
-          style={{ fontFamily: "'Vazirmatn', sans-serif" }}
-          className="text-white text-[20px] mb-6"
-        >
-          You’ve successfully activated your Month to month membership.
+        <p className="text-white text-[18px] mb-4 font-[400] font-[vazirmatn]">
+          You’ve successfully activated your{" "}
+          <span className="text-[20px] font-[700]">Month to month</span>{" "}
+          membership.
         </p>
 
         <div
           style={{ fontFamily: "'Vazirmatn', sans-serif" }}
-          className="space-y-4 mt-4 w-full"
+          className="space-y-4 mt-3 w-full"
         >
-          <div className="flex justify-between text-white/90 text-sm text-[20px] font-regular">
+          <div className="flex justify-between text-white/90 font-[vazirmatn] text-[16px] font-regular">
             <span className="">Start Date</span>
             <span>
               {new Date().toLocaleDateString("en-US", {
@@ -46,7 +34,7 @@ function Congratulations() {
               })}
             </span>{" "}
           </div>{" "}
-          <div className="flex justify-between text-white/90 text-sm text-[20px] font-regular border-t border-white/20 pt-4">
+          <div className="flex justify-between font-[vazirmatn] text-white/90 text-[16px] font-regular border-t border-white/20 pt-4">
             <span>Subscription</span>
             <span>Month To Month</span>
           </div>
@@ -56,10 +44,9 @@ function Congratulations() {
           </div>
         </div>
 
-        {/* Back Home Button */}
         <button
           onClick={handleBackHome}
-          className="w-[141px] mt-6 bg-[#2DDE28] text-black text-[16px] font-medium h-[50px] button"
+          className="px-6 py-[10px] mt-5 bg-[#2DDE28] text-black text-[16px] font-medium button"
         >
           BACK HOME
         </button>

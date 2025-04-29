@@ -4,11 +4,10 @@ import logo from "../../../assets/images/desktop/logo_navbar.svg";
 
 const NavBarDesktop = () => {
   const navigate = useNavigate();
-  const location = useLocation();  // Hook to get current route
+  const location = useLocation();
   const [buttonText, setButtonText] = useState("Next");
 
   useEffect(() => {
-    // Update button text based on current route
     if (location.pathname === "/membership") {
       setButtonText("JOIN NOW");
     } else if (location.pathname === "/about-yourself") {
@@ -22,18 +21,18 @@ const NavBarDesktop = () => {
 
   const handleButtonClick = () => {
     if (location.pathname === "/membership") {
-      navigate("/about-yourself"); // Redirect to /about-yourself from /membership
+      navigate("/about-yourself");
     } else if (location.pathname === "/about-yourself") {
-      navigate("/review-and-pay"); // Redirect to /review-and-pay from /about-yourself
+      navigate("/review-and-pay");
     } else if (location.pathname === "/review-and-pay") {
-      navigate("/congratulations"); // Redirect to /congratulations from /review-and-pay
+      navigate("/congratulations");
     } else if (location.pathname === "/congratulations") {
-      navigate("/"); // Redirect to home from /congratulations
+      navigate("/");
     }
   };
 
   return (
-    <nav className="fixed top-0 h-[88px] bg-black/40 shadow-md z-50 w-full flex items-center">
+    <nav className="fixed top-0 py-4 bg-black/40 shadow-md z-50 w-full flex items-center">
       <div className="flex items-center justify-between w-full max-w-[1280px] mx-auto">
         <img src={logo} alt="Logo" className="w-[175px] h-auto" />
         <button

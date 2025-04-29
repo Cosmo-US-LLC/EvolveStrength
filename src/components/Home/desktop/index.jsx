@@ -1,15 +1,13 @@
 import React, { useState } from "react";
 import { Listbox } from "@headlessui/react";
-// import locations from "../../../utils/locations";
 import { locations } from "../../../constant/locationsData";
-import location_bg from "../../../assets/images/desktop/location_bg.webp";
+import location_bg from "../../../assets/images/desktop/locationBG2.webp";
 import ChevronDownFilled from "../../../assets/images/desktop/chevron-down-filled.svg";
 import { useNavigate } from "react-router-dom";
 
 function LocationDesktop() {
   const [selectedLocation, setSelectedLocation] = useState(locations[0]);
 
-  console.log({selectedLocation})
   const navigate = useNavigate();
 
   const handleTakeTour = () => {
@@ -17,14 +15,8 @@ function LocationDesktop() {
   };
 
   return (
-    <div className="relative h-screen w-full overflow-hidden">
-      <img
-        src={location_bg}
-        alt="location_bg"
-        className="absolute inset-0 w-full h-full object-cover"
-      />
-
-      <div className="relative z-10 flex flex-col items-center justify-center h-full w-full space-y-6">
+    <div className="relative location-bg overflow-hidden">
+      <div className="relative z-10 flex flex-col items-center justify-center min-h-screen ">
         <p className="text-white text-[79px] font-bold text-center">
           SELECT LOCATION
         </p>
@@ -39,12 +31,9 @@ function LocationDesktop() {
                   {selectedLocation.clubName}
                 </p>
                 <div className="flex">
-                {/* <p className="text-white text-[22px] font-normal">
-                  {selectedLocation.postalCode}
-                </p> */}
-                <p className="text-white text-[22px] font-normal">
-                  {selectedLocation.clubAddress}
-                </p>
+                  <p className="text-white text-[22px] font-normal">
+                    {selectedLocation.clubAddress}
+                  </p>
                 </div>
               </div>
               <img
@@ -73,12 +62,9 @@ function LocationDesktop() {
                       {loc.clubName}
                     </p>
                     <div className="flex flex-row">
-                    {/* <p className="text-white text-[22px] font-normal">
-                      {loc.postalCode}
-                    </p> */}
-                    <p className="text-white text-[22px] font-normal">
-                      {loc.clubAddress}
-                    </p>
+                      <p className="text-white text-[22px] font-normal">
+                        {loc.clubAddress}
+                      </p>
                     </div>
                   </div>
                 </Listbox.Option>
