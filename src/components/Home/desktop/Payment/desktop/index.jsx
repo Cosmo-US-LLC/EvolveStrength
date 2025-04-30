@@ -9,8 +9,8 @@ import PaymentMethodSelector from "./PaymentMethodSelector";
 import DebitForm from "./DebitForm";
 import CardForm from "./CardForm";
 
-function ReviewAndPay() {
-  const [selectedPlan, setSelectedPlan] = useState("direct_debit");
+function ReviewAndPay({selectedPlan, setSelectedPlan}) {
+  const [selectPlan, setSelectPlan] = useState("direct_debit");
   const navigate = useNavigate();
 
   const handleJoinNow = () => {
@@ -45,14 +45,14 @@ function ReviewAndPay() {
               Choose your pricing plan
             </p>
             <PaymentMethodSelector
-              selectedPlan={selectedPlan}
-              setSelectedPlan={setSelectedPlan}
+              selectPlan={selectPlan}
+              setSelectPlan={setSelectPlan}
             />
-            {selectedPlan === "direct_debit" ? <DebitForm /> : <CardForm />}
+            {selectPlan === "direct_debit" ? <DebitForm /> : <CardForm />}
           </div>
           {/* Final Details */}
           <div>
-            <MembershipSummaryBoxDesktop />
+            <MembershipSummaryBoxDesktop selectedPlan={selectedPlan} setSelectedPlan={setSelectedPlan} />
             <div className="flex justify-end items-end mt-6 w-full">
               <button
                 onClick={handleJoinNow}

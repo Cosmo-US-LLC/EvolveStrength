@@ -1,13 +1,11 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-const MembershipSummaryBoxDesktop = () => {
+const MembershipSummaryBoxDesktop = ({selectedPlan}) => {
   const navigate = useNavigate();
-
   const handleEdit = () => {
     navigate(`/`);
   };
-
   return (
     <div className="w-[471px] h-[421px] bg-[#000000]/60 backdrop-blur-[10px] rounded-md p-6">
       <div className="flex justify-between items-center">
@@ -47,19 +45,19 @@ const MembershipSummaryBoxDesktop = () => {
         </div>{" "}
         <div className="flex justify-between text-white/90 text-sm text-[20px] font-regular border-t border-white/20 pt-4">
           <span>Bi-Weekly</span>
-          <span>$96.66</span>
+          <span>{selectedPlan == "monthly" ? localStorage.getItem("noContractSubtotal") : localStorage.getItem("contractSubtotal")}</span>
         </div>
         <div className="flex justify-between text-white/90 text-sm text-[20px] font-regular">
           <span>Initiation Fee</span>
-          <span>$00.00</span>
+          <span>{selectedPlan == "monthly" ? localStorage.getItem("noContractTax") : localStorage.getItem("contractTax")}</span>
         </div>
         <div className="flex justify-between text-white/90 text-sm text-[20px] font-semibold border-t border-white/20 pt-4">
           <span>Total</span>
-          <span>$98.66</span>
+          <span>{selectedPlan == "monthly" ? localStorage.getItem("noContractTotal") : localStorage.getItem("contractTotal")}</span>
         </div>
         <p className="text-[#CACACA] text-[16px] font-regular pt-4">
           Please note that any offers or discounts will be displayed on the
-          checkout summary page. our offer T&Cs.
+          checkout summary page.&nbsp;our offer T&Cs.
         </p>
       </div>
     </div>

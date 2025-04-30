@@ -1,7 +1,7 @@
 import React from "react";
 import check_with_circle from "../../../../../assets/images/desktop/check_with_circle.svg";
 
-const MembershipPlanSelector = ({ selectedPlan, setSelectedPlan }) => {
+const MembershipPlanSelector = ({ selectedPlan, setSelectedPlan, planData }) => {
   const monthlyPlanBenefits = [
     "$0 Enrollment Fee",
     "$0 Maintenance fee",
@@ -64,7 +64,7 @@ const MembershipPlanSelector = ({ selectedPlan, setSelectedPlan }) => {
           style={{ fontFamily: "'Vazirmatn', sans-serif" }}
           className="text-[#2DDE28] text-[68px] font-medium"
         >
-          $34.99
+          {selectedPlan == "monthly" ? planData?.[0]?.downPayments?.[0]?.subTotal : planData?.[1]?.downPayments?.[0]?.subTotal}
         </p>
         <div className="flex flex-col items-center">
           {monthlyPlanBenefits.map((benefit, index) => (

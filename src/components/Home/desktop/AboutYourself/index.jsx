@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import about_yourself_bg from "../../../../assets/images/desktop/about_yourself_bg.webp";
 // import MembershipSummaryBoxDesktop from "../Membership/desktop/MembershipSummaryBoxDesktop";
 import MembershipSummaryBoxDesktop from "../Membership/desktop/MembershipSummaryBoxDesktop";
@@ -7,8 +7,7 @@ import StepperDesktop from "../commen/StepperDesktop";
 import AboutYourselfForm from "./AboutYourselfForm";
 import { useNavigate } from "react-router-dom";
 
-function AboutYourself() {
-  const [selectedPlan, setSelectedPlan] = useState("monthly");
+function AboutYourself({selectedPlan}) {
   const navigate = useNavigate();
 
   const handleJoinNow = () => {
@@ -39,7 +38,7 @@ function AboutYourself() {
           <AboutYourselfForm />
           {/* Final Details */}
           <div>
-            <MembershipSummaryBoxDesktop />
+            <MembershipSummaryBoxDesktop selectedPlan={selectedPlan} />
             <div className="flex justify-end items-end mt-6 w-full">
               <button
                 onClick={handleJoinNow}
