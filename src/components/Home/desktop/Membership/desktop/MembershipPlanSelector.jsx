@@ -1,7 +1,11 @@
 import React from "react";
 import check_with_circle from "../../../../../assets/images/desktop/check_with_circle.svg";
 
-const MembershipPlanSelector = ({ selectedPlan, setSelectedPlan, planData }) => {
+const MembershipPlanSelector = ({
+  selectedPlan,
+  setSelectedPlan,
+  planData,
+}) => {
   const monthlyPlanBenefits = [
     "$0 Enrollment Fee",
     "$0 Maintenance fee",
@@ -11,34 +15,28 @@ const MembershipPlanSelector = ({ selectedPlan, setSelectedPlan, planData }) => 
 
   return (
     <div className="max-w-[1280px]">
-      {/* Choose Plan Section */}
       <div>
-        <p
-          style={{ fontFamily: "'Vazirmatn', sans-serif" }}
-          className="text-white font-normal text-[16px]"
-        >
+        <p className="text-white font-normal text-[16px] leading-[25px] font-[vazirmatn]">
           Choose your pricing plan
         </p>
 
-        <div className="flex flex-row items-center mt-4 p-2 bg-[#000000]/60 backdrop-blur-[20px] w-[607px] h-[72px] border border-[1px] border-[#464646]">
-          {/* MONTHLY */}
+        <div className="flex flex-row items-center mt-1 p-[6px] bg-[#000000]/60 backdrop-blur-[20px] w-[607px] h-[72px] border border-[#464646]">
           <button
             onClick={() => setSelectedPlan("monthly")}
-            className={`cursor-pointer w-[326px] h-[59px] flex items-center justify-center ${
+            className={`cursor-pointer w-[326px] h-[59px] flex items-center justify-center font-[vazirmatn] ${
               selectedPlan === "monthly" ? "bg-[#2DDE28]" : "bg-transparent"
             }`}
           >
             <p
-              style={{ fontFamily: "'Vazirmatn', sans-serif" }}
-              className={`font-bold text-[20px] ${
-                selectedPlan === "monthly" ? "text-black" : "text-white"
+              className={`font-[400] uppercase text-[20px] font-[vazirmatn] leading-[24px] ${
+                selectedPlan === "monthly"
+                  ? "text-black font-[700]"
+                  : "text-white"
               }`}
             >
               MONTH TO MONTH
             </p>
           </button>
-
-          {/* YEARLY */}
           <button
             onClick={() => setSelectedPlan("yearly")}
             className={`cursor-pointer w-[326px] h-[59px] flex items-center justify-center ${
@@ -46,9 +44,10 @@ const MembershipPlanSelector = ({ selectedPlan, setSelectedPlan, planData }) => 
             }`}
           >
             <p
-              style={{ fontFamily: "'Vazirmatn', sans-serif" }}
-              className={`font-bold text-[20px] ${
-                selectedPlan === "yearly" ? "text-black" : "text-white"
+              className={`font-[400] text-[20px] font-[vazirmatn] leading-[24px] ${
+                selectedPlan === "yearly"
+                  ? "text-black font-[700]"
+                  : "text-white"
               }`}
             >
               1 YEAR CONTRACT
@@ -56,31 +55,30 @@ const MembershipPlanSelector = ({ selectedPlan, setSelectedPlan, planData }) => 
           </button>
         </div>
       </div>
-      {/* Plan Details */}
-      {/* <div className="mt-4 bg-[#000000] w-[607px] h-[407px] p-8"> */}
-      <div className="mt-4 bg-[#000000]/60 backdrop-blur-[10px] w-[607px] h-[407px] p-8">
-        <p className="text-[white] font-semibold">BI-WEEKLY</p>
-        <p
-          style={{ fontFamily: "'Vazirmatn', sans-serif" }}
-          className="text-[#2DDE28] text-[68px] font-medium"
-        >
-          {selectedPlan == "monthly" ? planData?.[0]?.downPayments?.[0]?.subTotal : planData?.[1]?.downPayments?.[0]?.subTotal}
+
+      <div className="mt-6 bg-[#000000]/60 backdrop-blur-[10px] w-[607px]   p-8">
+        <p className="text-[#FFF] text-[16px] font-[600] leading-[16px] uppercase">
+          BI-WEEKLY
         </p>
-        <div className="flex flex-col items-center">
+        <p className="text-[#2DDE28] text-[68px] font-medium font-[vazirmatn]">
+          {selectedPlan == "monthly"
+            ? planData?.[0]?.downPayments?.[0]?.subTotal
+            : planData?.[1]?.downPayments?.[0]?.subTotal}
+        </p>
+        <div className="w-[537.2px] h-[1px] bg-white/20"></div>
+
+        <div className="flex flex-col items-center mt-3">
           {monthlyPlanBenefits.map((benefit, index) => (
             <div
               key={index}
-              className="flex items-center justify-start w-full mt-4"
+              className="flex items-center justify-start w-full mt-3"
             >
               <img
                 src={check_with_circle}
                 alt="checkmark"
-                className="w-4 h-4 mr-2"
+                className="w-6 h-6 mr-2"
               />
-              <p
-                style={{ fontFamily: "'Vazirmatn', sans-serif" }}
-                className="text-[white] text-[16px] font-regular text-[16px]"
-              >
+              <p className="text-[white] font-[vazirmatn] font-regular text-[16px] leading-[24px] pt-1">
                 {benefit}
               </p>
             </div>

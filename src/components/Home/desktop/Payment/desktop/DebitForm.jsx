@@ -15,44 +15,40 @@ function DebitForm() {
 
   return (
     <div className="max-w-[600px] space-y-4 text-white">
-      <h1 className="text-3xl font-bold mb-6 text-left mt-4">
-        Set Your Monthly Payment Of $98.99
+      <h1 className="text-[40px] font-[500] leading-[42px] font-[kanit] capitalize mb-6 text-left mt-4">
+        Set Your Monthly Payment Of <br /> $98.99
       </h1>
-      <p className="mb-6 text-left text-[#FFFFFF] text-[18px] font-regular">
+      <p className="mb-6 text-left text-[#FFFFFF] font-[vazirmatn] text-[18px] font-regular">
         This is your standard payment for your monthly direct debit before any
         discounts are applied
       </p>
 
-      {/* Form */}
       <form>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-          {/* First Name */}
           <div className="flex flex-col">
             <input
               type="text"
               id="firstName"
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
-              className="p-3 border border-[#999999] text-white bg-[#000000]/60 backdrop-blur-[10px] placeholder-[#999999]"
+              className="p-3 border border-[#999999] text-white font-[vazirmatn] bg-[#000000]/60 backdrop-blur-[10px] placeholder-[#999999]"
               placeholder="First Name"
             />
           </div>
 
-          {/* Last Name */}
           <div className="flex flex-col">
             <input
               type="text"
               id="lastName"
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
-              className="p-3 border border-[#999999] text-white bg-[#000000]/60 backdrop-blur-[10px] placeholder-[#999999]"
+              className="p-3 border border-[#999999] text-white font-[vazirmatn] bg-[#000000]/60 backdrop-blur-[10px] placeholder-[#999999]"
               placeholder="Last Name"
             />
           </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-          {/* Transit Number */}
           <div className="flex flex-col">
             <div className="flex items-center">
               <input
@@ -60,13 +56,12 @@ function DebitForm() {
                 id="transitNumber"
                 value={transitNumber}
                 onChange={(e) => setTransitNumber(e.target.value)}
-                className="p-3 bg-[#000000]/60 backdrop-blur-[10px] border border-[#999999] text-white w-full placeholder-[#999999]"
+                className="p-3 bg-[#000000]/60 backdrop-blur-[10px] font-[vazirmatn] border border-[#999999] text-white w-full placeholder-[#999999]"
                 placeholder="Transit Number"
               />
             </div>
           </div>
 
-          {/* Institution Number */}
           <div className="flex flex-col">
             <div className="flex items-center">
               <input
@@ -74,7 +69,7 @@ function DebitForm() {
                 id="institutionNumber"
                 value={institutionNumber}
                 onChange={(e) => setInstitutionNumber(e.target.value)}
-                className="p-3 bg-[#000000]/60 backdrop-blur-[10px] border border-[#999999] text-white w-full placeholder-[#999999]"
+                className="p-3 bg-[#000000]/60 backdrop-blur-[10px] font-[vazirmatn] border border-[#999999] text-white w-full placeholder-[#999999]"
                 placeholder="Institution Number"
               />
             </div>
@@ -83,19 +78,17 @@ function DebitForm() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
           <div>
-            {/* Account Number */}
             <div className="flex flex-col">
-              <label className="text-[14px] flex flex-row items-center mb-2 gap-2">
+              <label className="text-[14px] flex font-[vazirmatn] flex-row items-center mb-2 gap-2">
                 Where is my Transit Number?
-                {/* Info icon with tooltip on hover */}
                 <div className="relative group">
                   <img
                     src={info_icon}
                     alt="info_icon"
                     className="cursor-pointer"
                   />
-                  {/* Tooltip */}
-                  <span className="border border-[1px] border-[#999999] max-w-[250px] z-20 absolute left-1/2 transform -translate-x-1/2 bottom-[-80px] w-max bg-[#757575] text-white text-xs p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+
+                  <span className="border font-[vazirmatn] border-[#999999] max-w-[250px] z-20 absolute left-1/2 transform -translate-x-1/2 bottom-[-80px] w-max bg-[#757575] text-white text-xs p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                     This is a 5-digit number that identifies your branch. You
                     can find it on your bank card or check with your bank.
                   </span>
@@ -107,21 +100,20 @@ function DebitForm() {
                 id="accountNumber"
                 value={accountNumber}
                 onChange={(e) => setAccountNumber(e.target.value)}
-                className="p-3 bg-[#000000]/60 backdrop-blur-[10px] border border-[#999999] text-white placeholder-[#999999]"
+                className="p-3 bg-[#000000]/60 backdrop-blur-[10px] font-[vazirmatn] border border-[#999999] text-white placeholder-[#999999]"
                 placeholder="Account Number"
               />
             </div>
-            <label className="text-[14px] flex flex-row items-center mt-2 gap-2">
+            <label className="text-[14px] font-[vazirmatn] flex flex-row items-center mt-2 gap-2">
               Where is my Account Number?
-              {/* Info icon with tooltip on hover */}
               <div className="relative group">
                 <img
                   src={info_icon}
                   alt="info_icon"
                   className="cursor-pointer"
                 />
-                {/* Tooltip */}
-                <span className="border border-[1px] border-[#999999] max-w-[250px] z-20 absolute left-1/2 transform -translate-x-1/2 bottom-[-80px] w-max bg-[#757575] text-white text-xs p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+
+                <span className="border  font-[vazirmatn] border-[#999999] max-w-[250px] z-20 absolute left-1/2 transform -translate-x-1/2 bottom-[-80px] w-max bg-[#757575] text-white text-xs p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                   This is the number of your personal bank account. It can be
                   found on your cheque or bank statement.
                 </span>
@@ -129,19 +121,17 @@ function DebitForm() {
             </label>
           </div>
 
-          {/* Verify Account Number */}
           <div className="flex flex-col">
-            <label className="text-[14px] flex flex-row items-center mb-2 gap-2">
+            <label className="text-[14px] flex font-[vazirmatn] flex-row items-center mb-2 gap-2">
               Where is my Institution Number?
-              {/* Info icon with tooltip on hover */}
               <div className="relative group">
                 <img
                   src={info_icon}
                   alt="info_icon"
                   className="cursor-pointer"
                 />
-                {/* Tooltip */}
-                <span className="border border-[1px] border-[#999999] max-w-[250px] z-20 absolute left-1/2 transform -translate-x-1/2 bottom-[-90px] w-max bg-[#757575] text-white text-xs p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+
+                <span className="border font-[vazirmatn] border-[#999999] max-w-[250px] z-20 absolute left-1/2 transform -translate-x-1/2 bottom-[-90px] w-max bg-[#757575] text-white text-xs p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                   This 3-digit number identifies the bank itself. You can find
                   it on your bank statement or contact your bank for assistance.
                 </span>
@@ -152,27 +142,23 @@ function DebitForm() {
               id="verifyAccountNumber"
               value={verifyAccountNumber}
               onChange={(e) => setVerifyAccountNumber(e.target.value)}
-              className="p-3 bg-[#000000]/60 backdrop-blur-[10px] border border-[#999999] text-white placeholder-[#999999]"
+              className="p-3 bg-[#000000]/60 backdrop-blur-[10px] font-[vazirmatn] border border-[#999999] text-white placeholder-[#999999]"
               placeholder="Verify Account Number"
             />
           </div>
         </div>
 
-        {/* Guarantee */}
         <div>
-          <p
-            style={{ fontFamily: "'Vazirmatn', sans-serif" }}
-            className="text-[16px] font-regular"
-          >
+          <p className="text-[16px] font-regular capitalize font-[vazirmatn]">
             Guaranteed Safe checkout
           </p>
           <img
             src={guarantee_icons}
             alt="guarantee_icons"
-            className="cursor-pointer"
+            className="cursor-pointer mt-1"
           />
         </div>
-        {/* Agreement Checkboxes */}
+
         <div className="flex items-center mb-6 mt-4">
           <input
             type="checkbox"
@@ -181,7 +167,10 @@ function DebitForm() {
             onChange={() => setTermsAgreed(!termsAgreed)}
             className="mr-2"
           />
-          <label htmlFor="accountHolder" className="text-sm">
+          <label
+            htmlFor="accountHolder"
+            className="text-[16px] font-[400] font-[vazirmatn] ml-2"
+          >
             I am the bank account holder and do not require another person to
             authorize the debits on this account
           </label>
@@ -195,7 +184,10 @@ function DebitForm() {
             onChange={() => setRenewAgreed(!renewAgreed)}
             className="mr-2"
           />
-          <label htmlFor="renewAgreed" className="text-sm">
+          <label
+            htmlFor="renewAgreed"
+            className="text-[16px] font-[400] font-[vazirmatn] ml-2"
+          >
             I acknowledge and agree that my membership will automatically renew
             bi-weekly until I cancel in accordance with the membership contract
             (unless the membership contract provides for a shorter renewal
@@ -203,8 +195,7 @@ function DebitForm() {
           </label>
         </div>
 
-        {/* Terms and Conditions */}
-        <div className="flex items-center mb-6">
+        <div className="flex items-center mb-6 ">
           <input
             type="checkbox"
             id="terms"
@@ -212,7 +203,10 @@ function DebitForm() {
             onChange={() => setConfirm(!confirm)}
             className="mr-2"
           />
-          <label htmlFor="terms" className="text-sm">
+          <label
+            htmlFor="terms"
+            className="text-[16px] font-[400] font-[vazirmatn] ml-2"
+          >
             Please confirm you have read our{" "}
             <a href="#" className="text-blue-400">
               Terms And Conditions

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import logo from "../../../assets/images/desktop/logo_navbar.svg";
 
-const NavBarDesktop = () => {
+const NavBarDesktop = ({ scrollDirection }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [buttonText, setButtonText] = useState("Next");
@@ -32,7 +32,11 @@ const NavBarDesktop = () => {
   };
 
   return (
-    <nav className="fixed top-0 py-4 bg-black/40 shadow-md z-50 w-full flex items-center">
+    <nav
+    className={`fixed top-0 py-4 bg-[#000000] shadow-md z-50 w-full flex items-center transition-transform duration-300 ${
+      scrollDirection === "down" ? "-translate-y-full" : "translate-y-0"
+    }`}
+    >
       <div className="flex items-center justify-between w-full max-w-[1280px] mx-auto">
         <img src={logo} alt="Logo" className="w-[175px] h-auto" />
         <button

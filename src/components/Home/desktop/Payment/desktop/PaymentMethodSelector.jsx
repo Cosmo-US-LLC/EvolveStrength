@@ -5,7 +5,6 @@ import credit_icon_active from "../../../../../assets/images/desktop/credit_icon
 import credit_icon_inactive from "../../../../../assets/images/desktop/credit_icon_inactive.svg";
 
 const PaymentMethodSelector = ({ selectPlan, setSelectPlan }) => {
-
   return (
     <div className="flex flex-row items-center mt-4 p-2 bg-[#000000]/60 backdrop-blur-[20px] w-[607px] h-[72px] border border-[1px] border-[#464646]">
       {/* DIRECT DEBIT */}
@@ -25,16 +24,16 @@ const PaymentMethodSelector = ({ selectPlan, setSelectPlan }) => {
           className="w-6 h-6 mr-2"
         />
         <p
-          style={{ fontFamily: "'Vazirmatn', sans-serif" }}
-          className={`font-bold text-[20px] ${
-            selectPlan === "direct_debit" ? "text-black" : "text-white"
+          className={`font-[400] text-[20px] font-[vazirmatn] uppercase leading-[24px] ${
+            selectPlan === "direct_debit"
+              ? "text-black font-[700]"
+              : "text-white"
           }`}
         >
           DIRECT DEBIT
         </p>
       </button>
 
-      {/* CARD PAY */}
       <button
         onClick={() => setSelectPlan("card")}
         className={`cursor-pointer w-[326px] h-[59px] flex items-center justify-center ${
@@ -49,9 +48,8 @@ const PaymentMethodSelector = ({ selectPlan, setSelectPlan }) => {
           className="w-6 h-6 mr-2"
         />
         <p
-          style={{ fontFamily: "'Vazirmatn', sans-serif" }}
-          className={`font-bold text-[20px] ${
-            selectPlan === "card" ? "text-black" : "text-white"
+          className={`font-[400] text-[20px] font-[vazirmatn] ${
+            selectPlan === "card" ? "text-black font-[700]" : "text-white"
           }`}
         >
           CARD PAY

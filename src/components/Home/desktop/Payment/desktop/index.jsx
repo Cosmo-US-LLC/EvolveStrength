@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import review_and_pay_bg from "../../../../../assets/images/desktop/review_and_pay_bg.webp";
-
 import MembershipSummaryBoxDesktop from "../../Membership/desktop/MembershipSummaryBoxDesktop";
 
 import StepperDesktop from "../../commen/StepperDesktop";
@@ -9,41 +7,31 @@ import PaymentMethodSelector from "./PaymentMethodSelector";
 import DebitForm from "./DebitForm";
 import CardForm from "./CardForm";
 import Turnstile from "react-turnstile";
+import useScrollDirection from "../../../../../hooks/useScrollDirection";
 
 function ReviewAndPay({ selectedPlan, setSelectedPlan }) {
   const [selectPlan, setSelectPlan] = useState("direct_debit");
   const [isHuman, setIsHuman] = useState(false);
   const navigate = useNavigate();
+  const scrollDirection = useScrollDirection();
 
   const handleJoinNow = () => {
     navigate(`/congratulations`);
   };
 
   return (
-    <div className="relative min-h-screen w-full">
-      {/* Fixed Stepper Header */}
-      <StepperDesktop stepNumber={3} />
-
-      {/* Background Image */}
-      <div className="absolute w-full h-full -z-10">
-        <img
-          src={review_and_pay_bg}
-          alt="review_and_pay_bg"
-          className="object-cover w-full h-full"
-        />
-      </div>
-
-      <div className="pt-[270px] max-w-[1280px] mx-auto">
-        <p className="text-white font-kanit text-[79px] font-bold leading-[68px] uppercase">
+    <div className="relative w-full review_and_pay_bg">
+      <StepperDesktop stepNumber={3} scrollDirection={scrollDirection} />
+      <div className="pt-[300px] pb-[100px] max-w-[1280px] mx-auto">
+        <p className="text-white font-[kanit] text-[79px] font-[700] leading-[66px] tracking-[-1.329px] uppercase">
           Review &
         </p>
-        <p className="text-[#2DDE28] font-kanit text-[79px] font-bold leading-[68px] uppercase">
+        <p className="text-[#2DDE28] font-[kanit] text-[79px] font-[700] leading-[66px] tracking-[-1.329px] uppercase">
           Pay
         </p>
-        <div className="flex flex-row justify-between mt-8">
-          {/* Plan Selector Tabs */}
+        <div className="flex flex-row justify-between mt-16">
           <div>
-            <p className="mb-2 text-white text-[16px] font-normal leading-[25.2px]">
+            <p className=" text-white text-[16px] font-[400] leading-[10.2px]">
               Choose your pricing plan
             </p>
             <PaymentMethodSelector
@@ -52,7 +40,7 @@ function ReviewAndPay({ selectedPlan, setSelectedPlan }) {
             />
             {selectPlan === "direct_debit" ? <DebitForm /> : <CardForm />}
           </div>
-          {/* Final Details */}
+
           <div>
             <MembershipSummaryBoxDesktop
               selectedPlan={selectedPlan}

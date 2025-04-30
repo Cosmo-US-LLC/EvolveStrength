@@ -24,7 +24,7 @@ const MobileHero = () => {
         LOCATION
       </div>
 
-      <div className="px-6  flex flex-col justify-center items-center">
+      <div className="px-6 flex flex-col justify-center items-center">
         <div className="relative w-full max-w-xs">
           <div
             onClick={() => setIsOpen(!isOpen)}
@@ -65,7 +65,7 @@ const MobileHero = () => {
                     {location.clubName}
                   </div>
 
-                  <div className="text-white font-[vazirmatn] text-[12px] font-normal leading-[14.815px] capitalize  ">
+                  <div className="text-white font-[vazirmatn] text-[10px] font-normal leading-[14.815px] capitalize  ">
                     {location.clubAddress}
                   </div>
                 </div>
@@ -78,7 +78,7 @@ const MobileHero = () => {
           className="flex mt-2 justify-center items-center w-[139px] h-[42px] px-[15.602px] py-[12.801px] border border-[#2DDE28] bg-[#2DDE28] text-black font-[kanit] font-[500] text-[16px] uppercase"
           onClick={takeATourHandler}
         >
-          TAKE A TOUR
+          continue
         </button>
       </div>
     </div>
