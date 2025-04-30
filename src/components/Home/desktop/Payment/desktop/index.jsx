@@ -1,16 +1,18 @@
 import React, { useState } from "react";
 import review_and_pay_bg from "../../../../../assets/images/desktop/review_and_pay_bg.webp";
- 
+
 import MembershipSummaryBoxDesktop from "../../Membership/desktop/MembershipSummaryBoxDesktop";
- 
+
 import StepperDesktop from "../../commen/StepperDesktop";
 import { useNavigate } from "react-router-dom";
 import PaymentMethodSelector from "./PaymentMethodSelector";
 import DebitForm from "./DebitForm";
 import CardForm from "./CardForm";
+import Turnstile from "react-turnstile";
 
-function ReviewAndPay({selectedPlan, setSelectedPlan}) {
+function ReviewAndPay({ selectedPlan, setSelectedPlan }) {
   const [selectPlan, setSelectPlan] = useState("direct_debit");
+  const [isHuman, setIsHuman] = useState(false);
   const navigate = useNavigate();
 
   const handleJoinNow = () => {
@@ -52,11 +54,23 @@ function ReviewAndPay({selectedPlan, setSelectedPlan}) {
           </div>
           {/* Final Details */}
           <div>
-            <MembershipSummaryBoxDesktop selectedPlan={selectedPlan} setSelectedPlan={setSelectedPlan} />
+            <MembershipSummaryBoxDesktop
+              selectedPlan={selectedPlan}
+              setSelectedPlan={setSelectedPlan}
+            />
+            <Turnstile
+              sitekey="0x4AAAAAABWSTWCqAhOt104z"
+              onSuccess={() => setIsHuman(true)}
+              onError={() => setIsHuman(false)}
+              onExpire={() => setIsHuman(false)}
+            />
             <div className="flex justify-end items-end mt-6 w-full">
               <button
                 onClick={handleJoinNow}
-                className="button mt-6 bg-[#2DDE28] text-black text-[16px] font-medium w-[139px] h-[42px]"
+                className={`button mt-6 ${
+                  isHuman ? "bg-[#2DDE28]" : "bg-gray-400 cursor-not-allowed"
+                } text-black text-[16px] font-medium w-[139px] h-[42px]`}
+                disabled={!isHuman}
               >
                 PAY NOW
               </button>
