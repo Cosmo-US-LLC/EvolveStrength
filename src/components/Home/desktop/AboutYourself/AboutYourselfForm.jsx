@@ -1,4 +1,5 @@
 import React from "react";
+import Cookies from "js-cookie";
 
 const AboutYourselfForm = () => {
   return (
@@ -11,12 +12,14 @@ const AboutYourselfForm = () => {
           type="text"
           placeholder="First Name"
           className="flex-1 border border-white/40 px-4 py-3 placeholder-white text-white text-[16px] bg-[#000000]/60 backdrop-blur-[10px]"
+          onChange={(e) => Cookies.set("firstName", e.target.value)}
         />
         <input
           style={{ fontFamily: "'Vazirmatn', sans-serif" }}
           type="text"
           placeholder="Last Name"
           className="flex-1 border border-white/40 px-4 py-3 placeholder-white text-white text-[16px]  bg-[#000000]/60 backdrop-blur-[10px]"
+          onChange={(e) => Cookies.set("lastName", e.target.value)}
         />
       </div>
 
@@ -25,6 +28,7 @@ const AboutYourselfForm = () => {
         type="email"
         placeholder="Email Address"
         className="w-full border border-white/40 px-4 py-3 placeholder-white text-white text-[16px]  bg-[#000000]/60 backdrop-blur-[10px]"
+        onChange={(e) => Cookies.set("email", e.target.value)}
       />
 
       <input
@@ -32,6 +36,7 @@ const AboutYourselfForm = () => {
         type="tel"
         placeholder="Phone Number"
         className="w-full border border-white/40 px-4 py-3 placeholder-white text-white text-[16px]  bg-[#000000]/60 backdrop-blur-[10px]"
+        onChange={(e) => Cookies.set("number", e.target.value)}
       />
 
       <input
@@ -39,6 +44,7 @@ const AboutYourselfForm = () => {
         type="text"
         placeholder="Mailing Address"
         className="w-full border border-white/40 px-4 py-3 placeholder-white text-white text-[16px]  bg-[#000000]/60 backdrop-blur-[10px]"
+        onChange={(e) => Cookies.set("address", e.target.value)}
       />
 
       <input
@@ -46,6 +52,7 @@ const AboutYourselfForm = () => {
         type="text"
         placeholder="Province"
         className="w-full border border-white/40 px-4 py-3 placeholder-white text-white text-[16px]  bg-[#000000]/60 backdrop-blur-[10px]"
+        onChange={(e) => Cookies.set("province", e.target.value)}
       />
 
       <div className="flex gap-4">
@@ -54,12 +61,14 @@ const AboutYourselfForm = () => {
           type="text"
           placeholder="City"
           className="flex-1 border border-white/40 px-4 py-3 placeholder-white text-white text-[16px]  bg-[#000000]/60 backdrop-blur-[10px]"
+          onChange={(e) => Cookies.set("city", e.target.value)}
         />
         <input
           style={{ fontFamily: "'Vazirmatn', sans-serif" }}
           type="text"
           placeholder="Postal Code"
           className="flex-1 border border-white/40 px-4 py-3 placeholder-white text-white text-[16px]  bg-[#000000]/60 backdrop-blur-[10px]"
+          onChange={(e) => Cookies.set("postalCode", e.target.value)}
         />
       </div>
 
@@ -69,6 +78,7 @@ const AboutYourselfForm = () => {
             style={{ fontFamily: "'Vazirmatn', sans-serif" }}
             type="date"
             className="bg-transparent text-white w-full outline-none"
+            onChange={(e) => Cookies.set("selectedDate", e.target.value)}
           />
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -89,6 +99,7 @@ const AboutYourselfForm = () => {
         <select
           style={{ fontFamily: "'Vazirmatn', sans-serif" }}
           className="flex-1 border border-white/40 px-4 py-3 text-white text-[16px] appearance-none relative  bg-[#000000]/60 backdrop-blur-[10px]"
+          onChange={(e) => Cookies.set("gender", e.target.value)}
         >
           <option className="text-black">Gender</option>
           <option className="text-black">Male</option>

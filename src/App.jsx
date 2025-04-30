@@ -13,8 +13,10 @@ import MembershipPlan from "./components/Home/mobile/MembershipPlan";
 import ReviewAndPay from "./components/Home/desktop/Payment/desktop";
 import Congratulations from "./components/Home/desktop/Congratulations";
 import ScrollToTop from "./utils/ScrollToTop";
+import { useState } from "react";
 
 function App() {
+  const [selectedPlan, setSelectedPlan] = useState("monthly");
   return (
     <Router>
       <ScrollToTop/>
@@ -38,7 +40,7 @@ function App() {
             element={
               <>
                 <div className="max-lg:hidden">
-                  <MembershipDesktop />
+                  <MembershipDesktop selectedPlan={selectedPlan} setSelectedPlan={setSelectedPlan} />
                 </div>
               </>
             }
@@ -48,7 +50,7 @@ function App() {
             element={
               <>
                 <div className="max-lg:hidden">
-                  <AboutYourself />
+                  <AboutYourself selectedPlan={selectedPlan} />
                 </div>
               </>
             }
@@ -58,7 +60,7 @@ function App() {
             element={
               <>
                 <div className="max-lg:hidden">
-                  <ReviewAndPay />
+                  <ReviewAndPay setSelectedPlan={setSelectedPlan} selectedPlan={selectedPlan} />
                 </div>
               </>
             }

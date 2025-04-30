@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import membership_bg from "../../../../../assets/images/desktop/membership_bg.webp";
 // import StepperDesktop from "../../Home/desktop/commen/StepperDesktop";
 import StepperDesktop from "../../commen/StepperDesktop";
@@ -6,9 +6,67 @@ import MembershipPlanSelector from "./MembershipPlanSelector";
 import MembershipSummaryBoxDesktop from "./MembershipSummaryBoxDesktop";
 import { useNavigate } from "react-router-dom";
 
-function MembershipDesktop() {
-  const [selectedPlan, setSelectedPlan] = useState("monthly");
+function MembershipDesktop({selectedPlan, setSelectedPlan}) {
+  const [location, setLocation] = useState(null);
+  console.log("location", location)
+  const [planData, setPlanData] = useState([]);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    let loc = params.get("location");
+
+    if (loc && loc.startsWith("0")) {
+      loc = loc.slice(1);
+    }
+
+    if (loc) {
+      setLocation(loc);
+    }
+  }, []);
+
+  useEffect(() => {
+    const getClubInfo = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:3002/api/getClubInfo?location=${location}`
+        );
+        const data = await response.json();
+
+        const planDataResponses = await Promise.all(
+          data?.plans?.map((club) => {
+            return fetch(
+              `http://localhost:3002/api/getPlanDetails?location=${location}&planId=${club.planId}`
+            )
+              .then((res) => res.json())
+              .catch((err) => {
+                console.error(
+                  `Error fetching plan for planId ${club.planId}:`,
+                  err
+                );
+                return null;
+              });
+          })
+        );
+
+        setPlanData(planDataResponses);
+        console.log("planDataResponses", planDataResponses)
+        localStorage.setItem("noContractSubtotal", planDataResponses?.[0]?.downPayments?.[0]?.subTotal)
+        localStorage.setItem("contractSubtotal", planDataResponses?.[1]?.downPayments?.[0]?.subTotal)
+        localStorage.setItem("noContractTax", planDataResponses?.[0]?.downPayments?.[0]?.tax)
+        localStorage.setItem("contractTax", planDataResponses?.[1]?.downPayments?.[0]?.tax)
+        localStorage.setItem("noContractTotal", planDataResponses?.[0]?.downPayments?.[0]?.total)
+        localStorage.setItem("contractTotal", planDataResponses?.[1]?.downPayments?.[0]?.total)
+
+      } catch (error) {
+        console.error("Error fetching club information:", error.message);
+      }
+    };
+
+    if (location) {
+      getClubInfo();
+    }
+  }, [location]);
 
   const handleJoinNow = () => {
     navigate(`/about-yourself`);
@@ -38,10 +96,14 @@ function MembershipDesktop() {
           <MembershipPlanSelector
             selectedPlan={selectedPlan}
             setSelectedPlan={setSelectedPlan}
+            planData={planData}
           />
           {/* Final Details */}
           <div>
-            <MembershipSummaryBoxDesktop />
+            <MembershipSummaryBoxDesktop
+              planData={planData}
+              selectedPlan={selectedPlan}
+            />
             <div className="flex justify-end items-end mt-6 w-full">
               <button
                 onClick={handleJoinNow}
