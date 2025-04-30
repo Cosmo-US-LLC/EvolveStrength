@@ -1,53 +1,46 @@
 import React from "react";
-import about_yourself_bg from "../../../../assets/images/desktop/about_yourself_bg.webp";
-// import MembershipSummaryBoxDesktop from "../Membership/desktop/MembershipSummaryBoxDesktop";
+
 import MembershipSummaryBoxDesktop from "../Membership/desktop/MembershipSummaryBoxDesktop";
-// import StepperDesktop from "../Home/desktop/commen/StepperDesktop";
+
 import StepperDesktop from "../commen/StepperDesktop";
 import AboutYourselfForm from "./AboutYourselfForm";
 import { useNavigate } from "react-router-dom";
+import useScrollDirection from "../../../../hooks/useScrollDirection";
 
-function AboutYourself({selectedPlan}) {
+function AboutYourself({ selectedPlan }) {
   const navigate = useNavigate();
+  const scrollDirection = useScrollDirection();
 
   const handleJoinNow = () => {
     navigate(`/review-and-pay`);
   };
 
   return (
-    <div className="relative h-screen w-full">
-      {/* Fixed Stepper Header */}
-      <StepperDesktop stepNumber={2} />
+    <div className="relative w-full about_yourself_bg">
+      <StepperDesktop stepNumber={2} scrollDirection={scrollDirection} />
 
-      {/* Background Image */}
-      <img
-        src={about_yourself_bg}
-        alt="about_yourself_bg"
-        className="absolute top-0 w-full h-auto -z-10"
-      />
-
-      <div className="pt-[270px] max-w-[1280px] mx-auto">
-        <p className="text-white font-kanit text-[79px] font-bold leading-[68px] uppercase">
+      <div className="pt-[300px] pb-[100px] max-w-[1280px] mx-auto">
+        <p className="text-white font-[kanit] text-[79px] font-[700] tracking-[-1.329px] leading-[66px] uppercase">
           Tell us about
         </p>
-        <p className="text-[#2DDE28] font-kanit text-[79px] font-bold leading-[68px] uppercase">
+        <p className="text-[#2DDE28] font-[kanit] text-[79px] font-[700] leading-[66px] tracking-[-1.329px] uppercase">
           yourself
         </p>
-        {/* Plan Selector Tabs */}
-        <div className="flex flex-row justify-between mt-8">
+
+        <div className="flex flex-row justify-between mt-16">
           <AboutYourselfForm />
-          {/* Final Details */}
+
           <div>
             <MembershipSummaryBoxDesktop selectedPlan={selectedPlan} />
-            <div className="flex justify-end items-end mt-6 w-full">
-              <button
-                onClick={handleJoinNow}
-                className="button mt-6 bg-[#2DDE28] text-black text-[16px] font-medium w-[139px] h-[42px]"
-              >
-                Next
-              </button>
-            </div>
           </div>
+        </div>
+        <div className="flex justify-end items-end mt-8 w-full">
+          <button
+            onClick={handleJoinNow}
+            className="button  bg-[#2DDE28] text-black text-[16px] font-[vazirmatn] leading-[16px] uppercase font-medium w-[139px] h-[42px]"
+          >
+            Next
+          </button>
         </div>
       </div>
     </div>

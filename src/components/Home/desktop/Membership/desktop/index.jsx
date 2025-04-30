@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react";
-import membership_bg from "../../../../../assets/images/desktop/membership_bg.webp";
-// import StepperDesktop from "../../Home/desktop/commen/StepperDesktop";
 import StepperDesktop from "../../commen/StepperDesktop";
 import MembershipPlanSelector from "./MembershipPlanSelector";
 import MembershipSummaryBoxDesktop from "./MembershipSummaryBoxDesktop";
 import { useNavigate } from "react-router-dom";
+import useScrollDirection from "../../../../../hooks/useScrollDirection";
 
-function MembershipDesktop({selectedPlan, setSelectedPlan}) {
+function MembershipDesktop({ selectedPlan, setSelectedPlan }) {
   const [location, setLocation] = useState(null);
-  console.log("location", location)
+  console.log("location", location);
   const [planData, setPlanData] = useState([]);
   const navigate = useNavigate();
+  const scrollDirection = useScrollDirection();
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -50,14 +50,31 @@ function MembershipDesktop({selectedPlan, setSelectedPlan}) {
         );
 
         setPlanData(planDataResponses);
-        console.log("planDataResponses", planDataResponses)
-        localStorage.setItem("noContractSubtotal", planDataResponses?.[0]?.downPayments?.[0]?.subTotal)
-        localStorage.setItem("contractSubtotal", planDataResponses?.[1]?.downPayments?.[0]?.subTotal)
-        localStorage.setItem("noContractTax", planDataResponses?.[0]?.downPayments?.[0]?.tax)
-        localStorage.setItem("contractTax", planDataResponses?.[1]?.downPayments?.[0]?.tax)
-        localStorage.setItem("noContractTotal", planDataResponses?.[0]?.downPayments?.[0]?.total)
-        localStorage.setItem("contractTotal", planDataResponses?.[1]?.downPayments?.[0]?.total)
-
+        console.log("planDataResponses", planDataResponses);
+        localStorage.setItem(
+          "noContractSubtotal",
+          planDataResponses?.[0]?.downPayments?.[0]?.subTotal
+        );
+        localStorage.setItem(
+          "contractSubtotal",
+          planDataResponses?.[1]?.downPayments?.[0]?.subTotal
+        );
+        localStorage.setItem(
+          "noContractTax",
+          planDataResponses?.[0]?.downPayments?.[0]?.tax
+        );
+        localStorage.setItem(
+          "contractTax",
+          planDataResponses?.[1]?.downPayments?.[0]?.tax
+        );
+        localStorage.setItem(
+          "noContractTotal",
+          planDataResponses?.[0]?.downPayments?.[0]?.total
+        );
+        localStorage.setItem(
+          "contractTotal",
+          planDataResponses?.[1]?.downPayments?.[0]?.total
+        );
       } catch (error) {
         console.error("Error fetching club information:", error.message);
       }
@@ -73,46 +90,38 @@ function MembershipDesktop({selectedPlan, setSelectedPlan}) {
   };
 
   return (
-    <div className="relative h-screen w-full">
-      {/* Fixed Stepper Header */}
-      <StepperDesktop stepNumber={1} />
+    <div className="relative w-full membership_bg">
+      <StepperDesktop stepNumber={1} scrollDirection={scrollDirection} />
 
-      {/* Background Image */}
-      <img
-        src={membership_bg}
-        alt="membership_bg"
-        className="absolute top-0 w-full h-auto -z-10"
-      />
-
-      <div className="pt-[270px] max-w-[1280px] mx-auto">
-        <p className="text-white font-kanit text-[79px] font-bold leading-[68px] uppercase">
+      <div className="pt-[300px] pb-[100px] max-w-[1280px] mx-auto">
+        <p className="text-white font-[kanit] text-[79px] font-[700] leading-[66px] tracking-[-1.32ppx] uppercase">
           Your membership at
         </p>
-        <p className="text-[#2DDE28] font-kanit text-[79px] font-bold leading-[68px] uppercase">
+        <p className="text-[#2DDE28] font-[kanit] text-[79px] font-[700] leading-[66px] tracking-[-1.32ppx] uppercase">
           Vancouver, The Post
         </p>
-        {/* Plan Selector Tabs */}
-        <div className="flex flex-row justify-between mt-8">
+
+        <div className="flex flex-row justify-between mt-16">
           <MembershipPlanSelector
             selectedPlan={selectedPlan}
             setSelectedPlan={setSelectedPlan}
             planData={planData}
           />
-          {/* Final Details */}
+
           <div>
             <MembershipSummaryBoxDesktop
               planData={planData}
               selectedPlan={selectedPlan}
             />
-            <div className="flex justify-end items-end mt-6 w-full">
-              <button
-                onClick={handleJoinNow}
-                className="button mt-6 bg-[#2DDE28] text-black text-[16px] font-medium w-[139px] h-[42px]"
-              >
-                Join Now
-              </button>
-            </div>
           </div>
+        </div>
+        <div className="flex justify-end items-end mt-4 w-full">
+          <button
+            onClick={handleJoinNow}
+            className="button mt-6 bg-[#2DDE28] text-black text-[16px] font-medium w-[139px] h-[42px]"
+          >
+            Join Now
+          </button>
         </div>
       </div>
     </div>

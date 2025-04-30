@@ -14,10 +14,10 @@ function CardForm() {
 
   return (
     <div className="max-w-[600px] space-y-4 text-white">
-      <h1 className="text-3xl font-bold mb-6 text-left mt-4">
-        Set your Bi-Weekly Payment of $98.99
+      <h1 className="text-[40px] leading-[42px] font-[kanit] font-[500] capitalize  mb-6 text-left mt-4">
+        Set your Bi-Weekly Payment of <br /> $98.99
       </h1>
-      <p className="mb-6 text-left text-[#FFFFFF] text-[18px] font-regular">
+      <p className="mb-6 text-left text-[#FFFFFF] font-[400] text-[18px] font-[vazirmatn]">
         Visa and master cards are accepted here
       </p>
 
@@ -31,7 +31,7 @@ function CardForm() {
               id="firstName"
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
-              className="p-3 border border-[#999999] text-white bg-[#000000]/60 backdrop-blur-[10px] placeholder-[#999999]"
+              className="p-3 border border-[#999999] text-white font-[vazirmatn] bg-[#000000]/60 backdrop-blur-[10px] placeholder-[#999999]"
               placeholder="First Name"
             />
           </div>
@@ -43,7 +43,7 @@ function CardForm() {
               id="lastName"
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
-              className="p-3 border border-[#999999] text-white bg-[#000000]/60 backdrop-blur-[10px] placeholder-[#999999]"
+              className="p-3 border border-[#999999] text-white font-[vazirmatn] bg-[#000000]/60 backdrop-blur-[10px] placeholder-[#999999]"
               placeholder="Last Name"
             />
           </div>
@@ -58,7 +58,7 @@ function CardForm() {
                 id="cardNumber"
                 value={cardNumber}
                 onChange={(e) => setCardNumber(e.target.value)}
-                className="p-3 bg-[#000000]/60 backdrop-blur-[10px] border border-[#999999] text-white w-full placeholder-[#999999]"
+                className="p-3 bg-[#000000]/60 backdrop-blur-[10px] font-[vazirmatn] border border-[#999999] text-white w-full placeholder-[#999999]"
                 placeholder="Card Number"
               />
             </div>
@@ -73,7 +73,7 @@ function CardForm() {
                 id="cvv"
                 value={cvv}
                 onChange={(e) => setCvv(e.target.value)}
-                className="p-3 bg-[#000000]/60 backdrop-blur-[10px] border border-[#999999] text-white placeholder-[#999999]"
+                className="p-3 bg-[#000000]/60 backdrop-blur-[10px] font-[vazirmatn] border border-[#999999] text-white placeholder-[#999999]"
                 placeholder="CVV"
               />
             </div>
@@ -85,28 +85,24 @@ function CardForm() {
                 id="accountNumber"
                 value={expirationDate}
                 onChange={(e) => setExpirationDate(e.target.value)}
-                className="p-3 bg-[#000000]/60 backdrop-blur-[10px] border border-[#999999] text-white placeholder-[#999999]"
+                className="p-3 bg-[#000000]/60 backdrop-blur-[10px] border font-[vazirmatn] border-[#999999] text-white placeholder-[#999999]"
                 placeholder="Expiration Date"
               />
             </div>
           </div>
         </div>
 
-        {/* Guarantee */}
         <div>
-          <p
-            style={{ fontFamily: "'Vazirmatn', sans-serif" }}
-            className="text-[16px] font-regular"
-          >
+          <p className="text-[16px] font-regular font-[vazirmatn]">
             Guaranteed Safe checkout
           </p>
           <img
             src={guarantee_icons}
             alt="guarantee_icons"
-            className="cursor-pointer"
+            className="cursor-pointer mt-1"
           />
         </div>
-        {/* Agreement Checkboxes */}
+
         <div className="flex items-center mb-6 mt-4">
           <input
             type="checkbox"
@@ -115,13 +111,15 @@ function CardForm() {
             onChange={() => setTermsAgreed(!termsAgreed)}
             className="mr-2"
           />
-          <label htmlFor="accountHolder" className="text-sm">
+          <label
+            htmlFor="accountHolder"
+            className="text-[16px] font-[400] font-[vazirmatn] ml-2"
+          >
             I am the bank account holder and do not require another person to
             authorize the debits on this account
           </label>
         </div>
 
-        {/* Terms and Conditions */}
         <div className="flex items-center mb-6">
           <input
             type="checkbox"
@@ -130,7 +128,10 @@ function CardForm() {
             onChange={() => setConfirm(!confirm)}
             className="mr-2"
           />
-          <label htmlFor="terms" className="text-sm">
+          <label
+            htmlFor="terms"
+            className="text-[16px] font-[400] font-[vazirmatn] ml-2"
+          >
             Please confirm you have read our{" "}
             <a href="#" className="text-blue-400">
               Terms And Conditions

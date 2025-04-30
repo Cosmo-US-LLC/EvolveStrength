@@ -3,6 +3,10 @@ import StepIndicator from "./common/StepIndicator";
 import DirectDebitForm from "./DirectDebitForm";
 import CardPaymentForm from "./CardPaymentForm";
 import MembershipVancouver from "./common/MembershipVancouver";
+import debit_icon_active from "../../../assets/images/desktop/debit_icon_active.svg";
+import debit_icon_inactive from "../../../assets/images/desktop/debit_icon_inactive.svg";
+import credit_icon_active from "../../../assets/images/desktop/credit_icon_active.svg";
+import credit_icon_inactive from "../../../assets/images/desktop/credit_icon_inactive.svg";
 
 const MemberPayment = () => {
   const [paymentMethod, setPaymentMethod] = useState("direct");
@@ -34,23 +38,41 @@ const MemberPayment = () => {
         <div className="border border-white/40 flex overflow-hidden p-1">
           <button
             onClick={() => setPaymentMethod("direct")}
-            className={`w-1/2 py-2 text-[14px] font-[500] font-[vazirmatn] uppercase ${
+            className={`w-1/2 py-2 text-[14px] font-[500] font-[vazirmatn] uppercase flex items-center justify-center gap-2 ${
               paymentMethod === "direct"
                 ? "bg-[#2DDE28] text-black"
                 : "text-white"
             }`}
           >
-            Direct Debit
+            <img
+              src={
+                paymentMethod === "direct"
+                  ? debit_icon_active
+                  : debit_icon_inactive
+              }
+              alt="Direct Debit Icon"
+              className="w-4 h-4"
+            />
+            <span>Direct Debit</span>
           </button>
           <button
             onClick={() => setPaymentMethod("card")}
-            className={`w-1/2 py-2 text-[14] font-[500] font-[vazirmatn] uppercase ${
+            className={`w-1/2 py-2 text-[14px] font-[500] font-[vazirmatn] uppercase flex items-center justify-center space-x-2 ${
               paymentMethod === "card"
                 ? "bg-[#2DDE28] text-black"
                 : "text-white"
             }`}
           >
-            Card pay
+            <img
+              src={
+                paymentMethod === "card"
+                  ? credit_icon_active
+                  : credit_icon_inactive
+              }
+              alt="Card Pay Icon"
+              className="w-4 h-4"
+            />
+            <span>Card pay</span>
           </button>
         </div>
       </div>

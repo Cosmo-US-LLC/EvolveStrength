@@ -1,8 +1,7 @@
 #root {
   margin: 0 auto;
-  font-family: 'Kanit', sans-serif;
+  font-family: "Kanit", sans-serif;
 }
-
 
 .button {
   cursor: pointer;
@@ -17,22 +16,38 @@
   filter: brightness(95%);
 }
 
-.congratulations_bg{
-  background-image: url(/src/assets/images/desktop/congratulationsBG.webp);  
+.location-bg {
+  background-image: url(/src/assets/images/desktop/locationBG2.webp);
+  background-size: cover;
+  background-position-y: -20px;
+  background-repeat: no-repeat;
+}
+
+.membership_bg {
+  background-image: url(/src/assets/images/desktop/membership_bg.webp);
   background-size: cover;
   background-repeat: no-repeat;
   background-position: 100% 100%;
-  min-height: 643px;
 }
 
-
-.location-bg {
-  background-image: url('/src/assets/images/desktop/locationBG2.webp');
+.about_yourself_bg {
+  background-image: url(/src/assets/images/desktop/about_yourself_bg.webp);
   background-size: cover;
-  /* background-position: center; */
-  /* background-position: center; */
-  /* background-position-y: -10px; */
- 
   background-repeat: no-repeat;
- 
+  background-position: 100% 100%;
+}
+
+.review_and_pay_bg {
+  background-image: url(/src/assets/images/desktop/review_and_pay_bg.webp);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: 100% 100%;
+}
+
+.congratulations_bg {
+  background-image: url(/src/assets/images/desktop/congratulationsBG.webp);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position-x: 100%;
+  background-position-y: 20px;
 }

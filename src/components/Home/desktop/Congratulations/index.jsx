@@ -9,8 +9,8 @@ function Congratulations() {
   };
 
   return (
-    <div className="congratulations_bg flex justify-center items-center">
-      <div className="w-[580px] h-[420px] border border-[#FFFFFF] bg-[#000000]/20 backdrop-blur-[20px] p-6 flex flex-col justify-center items-center text-center">
+    <div className="congratulations_bg min-h-screen flex justify-center items-center">
+      <div className="w-[580px] h-[420px] border border-[#FFFFFF42] bg-[#000000]/20 backdrop-blur-[20px] p-6 flex flex-col justify-center items-center text-center">
         <h1 className="text-[#2DDE28] font-kanit text-[40px] font-bold mb-2">
           CONGRATULATIONS
         </h1>
@@ -38,8 +38,8 @@ function Congratulations() {
             <span>Subscription</span>
             <span>Month To Month</span>
           </div>
-          <div className="flex justify-between text-white/90 text-sm text-[20px] font-semibold border-t border-white/20 pt-4">
-            <span>Total</span>
+          <div className="flex justify-between text-white/90 text-sm text-[20px] leading-[24px] capitalize font-semibold border-t border-white/20 pt-4">
+            <span>Amount Paid</span>
             <span>$98.66</span>
           </div>
         </div>
