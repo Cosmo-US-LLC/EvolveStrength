@@ -5,9 +5,9 @@ import healthWellnessIcon from "../../../assets/images/mobile/location-details/h
 import personalTrainersIcon from "../../../assets/images/mobile/location-details/personal-trainers.svg";
 import equipmentIcon from "../../../assets/images/mobile/location-details/equipment.svg";
 import locationIcon from "../../../assets/images/mobile/location-details/location.svg";
-import TailwindCalendar from "../../../utils/TailwindCalendar";
 
 import { useNavigate } from "react-router-dom";
+import EventDatePicker from "../../../utils/EventDatePicker";
 
 const LocationDetails = () => {
   const navigate = useNavigate();
@@ -54,7 +54,7 @@ const LocationDetails = () => {
         </ul>
       </div>
 
-      <TailwindCalendar title="Choose your start date"/>
+      <EventDatePicker />
       <button
         onClick={() => navigate("/membership-plan")}
         className="flex items-center justify-center h-[42px] 
