@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import StepIndicator from "./common/StepIndicator";
 import MembershipVancouver from "./common/MembershipVancouver";
-import calendarIcon from "../../../assets/images/mobile/location-details/calendar.svg";
 import dropdownIcon from "../../../assets/images/mobile/member-ship/up-down-arrow.svg";
 import { useNavigate } from "react-router-dom";
-import TailwindCalendar from "../../../utils/TailwindCalendar";
+import EventDatePicker from "../../../utils/EventDatePicker";
+import DOBPicker from "../../../utils/DOBPicker";
 
 const MemberDetails = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -38,7 +38,7 @@ const MemberDetails = () => {
           Your Basic Info
         </p>
 
-        <div className="flex flex-row  gap-4">
+        <div className="flex flex-row gap-4">
           <input
             type="text"
             placeholder="First Name"
@@ -86,8 +86,8 @@ const MemberDetails = () => {
         </div>
 
         <div className="flex flex-row gap-4">
-          <TailwindCalendar title=""/>
-          {/* <div className="flex items-center justify-between w-full border border-white/40 px-4 py-3 bg-transparent">
+          <DOBPicker />
+          {/* <div className="flex items-center justify-between w-full px-4 py-3 bg-transparent border border-white/40">
             <input
               type="date"
               className="w-full bg-transparent text-white text-[14px] font-[400]   outline-none placeholder-[#D8D8D8]"
