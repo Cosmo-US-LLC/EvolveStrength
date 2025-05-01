@@ -4,13 +4,14 @@ import MembershipPlanSelector from "./MembershipPlanSelector";
 import MembershipSummaryBoxDesktop from "./MembershipSummaryBoxDesktop";
 import { useNavigate } from "react-router-dom";
 import useScrollDirection from "../../../../../hooks/useScrollDirection";
+import Cookies from "js-cookie";
 
 function MembershipDesktop({ selectedPlan, setSelectedPlan }) {
   const [location, setLocation] = useState(null);
-  console.log("location", location);
   const [planData, setPlanData] = useState([]);
   const navigate = useNavigate();
   const scrollDirection = useScrollDirection();
+  const selectedLocation = Cookies.get("location")
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -98,7 +99,7 @@ function MembershipDesktop({ selectedPlan, setSelectedPlan }) {
           Your membership at
         </p>
         <p className="text-[#2DDE28] font-[kanit] text-[79px] font-[700] leading-[66px] tracking-[-1.32ppx] uppercase">
-          Vancouver, The Post
+          {selectedLocation}
         </p>
 
         <div className="flex flex-row justify-between mt-16">
@@ -115,7 +116,7 @@ function MembershipDesktop({ selectedPlan, setSelectedPlan }) {
             />
           </div>
         </div>
-        <div className="flex justify-end items-end mt-4 w-full">
+        <div className="flex items-end justify-end w-full mt-4">
           <button
             onClick={handleJoinNow}
             className="button mt-6 bg-[#2DDE28] text-black text-[16px] font-medium w-[139px] h-[42px]"

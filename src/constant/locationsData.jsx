@@ -36,7 +36,7 @@ export const locations = [
     },
     {
       postalCode: "40327",
-      clubName: "Vancouver Post",
+      clubName: "Vancouver, The Post",
       clubAddress: "# 658 Homer St Vancouver, British Columbia, V6B 2R4",
     },
   ];

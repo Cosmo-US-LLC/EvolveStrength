@@ -2,10 +2,12 @@ import React, { useContext, useState } from "react";
 import StepIndicator from "./common/StepIndicator";
 import MembershipVancouver from "./common/MembershipVancouver";
 import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 
 const MembershipPlan = () => {
   const [selectedPlan, setSelectedPlan] = useState("monthly");
   const navigate = useNavigate();
+  const selectedLocation = Cookies.get("location");
 
   return (
     <div className="min-h-screen bg-black text-white px-4 pt-[80px] pb-[30px] flex flex-col gap-8">
@@ -24,7 +26,7 @@ const MembershipPlan = () => {
         </span>
 
         <span className="text-[#2DDE28] font-[kanit] text-[50px] font-[700] leading-[42px] uppercase">
-          Vancouver, The PosT
+          {selectedLocation}
         </span>
       </div>
 
@@ -33,7 +35,7 @@ const MembershipPlan = () => {
           Choose your pricing plan
         </p>
 
-        <div className="flex border border-white overflow-hidden p-1">
+        <div className="flex p-1 overflow-hidden border border-white">
           <button
             onClick={() => setSelectedPlan("monthly")}
             className={`flex items-center justify-center gap-[10px]
@@ -66,7 +68,7 @@ const MembershipPlan = () => {
         </div>
       </div>
 
-      <div className=" ">
+      <div className="">
         {selectedPlan === "monthly" ? (
           <>
             <p className="text-white font-[kanit] text-[16px] font-[600] leading-[16px] uppercase mb-1">
@@ -97,7 +99,7 @@ const MembershipPlan = () => {
             </p>
           </>
         )}
-        <hr className="border-white/20 mb-4" />
+        <hr className="mb-4 border-white/20" />
         <ul className="space-y-4">
           {[
             "$0 Enrollment Fee",
@@ -106,7 +108,7 @@ const MembershipPlan = () => {
             "Access to all locations",
           ].map((item, idx) => (
             <li key={idx} className="flex items-start gap-3">
-              <div className="h-5 w-5 flex items-center justify-center">
+              <div className="flex items-center justify-center w-5 h-5">
                 <svg
                   width="20"
                   height="20"
