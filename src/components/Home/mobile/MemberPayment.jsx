@@ -26,6 +26,17 @@ const MemberPayment = () => {
     error,
   } = useSelector((state) => state.plan);
 
+  const [fname, setFname] = useState(userInfo?.fname || "");
+  const [lname, setLname] = useState(userInfo?.lname || "");
+  const [transitNumber, setTransitNumber] = useState("");
+  const [institutionNumber, setInstitutionNumber] = useState("");
+  const [accountNumber, setAccountNumber] = useState("");
+  const [verifyAccountNumber, setVerifyAccountNumber] = useState("");
+  const [confirm, setConfirm] = useState(false);
+  const [cardNumber, setCardNumber] = useState("");
+  const [cvv, setCvv] = useState("");
+  const [expirationDate, setExpirationDate] = useState("");
+
   useEffect(() => {
     if (!userInfo) {
       navigate("/member-details");
@@ -34,47 +45,91 @@ const MemberPayment = () => {
 
   const makeAgreement = async () => {
     try {
+      const routingNumber = `0${institutionNumber}${transitNumber}`;
+      const [expMonth, expYearRaw] = expirationDate.split("/");
+      const expYear = expYearRaw?.length === 2 ? `20${expYearRaw}` : expYearRaw;
+
+      const payload = {
+        paymentPlanId: planId || "",
+        planValidationHash: planValidate || "",
+        campaignId: "730E227DC96B7F9EE05302E014ACD689",
+        activePresale: "true",
+        sendAgreementEmail: "true",
+        agreementContactInfo: {
+          firstName: fName || "John",
+          middleInitial: formattedLastName || "",
+          lastName: lName || "Doe",
+          email: email || "example@gmail.com",
+          gender: gender || "",
+          homePhone: "",
+          cellPhone: number || "9495898283",
+          workPhone: "",
+          birthday: selectedDate || "",
+          wellnessProgramId: "",
+          barcode: "",
+          agreementAddressInfo: {
+            addressLine1: "123 Queen Street West",
+            addressLine2: "",
+            city: "Toronto",
+            state: "ON",
+            country: "CA",
+            zipCode: formattedPostalCode || "",
+          },
+          emergencyContact: {
+            ecFirstName: "",
+            ecLastName: "",
+            ecPhone: "",
+            ecPhoneExtension: "",
+          },
+        },
+        todayBillingInfo: {},
+        draftBillingInfo: {},
+        marketingPreferences: {
+          email: "true",
+          sms: "true",
+          directMail: "true",
+          pushNotification: "true",
+        },
+      };
+
+      if (selectPlan !== "direct_debit") {
+        payload.todayBillingInfo = {
+          isTodayBillingSameAsDraft: "true",
+          todayCcCvvCode: cvv || "",
+          todayCcBillingZip: formattedPostalCode || "",
+        };
+
+        payload.draftBillingInfo.draftCreditCard = {
+          creditCardFirstName: firstName || "John",
+          creditCardLastName: lastName || "Doe",
+          creditCardType: "visa",
+          creditCardAccountNumber: cardNumber || "",
+          creditCardExpMonth: expMonth || "00",
+          creditCardExpYear: expYear || "",
+        };
+        // 👉 Debit (Bank Account) flow
+      } else if (selectPlan === "direct_debit") {
+        payload.draftBillingInfo.draftBankAccount = {
+          draftAccountFirstName: firstName || "John",
+          draftAccountLastName: lastName || "Doe",
+          draftAccountRoutingNumber: routingNumber || "",
+          draftAccountNumber: accountNumber || "",
+          draftAccountType: "Checking",
+        };
+      }
+
       const response = await fetch(
-        `${import.meta.env.VITE_APP_API_URL}/submitAgreement`,
+        `${
+          import.meta.env.VITE_APP_API_URL
+        }/submitAgreement?location=${location}`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            member: {
-              firstName: userInfo?.fname,
-              lastName: userInfo?.lname,
-              email: userInfo?.email,
-            },
-            membership: {
-              planId: "PLN123",
-              startDate: "2025-05-01",
-              term: "12",
-              frequency: "monthly",
-            },
-            paymentMethod: {
-              type: "creditCard",
-              cardNumber: "4111111111111111",
-              expiryDate: "12/27",
-              cvv: "123",
-              billingAddress: {
-                street: userInfo?.address,
-                city: userInfo?.city,
-                state: userInfo?.province,
-                postalCode: userInfo?.postal,
-                country: "CA",
-              },
-            },
-            agreement: {
-              accepted: true,
-              acceptedDate: new Date().toISOString(),
-              ipAddress: "203.0.113.42",
-            },
-            clubId: clubLocationPostal,
-          }),
+          body: JSON.stringify(payload),
         }
       );
       const data = await response.json();
-      console.log("data", data);
+      console.log("data", data?.data?.restResponse?.request);
     } catch (error) {
       console.error("Error fetching club information:", error.message);
     }
@@ -148,9 +203,21 @@ const MemberPayment = () => {
       </div>
 
       {paymentMethod === "direct" ? (
-        <DirectDebitForm makeAgreement={makeAgreement} />
+        <DirectDebitForm
+          makeAgreement={makeAgreement}
+          fname={fname}
+          setFname={setFname}
+          lname={lname}
+          setLname={setLname}
+        />
       ) : (
-        <CardPaymentForm makeAgreement={makeAgreement} />
+        <CardPaymentForm
+          makeAgreement={makeAgreement}
+          fname={fname}
+          setFname={setFname}
+          lname={lname}
+          setLname={setLname}
+        />
       )}
     </div>
   );

@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import visaIcon from "../../../assets/images/mobile/payment/dabit1.svg";
 import mcIcon from "../../../assets/images/mobile/payment/dabit2.svg";
 import lockIcon from "../../../assets/images/mobile/payment/dabit3.svg";
 import { useSelector } from "react-redux";
 
-const DirectDebitForm = ({ makeAgreement }) => {
+const DirectDebitForm = ({ makeAgreement, fname, setFname, lname, setLname }) => {
   const navigate = useNavigate();
   const {
     userInfo,
@@ -41,13 +41,15 @@ const DirectDebitForm = ({ makeAgreement }) => {
             <input
               type="text"
               placeholder="First Name"
-              value={userInfo?.fname || ""}
+              value={fname}
+              onChange={(e)=>setFname(e.target.value)}
               className="w-full p-2 pt-3 border border-[#999] font-[vazirmatn] bg-black text-white text-[16px] font-[400] placeholder-[#999999] text-left"
             />
             <input
               type="text"
               placeholder="Last Name"
-              value={userInfo?.lname || ""}
+              value={lname}
+              onChange={(e)=>setLname(e.target.value)}
               className="w-full p-2 pt-3 border border-[#999] font-[vazirmatn] bg-black text-white text-[16px] font-[400] placeholder-[#999999] text-left"
             />
           </div>

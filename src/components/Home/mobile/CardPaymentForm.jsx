@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import visaIcon from "../../../assets/images/mobile/payment/dabit1.svg";
 import mcIcon from "../../../assets/images/mobile/payment/credit2.svg";
@@ -6,7 +6,7 @@ import lockIcon from "../../../assets/images/mobile/payment/credit3.svg";
 import lockIcon2 from "../../../assets/images/mobile/payment/credit4.svg";
 import { useSelector } from "react-redux";
 
-const CardPaymentForm = ({ makeAgreement }) => {
+const CardPaymentForm = ({ makeAgreement, fname, setFname, lname, setLname }) => {
   const navigate = useNavigate();
   const {
     userInfo,
@@ -41,13 +41,15 @@ const CardPaymentForm = ({ makeAgreement }) => {
           <input
             type="text"
             placeholder="First Name"
-              value={userInfo?.fname || ""}
+            value={fname}
+            onChange={(e)=>setFname(e.target.value)}
             className="w-full px-4 py-3 bg-black border border-[#999] text-white text-[16px] font-[400] placeholder-[#999999] text-left rounded-none"
           />
           <input
             type="text"
             placeholder="Last Name"
-              value={userInfo?.lname || ""}
+            value={lname}
+            onChange={(e)=>setLname(e.target.value)}
             className="w-full px-4 py-3 bg-black border border-[#999] text-white text-[16px] font-[400] placeholder-[#999999] text-left rounded-none"
           />
         </div>
