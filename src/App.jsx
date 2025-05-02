@@ -76,7 +76,7 @@ function App() {
             }
           />
           <Route path="/location-details" element={<LocationDetails />} />
-          <Route path="/membership-plan" element={<MembershipPlan />} />
+          <Route path="/membership-plan" element={<MembershipPlan selectedPlan={selectedPlan} setSelectedPlan={setSelectedPlan} />} />
           <Route path="/member-details" element={<MemberDetails />} />
           <Route path="/member-Payment" element={<MemberPayment />} />
           <Route path="/confirmation" element={<ConfirmationPage />} />

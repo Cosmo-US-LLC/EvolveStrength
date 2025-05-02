@@ -1,22 +1,38 @@
-import React from "react";
+import React, { useState } from "react";
 import locationImg from "../../../assets/images/mobile/location-details/evolve-strength-bg.webp";
 
 import healthWellnessIcon from "../../../assets/images/mobile/location-details/health&wellness.svg";
 import personalTrainersIcon from "../../../assets/images/mobile/location-details/personal-trainers.svg";
 import equipmentIcon from "../../../assets/images/mobile/location-details/equipment.svg";
 import locationIcon from "../../../assets/images/mobile/location-details/location.svg";
-import TailwindCalendar from "../../../utils/TailwindCalendar";
 
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import EventDatePicker from "../../../utils/EventDatePicker";
 
 const LocationDetails = () => {
-  const navigate = useNavigate();
+  const [startDate, setStartDate] = useState(null);
   const facilities = [
     { icon: healthWellnessIcon, label: "Health & Wellness" },
     { icon: personalTrainersIcon, label: "Top Personal Trainers" },
     { icon: equipmentIcon, label: "Top of the Line Equipment" },
     { icon: locationIcon, label: "Access to All Locations" },
   ];
+
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleContinue = () => {
+    const searchParams = location.search; // includes "?" already
+    console.log(searchParams);
+    const formattedDate = startDate.toLocaleDateString('en-US', {
+      weekday: 'short',
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    });
+    console.log(formattedDate);
+    navigate(`/membership-plan${searchParams}&startDate=${formattedDate}`);
+  };
 
   return (
     <div className="min-h-screen pt-[74px] bg-black text-white px-4 flex flex-col">
@@ -54,13 +70,20 @@ const LocationDetails = () => {
         </ul>
       </div>
 
-      <TailwindCalendar title="Choose your start date"/>
+      <EventDatePicker
+        selectedDate={startDate}
+        setSelectedDate={setStartDate}
+        title={"Choose your start date"}
+      />
+
       <button
-        onClick={() => navigate("/membership-plan")}
+        onClick={handleContinue}
+        // onClick={() => navigate("/membership-plan")}
         className="flex items-center justify-center h-[42px] 
              px-0 py-[12.801px] border border-[#2DDE28] font-[kanit] 
              bg-[#2DDE28] text-black text-[16px] font-[500] 
-             uppercase mb-5"
+             uppercase mb-5 disabled:opacity-60"
+        disabled={startDate == null}
       >
         Continue
       </button>
