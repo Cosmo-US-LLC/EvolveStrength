@@ -5,14 +5,88 @@ import dropdownIcon from "../../../assets/images/mobile/member-ship/up-down-arro
 import { useNavigate } from "react-router-dom";
 import EventDatePicker from "../../../utils/EventDatePicker";
 import DOBPicker from "../../../utils/DOBPicker";
+import { formatDate } from "../../../libs/utils";
+import { useDispatch, useSelector } from "react-redux";
+import { setUserInfo } from "../../../redux/slices/planSlice";
 
 const MemberDetails = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const dispatch = useDispatch();
+  const { userInfo, isLoading, error } = useSelector((state) => state.plan);
   const navigate = useNavigate();
+  const [isOpen, setIsOpen] = useState(false);
 
   const toggleDropdown = () => {
     setIsOpen((prev) => !prev);
   };
+
+  const [errors, setErrors] = useState([]);
+  const [fname, setFname] = useState(userInfo?.fname || "");
+  const [lname, setLname] = useState(userInfo?.lname || "");
+  const [email, setEmail] = useState(userInfo?.email || "");
+  const [phone, setPhone] = useState(userInfo?.phone || "");
+  const [address, setAddress] = useState(userInfo?.address || "");
+  const [province, setProvince] = useState(userInfo?.province || "");
+  const [city, setCity] = useState(userInfo?.city || "");
+  const [postal, setPostal] = useState(userInfo?.postal || "");
+  const [dob, setDob] = useState(userInfo?.dob && new Date(userInfo?.dob) || "");
+  const [gender, setGender] = useState(userInfo?.gender || "");
+
+  function updateErrs(valueToRemove) {
+    const updatedArr = errors.filter((item) => item !== valueToRemove);
+    setErrors(updatedArr);
+  }
+
+  const validateForm = () => {
+    const errors = [];
+
+    if (!fname.trim()) errors.push("fname");
+    if (!lname.trim()) errors.push("lname");
+    if (!email.trim()) {
+      errors.push("email");
+    } else if (!/^\S+@\S+\.\S+$/.test(email)) {
+      errors.push("email");
+    }
+
+    if (!phone.trim()) errors.push("phone");
+    if (!address.trim()) errors.push("address");
+    if (!province.trim()) errors.push("province");
+    if (!city.trim()) errors.push("city");
+    if (!postal.trim()) errors.push("postal");
+    if (!dob) errors.push("dob");
+    if (!gender) errors.push("gender");
+
+    if (errors.length > 0) {
+      console.error("Validation Errors:", errors);
+      return errors;
+    }
+    return false;
+  };
+
+  function addUser() {
+    const errorStatus = validateForm();
+    if (errorStatus && errorStatus.length > 0) {
+      console.warn("Please fix the form errors.");
+      setErrors(errorStatus);
+      return;
+    }
+    // proceed with submission
+    const payload = {
+      fname,
+      lname,
+      email,
+      phone,
+      address,
+      province,
+      city,
+      postal,
+      dob: formatDate(dob),
+      gender
+    }
+    console.log(payload);
+    dispatch(setUserInfo(payload));
+    navigate("/member-Payment");
+  }
+
   return (
     <div className="min-h-screen bg-black text-white px-4 pt-[80px] pb-10 flex flex-col gap-6 max-w-[600px] w-full mx-auto">
       <StepIndicator
@@ -42,68 +116,127 @@ const MemberDetails = () => {
           <input
             type="text"
             placeholder="First Name"
-            className="w-full px-4 py-3 bg-transparent border border-white/40 placeholder-[#999999] text-[16px] font-[400]"
+            value={fname}
+            onChange={(e) => {
+              setFname(e.target.value);
+              updateErrs("fname");
+            }}
+            className={`w-full px-4 py-3 bg-transparent border border-white/40 placeholder-[#999999] text-[16px] font-[400] ${
+              errors?.includes("fname") && "!border-red-500"
+            }`}
           />
           <input
             type="text"
             placeholder="Last Name"
-            className="w-full px-4 py-3 bg-transparent border border-white/40 placeholder-[#999999] text-[16px] font-[400]"
+            value={lname}
+            onChange={(e) => {
+              setLname(e.target.value);
+              updateErrs("lname");
+            }}
+            className={`w-full px-4 py-3 bg-transparent border border-white/40 placeholder-[#999999] text-[16px] font-[400] ${
+              errors?.includes("lname") && "!border-red-500"
+            }`}
           />
         </div>
 
         <input
           type="email"
           placeholder="Email Address"
-          className="w-full px-4 py-3 bg-transparent border border-white/40 placeholder-[#999999] text-[16px] font-[400]"
+          value={email}
+          onChange={(e) => {
+            setEmail(e.target.value);
+            updateErrs("email");
+          }}
+          className={`w-full px-4 py-3 bg-transparent border border-white/40 placeholder-[#999999] text-[16px] font-[400] ${
+            errors?.includes("email") && "!border-red-500"
+          }`}
         />
         <input
           type="tel"
           placeholder="Phone Number"
-          className="w-full px-4 py-3 bg-transparent border border-white/40 placeholder-[#999999] text-[16px] font-[400]"
+          value={phone}
+          onChange={(e) => {
+            setPhone(e.target.value);
+            updateErrs("phone");
+          }}
+          className={`w-full px-4 py-3 bg-transparent border border-white/40 placeholder-[#999999] text-[16px] font-[400] ${
+            errors?.includes("phone") && "!border-red-500"
+          }`}
         />
         <input
           type="text"
           placeholder="Mailing Address"
-          className="w-full px-4 py-3 bg-transparent border border-white/40 placeholder-[#999999] text-[16px] font-[400]"
+          value={address}
+          onChange={(e) => {
+            setAddress(e.target.value);
+            updateErrs("address");
+          }}
+          className={`w-full px-4 py-3 bg-transparent border border-white/40 placeholder-[#999999] text-[16px] font-[400] ${
+            errors?.includes("address") && "!border-red-500"
+          }`}
         />
         <input
           type="text"
           placeholder="Province"
-          className="w-full px-4 py-3 bg-transparent border border-white/40 placeholder-[#999999] text-[16px] font-[400]"
+          value={province}
+          onChange={(e) => {
+            setProvince(e.target.value);
+            updateErrs("province");
+          }}
+          className={`w-full px-4 py-3 bg-transparent border border-white/40 placeholder-[#999999] text-[16px] font-[400] ${
+            errors?.includes("province") && "!border-red-500"
+          }`}
         />
 
         <div className="flex flex-row gap-4">
           <input
             type="text"
             placeholder="City"
-            className="w-full px-4 py-3 bg-transparent border border-white/40 placeholder-[#999999] text-[16px] font-[400]"
+            value={city}
+            onChange={(e) => {
+              setCity(e.target.value);
+              updateErrs("city");
+            }}
+            className={`w-full px-4 py-3 bg-transparent border border-white/40 placeholder-[#999999] text-[16px] font-[400] ${
+              errors?.includes("city") && "!border-red-500"
+            }`}
           />
           <input
             type="text"
             placeholder="Postal Code"
-            className="w-full px-4 py-3 bg-transparent border border-white/40 placeholder-[#999999] text-[16px] font-[400]"
+            value={postal}
+            onChange={(e) => {
+              setPostal(e.target.value);
+              updateErrs("postal");
+            }}
+            className={`w-full px-4 py-3 bg-transparent border border-white/40 placeholder-[#999999] text-[16px] font-[400] ${
+              errors?.includes("postal") && "!border-red-500"
+            }`}
           />
         </div>
 
         <div className="flex flex-row gap-4">
-          <DOBPicker />
-          {/* <div className="flex items-center justify-between w-full px-4 py-3 bg-transparent border border-white/40">
-            <input
-              type="date"
-              className="w-full bg-transparent text-white text-[14px] font-[400]   outline-none placeholder-[#D8D8D8]"
-            />
-            <img src={calendarIcon} alt="Calendar" className="w-5 h-5" />
-          </div> */}
+          <DOBPicker dob={dob} setDob={setDob} errors={errors} />
 
           <div className="relative w-full">
             <select
+              value={gender}
+              onChange={(e) => setGender(e.target.value)} // ✅ Update gender
               onClick={toggleDropdown}
-              className="w-full appearance-none px-4 py-3 bg-[#1C1C1C] border border-white/40 placeholder-[#999999] text-[#999999] text-[16px] font-[400] outline-none"
+              className={`w-full appearance-none px-4 py-2.5 bg-[#1C1C1C] border border-white/40 placeholder-[#999999] text-[#999999] text-[16px] font-[400] outline-none ${errors?.includes("gender") && "!border-red-500"}`}
             >
-              <option className="bg-[#1C1C1C] text-[#999999]">Gender</option>
-              <option className="bg-[#1C1C1C] text-white">Male</option>
-              <option className="bg-[#1C1C1C] text-white">Female</option>
-              <option className="bg-[#1C1C1C] text-white">Other</option>
+              <option className="bg-[#1C1C1C] cursor-pointer text-[#999999]" value="">
+                Gender
+              </option>
+              <option className="bg-[#1C1C1C] cursor-pointer text-white" value="Male">
+                Male
+              </option>
+              <option className="bg-[#1C1C1C] cursor-pointer text-white" value="Female">
+                Female
+              </option>
+              <option className="bg-[#1C1C1C] cursor-pointer text-white" value="Other">
+                Other
+              </option>
             </select>
 
             <img
@@ -118,10 +251,11 @@ const MemberDetails = () => {
       </div>
 
       <button
-        onClick={() => navigate("/member-Payment")}
-        className="flex justify-center items-center w-full h-[42px]  px-0 pt-[12.801px] pb-[13.199px] 
-             bg-[#2DDE28] border border-[#2DDE28] font-[kanit] text-black text-[16px] font-medium 
-             leading-[16px] uppercase font-kanit transition-all hover:opacity-90 active:scale-95"
+        onClick={() => addUser()}
+        className="flex justify-center items-center w-full h-[42px] cursor-pointer disabled:opacity-60 px-0 pt-[12.801px] pb-[13.199px] 
+        bg-[#2DDE28] border border-[#2DDE28] font-[kanit] text-black text-[16px] font-medium 
+        leading-[16px] uppercase font-kanit transition-all hover:opacity-90 active:scale-95"
+        disabled={errors.length > 0}
       >
         Continue
       </button>

@@ -10,6 +10,7 @@ const initialState = {
   clubPlanMonthly: null,
   clubPlanYearly: null,
   startDate: "",
+  userInfo: null,
   isLoading: false,
   error: null,
 };
@@ -39,6 +40,9 @@ const planSlice = createSlice({
     },
     setStartDate(state, action) {
       state.startDate = action.payload;
+    },
+    setUserInfo(state, action) {
+      state.userInfo = action.payload;
     },
     setLoading(state, action) {
       state.isLoading = action.payload;
@@ -81,6 +85,11 @@ const planSlice = createSlice({
       state.isLoading = false;
       state.error = null;
     },
+    resetUserInfo: (state) => {
+      state.userInfo = null;
+      state.isLoading = false;
+      state.error = null;
+    },
     resetState: (state) => {
       state.plan = "monthly";
       state.clubLocation = "";
@@ -89,6 +98,7 @@ const planSlice = createSlice({
       state.clubPlanMonthly = null;
       state.clubPlanYearly = null;
       state.startDate = "";
+      state.userInfo = null
       state.isLoading = false;
       state.error = null;
     },
@@ -140,6 +150,7 @@ export const {
   setClubPlanMonthly,
   setClubPlanYearly,
   setStartDate,
+  setUserInfo,
   setLoading,
   setError,
   resetPlan,
@@ -149,6 +160,7 @@ export const {
   resetClubPlanMonthly,
   resetClubPlanYearly,
   resetStartDate,
+  resetUserInfo,
   resetState,
 } = planSlice.actions;
 export default planSlice.reducer;

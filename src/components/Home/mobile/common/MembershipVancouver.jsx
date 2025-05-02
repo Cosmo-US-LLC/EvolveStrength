@@ -2,23 +2,16 @@ import React, { useState } from "react";
 import ChevronArrow from "../../../../assets/images/mobile/member-ship/up-down-arrow.svg";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
+import { useSelector } from "react-redux";
+import { formatDate } from "../../../../libs/utils";
 
 const MembershipVancouver = (props) => {
-  console.log(props);
+  // console.log(props);
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(props.step === 1 ? true : false);
   const selectedLocation = Cookies.get("location");
-  const {startDate, planData} = props;
-
-  function formatDate(date) {
-    const formattedDate = new Date(date).toLocaleDateString('en-US', {
-      weekday: 'short',
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric'
-    });
-    return `${formattedDate}`
-  }
+  // const {startDate, planData} = props;
+  const { startDate, clubLocation, plan, clubLocationPostal, clubPlans, clubPlanMonthly, clubPlanYearly, isLoading, error } = useSelector((state) => state.plan);
 
   return (
     <div
@@ -72,17 +65,18 @@ const MembershipVancouver = (props) => {
             </span>
             <span className="text-white text-[16px] font-[vazirmatn] font-normal leading-[20.382px] capitalize">
               {/* {formatDate(startDate)} */}
-              {formatDate(new Date())}
+              {/* {formatDate(new Date())} */}
               {/* {formatDate(planData?.firstDueDate)} */}
+              {startDate}
             </span>
           </div>
-          {planData?.expirationDate?.length > 1 && (
+          {(plan == "monthly" ? clubPlanMonthly : clubPlanYearly)?.expirationDate?.length > 1 && (
             <div className="flex justify-between">
               <span className="text-white text-[16px] font-[vazirmatn] font-normal leading-[20.382px] capitalize">
                 End Date
               </span>
               <span className="text-white text-[16px] font-[vazirmatn] font-normal leading-[20.382px] capitalize">
-                {formatDate(planData?.expirationDate)}
+                {formatDate((plan == "monthly" ? clubPlanMonthly : clubPlanYearly)?.expirationDate)}
               </span>
             </div>
           )}
@@ -90,11 +84,11 @@ const MembershipVancouver = (props) => {
           <div className="flex justify-between">
             <span className="text-white font-[vazirmatn] text-[16px] font-normal leading-[20.382px] capitalize">
               {/* Bi-Weekly */}
-              {planData?.scheduleFrequency || "Bi-Weekly"}
+              {(plan == "monthly" ? clubPlanMonthly : clubPlanYearly)?.scheduleFrequency || "Bi-Weekly"}
             </span>
             <span className="text-white font-[vazirmatn] text-[16px] font-normal leading-[20.382px] capitalize">
               {/* $96.66 */}
-              {planData?.scheduleTotalAmount || "$--.--"}
+              {(plan == "monthly" ? clubPlanMonthly : clubPlanYearly)?.scheduleTotalAmount || "$--.--"}
             </span>
           </div>
           <div className="flex justify-between">

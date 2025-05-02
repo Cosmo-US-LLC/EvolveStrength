@@ -2,13 +2,13 @@ import React, { useState, useEffect, useRef } from "react";
 import calendarIcon from "../assets/images/mobile/location-details/calendar.svg";
 
 const DOBPicker = (props) => {
-  const { title } = props;
+  const { title, dob, setDob, errors } = props;
   const today = new Date();
   const minYear = 1900;
   const maxYear = today.getFullYear();
 
   const [currentDate, setCurrentDate] = useState(today);
-  const [selectedDate, setSelectedDate] = useState(null);
+  // const [selectedDate, setSelectedDate] = useState(null);
   const [showCalendar, setShowCalendar] = useState(false);
   const calendarRef = useRef(null);
 
@@ -59,7 +59,7 @@ const DOBPicker = (props) => {
 
   const handleSelectDate = (day) => {
     const date = new Date(year, month, day);
-    setSelectedDate(date);
+    setDob(date);
     setShowCalendar(false);
   };
 
@@ -119,12 +119,12 @@ const DOBPicker = (props) => {
 
       <div
         onClick={() => setShowCalendar(true)}
-        className="flex h-[46px] px-[14px] py-[10px] items-center justify-between w-full border border-[#999] bg-[rgba(3,3,3,0.41)] backdrop-blur-[15.9px] cursor-pointer"
+        className={`flex h-[46px] px-[14px] py-[10px] items-center justify-between w-full border border-[#999] bg-[rgba(3,3,3,0.41)] backdrop-blur-[15.9px] cursor-pointer ${errors?.includes("dob") && "!border-red-500"}`}
       >
         <input
           type="text"
           readOnly
-          value={formatDate(selectedDate)}
+          value={formatDate(dob)}
           placeholder="Pick a date"
           className="bg-transparent text-white text-[16px] font-[vazirmatn] w-full outline-none placeholder-[#999999]"
         />
