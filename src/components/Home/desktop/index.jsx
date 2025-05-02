@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Listbox } from "@headlessui/react";
 import { locations } from "../../../constant/locationsData";
 import ChevronDownFilled from "../../../assets/images/desktop/chevron-down-filled.svg";
@@ -7,8 +7,16 @@ import Cookies from "js-cookie";
 
 function LocationDesktop() {
   const [selectedLocation, setSelectedLocation] = useState(locations[0]);
-  console.log("selectedLocation", selectedLocation);
-  Cookies.set("location", selectedLocation.clubName);
+  console.log("selectedLocation", selectedLocation.postalCode);
+  useEffect(() => {
+    let loc = selectedLocation.postalCode;
+
+    if (loc && loc.startsWith("0")) {
+      loc = loc.slice(1);
+    }
+    Cookies.set("locationCode", loc);
+    Cookies.set("location", selectedLocation.clubName);
+  }, [selectedLocation]);
 
   const navigate = useNavigate();
 
