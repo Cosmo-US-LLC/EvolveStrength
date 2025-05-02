@@ -4,14 +4,31 @@ import visaIcon from "../../../assets/images/mobile/payment/dabit1.svg";
 import mcIcon from "../../../assets/images/mobile/payment/credit2.svg";
 import lockIcon from "../../../assets/images/mobile/payment/credit3.svg";
 import lockIcon2 from "../../../assets/images/mobile/payment/credit4.svg";
+import { useSelector } from "react-redux";
 
-const CardPaymentForm = () => {
+const CardPaymentForm = ({ makeAgreement }) => {
   const navigate = useNavigate();
+  const {
+    userInfo,
+    startDate,
+    clubLocation,
+    plan,
+    clubLocationPostal,
+    clubPlans,
+    clubPlanMonthly,
+    clubPlanYearly,
+    isLoading,
+    error,
+  } = useSelector((state) => state.plan);
+
   return (
     <div className="flex flex-col gap-4">
       <div className="text-white ">
         <p className="text-white text-[18px] font-medium leading-[42px] capitalize">
-          Set Your Monthly Payment Of $98.99
+          Set Your Monthly Payment Of&nbsp;
+          {plan == "monthly"
+            ? clubPlanMonthly?.downPaymentTotalAmount
+            : clubPlanYearly?.downPaymentTotalAmount}
         </p>
 
         <p className="text-[#D8D8D8] leading-[21.2px] text-[14px] font-[400]">
@@ -24,11 +41,13 @@ const CardPaymentForm = () => {
           <input
             type="text"
             placeholder="First Name"
+              value={userInfo?.fname || ""}
             className="w-full px-4 py-3 bg-black border border-[#999] text-white text-[16px] font-[400] placeholder-[#999999] text-left rounded-none"
           />
           <input
             type="text"
             placeholder="Last Name"
+              value={userInfo?.lname || ""}
             className="w-full px-4 py-3 bg-black border border-[#999] text-white text-[16px] font-[400] placeholder-[#999999] text-left rounded-none"
           />
         </div>

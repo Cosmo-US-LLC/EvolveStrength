@@ -12,7 +12,7 @@ const MembershipPlan = ({ selectedPlan, setSelectedPlan }) => {
   // const [location, setLocation] = useState(null);
   // const [startDate, setStartDate] = useState(null);
   // console.log("location", location);
-  const [planData, setPlanData] = useState([]);
+  // const [planData, setPlanData] = useState([]);
   const navigate = useNavigate();
   const { startDate, clubLocation, plan, clubLocationPostal, clubPlans, clubPlanMonthly, clubPlanYearly, isLoading, error } = useSelector((state) => state.plan);
 

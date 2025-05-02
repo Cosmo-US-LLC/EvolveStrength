@@ -3,16 +3,32 @@ import { useNavigate } from "react-router-dom";
 import visaIcon from "../../../assets/images/mobile/payment/dabit1.svg";
 import mcIcon from "../../../assets/images/mobile/payment/dabit2.svg";
 import lockIcon from "../../../assets/images/mobile/payment/dabit3.svg";
+import { useSelector } from "react-redux";
 
-const DirectDebitForm = () => {
+const DirectDebitForm = ({ makeAgreement }) => {
   const navigate = useNavigate();
+  const {
+    userInfo,
+    startDate,
+    clubLocation,
+    plan,
+    clubLocationPostal,
+    clubPlans,
+    clubPlanMonthly,
+    clubPlanYearly,
+    isLoading,
+    error,
+  } = useSelector((state) => state.plan);
 
   return (
     <div className="flex justify-center min-h-screen bg-black">
       <div className="w-full max-w-[600px] flex flex-col gap-4">
         <div>
-          <p className="text-white text-[18px] font-[500] font-[kanit] uppercase">
-            Set Your Monthly Payment Of $98.99
+          <p className="text-white text-[18px] font-[500] font-[kanit] capitalize">
+            Set Your Monthly Payment Of&nbsp;
+            {plan == "monthly"
+              ? clubPlanMonthly?.downPaymentTotalAmount
+              : clubPlanYearly?.downPaymentTotalAmount}
           </p>
           <p className="text-[#D8D8D8] text-[14px] font-[400] mt-1 font-[vazirmatn]">
             This is your standard payment for your monthly direct debit before
@@ -25,12 +41,14 @@ const DirectDebitForm = () => {
             <input
               type="text"
               placeholder="First Name"
-              className="w-full px-2 py-3 border border-[#999] font-[vazirmatn] bg-black text-white text-[16px] font-[400] placeholder-[#999999] text-left"
+              value={userInfo?.fname || ""}
+              className="w-full p-2 pt-3 border border-[#999] font-[vazirmatn] bg-black text-white text-[16px] font-[400] placeholder-[#999999] text-left"
             />
             <input
               type="text"
               placeholder="Last Name"
-              className="w-full px-2 py-3 border border-[#999] font-[vazirmatn] bg-black text-white text-[16px] font-[400] placeholder-[#999999] text-left"
+              value={userInfo?.lname || ""}
+              className="w-full p-2 pt-3 border border-[#999] font-[vazirmatn] bg-black text-white text-[16px] font-[400] placeholder-[#999999] text-left"
             />
           </div>
 
@@ -38,16 +56,15 @@ const DirectDebitForm = () => {
             <input
               type="text"
               placeholder="Transit Number"
-              className="w-full px-2 py-3 border border-[#999] font-[vazirmatn] bg-black text-white text-[16px] font-[400] placeholder-[#999999] text-left"
+              className="w-full p-2 pt-3 border border-[#999] font-[vazirmatn] bg-black text-white text-[16px] font-[400] placeholder-[#999999] text-left"
             />
             <input
               type="text"
               placeholder="Bank Number"
-              className="w-full px-2 py-3 border border-[#999] font-[vazirmatn] bg-black text-white text-[16px] font-[400] placeholder-[#999999] text-left"
+              className="w-full p-2 pt-3 border border-[#999] font-[vazirmatn] bg-black text-white text-[16px] font-[400] placeholder-[#999999] text-left"
             />
           </div>
 
- 
           <div className="flex flex-row gap-3 text-xs text-white">
             <div className="flex items-center w-full gap-2">
               <span className="text-[10px] font-[400] text-[#D8D8D8] font-[vazirmatn]">
@@ -66,22 +83,21 @@ const DirectDebitForm = () => {
               </div>
             </div>
           </div>
- 
+
           <div className="flex flex-row gap-3">
             <input
               type="text"
               placeholder="Account Number"
-              className="w-full px-2 py-3 border font-[vazirmatn] border-[#999] bg-black text-white text-[16px] font-[400] placeholder-[#999999] text-left"
+              className="w-full p-2 pt-3 border font-[vazirmatn] border-[#999] bg-black text-white text-[16px] font-[400] placeholder-[#999999] text-left"
             />
             <input
               type="text"
               placeholder="Verify Account"
-              className="w-full px-2 py-3 font-[vazirmatn] border border-[#999] bg-black text-white text-[16px] font-[400] placeholder-[#999999] text-left"
+              className="w-full p-2 pt-3 font-[vazirmatn] border border-[#999] bg-black text-white text-[16px] font-[400] placeholder-[#999999] text-left"
             />
           </div>
         </div>
 
- 
         <div className="flex flex-col pt-1">
           <p className="text-[#CACACA] text-[16px] font-[400] font-[vazirmatn]">
             Guaranteed Safe checkout

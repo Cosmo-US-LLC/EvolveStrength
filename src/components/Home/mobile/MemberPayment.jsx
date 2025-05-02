@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import StepIndicator from "./common/StepIndicator";
 import DirectDebitForm from "./DirectDebitForm";
 import CardPaymentForm from "./CardPaymentForm";
@@ -7,9 +7,79 @@ import debit_icon_active from "../../../assets/images/desktop/debit_icon_active.
 import debit_icon_inactive from "../../../assets/images/desktop/debit_icon_inactive.svg";
 import credit_icon_active from "../../../assets/images/desktop/credit_icon_active.svg";
 import credit_icon_inactive from "../../../assets/images/desktop/credit_icon_inactive.svg";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const MemberPayment = () => {
+  const navigate = useNavigate();
   const [paymentMethod, setPaymentMethod] = useState("direct");
+  const {
+    userInfo,
+    startDate,
+    clubLocation,
+    plan,
+    clubLocationPostal,
+    clubPlans,
+    clubPlanMonthly,
+    clubPlanYearly,
+    isLoading,
+    error,
+  } = useSelector((state) => state.plan);
+
+  useEffect(() => {
+    if (!userInfo) {
+      navigate("/member-details");
+    }
+  }, []);
+
+  const makeAgreement = async () => {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_APP_API_URL}/submitAgreement`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            member: {
+              firstName: userInfo?.fname,
+              lastName: userInfo?.lname,
+              email: userInfo?.email,
+            },
+            membership: {
+              planId: "PLN123",
+              startDate: "2025-05-01",
+              term: "12",
+              frequency: "monthly",
+            },
+            paymentMethod: {
+              type: "creditCard",
+              cardNumber: "4111111111111111",
+              expiryDate: "12/27",
+              cvv: "123",
+              billingAddress: {
+                street: userInfo?.address,
+                city: userInfo?.city,
+                state: userInfo?.province,
+                postalCode: userInfo?.postal,
+                country: "CA",
+              },
+            },
+            agreement: {
+              accepted: true,
+              acceptedDate: new Date().toISOString(),
+              ipAddress: "203.0.113.42",
+            },
+            clubId: clubLocationPostal,
+          }),
+        }
+      );
+      const data = await response.json();
+      console.log("data", data);
+    } catch (error) {
+      console.error("Error fetching club information:", error.message);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-black text-white px-4 pt-[80px] pb-[12px] flex flex-col gap-6">
       <StepIndicator
@@ -31,7 +101,7 @@ const MemberPayment = () => {
       </div>
 
       <div className="flex flex-col">
-        <p class="text-white font-[Vazirmatn] text-[16px] font-normal leading-[25.2px]">
+        <p className="text-white font-[Vazirmatn] text-[16px] font-normal leading-[25.2px]">
           Choose payment Option
         </p>
 
@@ -77,7 +147,11 @@ const MemberPayment = () => {
         </div>
       </div>
 
-      {paymentMethod === "direct" ? <DirectDebitForm /> : <CardPaymentForm />}
+      {paymentMethod === "direct" ? (
+        <DirectDebitForm makeAgreement={makeAgreement} />
+      ) : (
+        <CardPaymentForm makeAgreement={makeAgreement} />
+      )}
     </div>
   );
 };
