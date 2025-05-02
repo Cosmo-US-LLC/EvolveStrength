@@ -1,20 +1,22 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 
 const MembershipSummaryBoxDesktop = ({ selectedPlan }) => {
   const navigate = useNavigate();
+  const selectedLocation = Cookies.get("location");
   const handleEdit = () => {
     navigate(`/`);
   };
   return (
     <div className="w-[471px] bg-[#000000]/60 backdrop-blur-[10px] p-6 flex flex-col gap-8">
-      <div className="flex justify-between items-center">
+      <div className="flex items-center justify-between">
         <div className="flex flex-col">
           <p className="text-[#F8F8F8] text-[16px] font-[700] font-[vazirmatn]">
             Your Membership at
           </p>
-          <p className="text-[#2DDE28] text-[40px] font-[700] tracking-[-0.76px] leading-[27.73px] uppercase font-[kanit]">
-            Vancouver
+          <p className="text-[#2DDE28] text-[30px] font-[700] tracking-[-0.76px] leading-[27.73px] uppercase font-[kanit]">
+            {selectedLocation}
           </p>
         </div>
         <div>
