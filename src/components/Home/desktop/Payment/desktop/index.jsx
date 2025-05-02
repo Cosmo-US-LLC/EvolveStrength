@@ -26,63 +26,156 @@ function ReviewAndPay({ selectedPlan, setSelectedPlan }) {
   const [cvv, setCvv] = useState("");
   const [expirationDate, setExpirationDate] = useState("");
 
-  console.log(
-    "firstNamefirstNamefirstName",
-    firstName,
-    lastName,
-    transitNumber,
-    institutionNumber,
-    accountNumber,
-    verifyAccountNumber,
-    confirm,
-    cardNumber,
-    cvv,
-    expirationDate
+  const location = Cookies.get("locationCode");
+  const planId = Cookies.get("planId");
+  const planValidate = Cookies.get("planValidation");
+  const fName = Cookies.get("firstName");
+  const lName = Cookies.get("lastName");
+  const formattedLastName = lName.charAt(0).toUpperCase();
+  const email = Cookies.get("email");
+  const gender = Cookies.get("gender");
+  let number = Cookies.get("number") || "";
+
+  const digitsOnly = number.replace(/\D/g, "");
+  if (digitsOnly.length === 10) {
+    // Format as 3-3-4
+    number = digitsOnly.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3");
+  } else {
+    console.warn("Invalid phone number format");
+    number = "";
+  }
+  let selectedDate = Cookies.get("selectedDate") || "";
+
+  if (selectedDate) {
+    const dateObj = new Date(selectedDate);
+    const month = String(dateObj.getMonth() + 1).padStart(2, "0");
+    const day = String(dateObj.getDate()).padStart(2, "0");
+    const year = dateObj.getFullYear();
+
+    selectedDate = `${month}/${day}/${year}`;
+  } else {
+    console.warn("Invalid or missing selectedDate");
+  }
+  // const address = Cookies.get("address");
+  // const city = Cookies.get("city");
+  const rawPostalCode = Cookies.get("postalCode") || "";
+  const formattedPostalCode = rawPostalCode
+    .toUpperCase()
+    .replace(/\s+/g, "") 
+    .replace(/(.{3})(.{3})/, "$1 $2"); 
+
+  // Optional regex validation
+  const isValidPostalCode = /^[A-Z]\d[A-Z] \d[A-Z]\d$/.test(
+    formattedPostalCode
   );
+
+  if (!isValidPostalCode) {
+    console.error("Invalid Canadian postal code format:", formattedPostalCode);
+  }
+
+  console.log("formattedPostalCode", formattedPostalCode);
+
+  const provinceMap = {
+    Punjab: "PB",
+    Sindh: "SD",
+    "Khyber Pakhtunkhwa": "KP",
+    Balochistan: "BL",
+    Ontario: "ON",
+    California: "CA",
+    "New York": "NY",
+  };
+
+  const provinceName = Cookies.get("province") || "";
+  const stateCode = provinceMap[provinceName] || "";
+  console.log("provinceName", provinceName, stateCode);
+
+  const routingNumber = `0${institutionNumber}${transitNumber}`;
+  const [expMonth, expYearRaw] = expirationDate.split("/");
+  const expYear = expYearRaw?.length === 2 ? `20${expYearRaw}` : expYearRaw;
+
+  const payload = {
+    paymentPlanId: planId || "",
+    planValidationHash: planValidate || "",
+    campaignId: "730E227DC96B7F9EE05302E014ACD689",
+    activePresale: "true",
+    sendAgreementEmail: "true",
+    agreementContactInfo: {
+      firstName: fName || "John",
+      middleInitial: formattedLastName || "",
+      lastName: lName || "Doe",
+      email: email || "example@gmail.com",
+      gender: gender || "",
+      homePhone: "",
+      cellPhone: number || "9495898283",
+      workPhone: "",
+      birthday: selectedDate || "",
+      wellnessProgramId: "",
+      barcode: "",
+      agreementAddressInfo: {
+        addressLine1: "123 Queen Street West",
+        addressLine2: "",
+        city: "Toronto",
+        state: "ON",
+        country: "CA",
+        zipCode: formattedPostalCode || "",
+      },
+      emergencyContact: {
+        ecFirstName: "",
+        ecLastName: "",
+        ecPhone: "",
+        ecPhoneExtension: "",
+      },
+    },
+    todayBillingInfo: {},
+    draftBillingInfo: {},
+    marketingPreferences: {
+      email: "true",
+      sms: "true",
+      directMail: "true",
+      pushNotification: "true",
+    },
+  };
+
+  if (selectPlan !== "direct_debit") {
+    payload.todayBillingInfo = {
+      isTodayBillingSameAsDraft: "true",
+      todayCcCvvCode: cvv || "",
+      todayCcBillingZip: formattedPostalCode || "",
+    };
+
+    payload.draftBillingInfo.draftCreditCard = {
+      creditCardFirstName: firstName || "John",
+      creditCardLastName: lastName || "Doe",
+      creditCardType: "visa",
+      creditCardAccountNumber: cardNumber || "",
+      creditCardExpMonth: expMonth || "00",
+      creditCardExpYear: expYear || "",
+    };
+    // 👉 Debit (Bank Account) flow
+  } else if (selectPlan === "direct_debit") {
+    payload.draftBillingInfo.draftBankAccount = {
+      draftAccountFirstName: firstName || "John",
+      draftAccountLastName: lastName || "Doe",
+      draftAccountRoutingNumber: routingNumber || "",
+      draftAccountNumber: accountNumber || "",
+      draftAccountType: "Checking",
+    };
+  }
 
   const getAgreementInfo = async () => {
     try {
       const response = await fetch(
-        "http://localhost:3002/api/submitAgreement",
+        `${
+          import.meta.env.VITE_APP_API_URL
+        }/submitAgreement?location=${location}`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            member: {
-              firstName: firstName || "John",
-              lastName: lastName || "Doe",
-              email: Cookies.get("email"),
-            },
-            membership: {
-              planId: "PLN123",
-              startDate: "2025-05-01",
-              term: "12",
-              frequency: "monthly",
-            },
-            paymentMethod: {
-              type: "creditCard",
-              cardNumber: "4111111111111111",
-              expiryDate: "12/27",
-              cvv: "123",
-              billingAddress: {
-                street: "123 Main St",
-                city: "Lahore",
-                state: "Punjab",
-                postalCode: "54000",
-                country: "PK",
-              },
-            },
-            agreement: {
-              accepted: true,
-              acceptedDate: new Date().toISOString(),
-              ipAddress: "203.0.113.42",
-            },
-            clubId: "CLUB456",
-          }),
+          body: JSON.stringify(payload),
         }
       );
       const data = await response.json();
-      console.log("data", data);
+      console.log("data", data?.data?.restResponse?.request);
     } catch (error) {
       console.error("Error fetching club information:", error.message);
     }
