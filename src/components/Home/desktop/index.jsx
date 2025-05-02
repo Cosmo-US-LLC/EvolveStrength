@@ -3,9 +3,12 @@ import { Listbox } from "@headlessui/react";
 import { locations } from "../../../constant/locationsData";
 import ChevronDownFilled from "../../../assets/images/desktop/chevron-down-filled.svg";
 import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 
 function LocationDesktop() {
   const [selectedLocation, setSelectedLocation] = useState(locations[0]);
+  console.log("selectedLocation", selectedLocation);
+  Cookies.set("location", selectedLocation.clubName);
 
   const navigate = useNavigate();
 
@@ -14,7 +17,7 @@ function LocationDesktop() {
   };
 
   return (
-    <div className="relative min-h-screen location-bg overflow-hidden z-10 flex flex-col items-center justify-center gap-6">
+    <div className="relative z-10 flex flex-col items-center justify-center min-h-screen gap-6 overflow-hidden location-bg">
       <p className="text-white text-center font-[kanit] text-[79px] font-bold leading-[66px] tracking-[-1.329px] uppercase">
         SELECT LOCATION
       </p>

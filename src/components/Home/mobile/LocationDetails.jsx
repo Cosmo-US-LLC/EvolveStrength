@@ -8,8 +8,17 @@ import locationIcon from "../../../assets/images/mobile/location-details/locatio
 
 import { useLocation, useNavigate } from "react-router-dom";
 import EventDatePicker from "../../../utils/EventDatePicker";
+import Cookies from "js-cookie";
 
 const LocationDetails = () => {
+  const navigate = useNavigate();
+
+  const selectedLocation = Cookies.get("location");
+
+  const spaceIndex = selectedLocation.indexOf(" ");
+  const locationFirstPart = selectedLocation.slice(0, spaceIndex);
+  const locationSecondPart = selectedLocation.slice(spaceIndex + 1);
+
   const [startDate, setStartDate] = useState(null);
   const facilities = [
     { icon: healthWellnessIcon, label: "Health & Wellness" },
@@ -17,8 +26,7 @@ const LocationDetails = () => {
     { icon: equipmentIcon, label: "Top of the Line Equipment" },
     { icon: locationIcon, label: "Access to All Locations" },
   ];
-
-  const navigate = useNavigate();
+ 
   const location = useLocation();
 
   const handleContinue = () => {
@@ -38,11 +46,11 @@ const LocationDetails = () => {
     <div className="min-h-screen pt-[74px] bg-black text-white px-4 flex flex-col">
       <div>
         <span className="text-white font-[kanit] text-[50px] leading-[42px] font-bold uppercase">
-          VANCOUVER,
+          {locationFirstPart}
         </span>
         <br />
         <span className="text-[#2DDE28] font-[kanit] text-[50px] leading-[42px] font-bold uppercase">
-          THE POST
+          {locationSecondPart}
         </span>
       </div>
 

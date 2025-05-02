@@ -2,16 +2,25 @@ import React, { useState } from "react";
 import info_icon from "../../../../../assets/images/desktop/info_icon.svg";
 import guarantee_icons from "../../../../../assets/images/desktop/guarantee_icons.svg";
 
-function DebitForm() {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [transitNumber, setTransitNumber] = useState("");
-  const [institutionNumber, setInstitutionNumber] = useState("");
-  const [accountNumber, setAccountNumber] = useState("");
-  const [verifyAccountNumber, setVerifyAccountNumber] = useState("");
+function DebitForm({
+  firstName,
+  setFirstName,
+  lastName,
+  setLastName,
+  transitNumber,
+  setTransitNumber,
+  institutionNumber,
+  setInstitutionNumber,
+  accountNumber,
+  setAccountNumber,
+  verifyAccountNumber,
+  setVerifyAccountNumber,
+  confirm,
+  setConfirm,
+}) {
   const [termsAgreed, setTermsAgreed] = useState(false);
   const [renewAgreed, setRenewAgreed] = useState(false);
-  const [confirm, setConfirm] = useState(false);
+
 
   return (
     <div className="max-w-[600px] space-y-4 text-white">
