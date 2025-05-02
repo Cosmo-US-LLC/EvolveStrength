@@ -1,22 +1,33 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import heroImage from "../../../assets/images/mobile/evolve-strength.webp";
 import UpDownArrow from "../../../assets/images/mobile/up-down-arrow.svg";
 import { useNavigate } from "react-router-dom";
 import { locations } from "../../../constant/locationsData";
 import Cookies from "js-cookie";
+import { useDispatch, useSelector } from "react-redux";
+import { resetClubLocation, resetClubLocationPostal, setClubLocation, setClubLocationPostal } from "../../../redux/slices/planSlice";
 
 const MobileHero = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch()
   const [selected, setSelected] = useState(locations[0]);
   const [isOpen, setIsOpen] = useState(false);
-  console.log({selected})
+  // console.log({selected})
+  const { clubLocation, clubLocationPostal, clubPlans, isLoading, error } = useSelector((state) => state.plan);
+  console.log(clubLocation, clubLocationPostal)
 
   Cookies.set("location", selected.clubName);
 
-
   const takeATourHandler = () => {
+    dispatch(setClubLocation(selected.clubName))
+    dispatch(setClubLocationPostal(parseInt(selected.postalCode)))
     navigate(`/location-details?location=${selected.postalCode}`);
   };
+
+  useEffect(()=>{
+    dispatch(resetClubLocation())
+    dispatch(resetClubLocationPostal())
+  }, [])
 
   return (
     <div

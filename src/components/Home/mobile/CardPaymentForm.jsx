@@ -9,7 +9,7 @@ const CardPaymentForm = () => {
   const navigate = useNavigate();
   return (
     <div className="flex flex-col gap-4">
-      <div className="text-white  ">
+      <div className="text-white ">
         <p className="text-white text-[18px] font-medium leading-[42px] capitalize">
           Set Your Monthly Payment Of $98.99
         </p>
@@ -19,36 +19,36 @@ const CardPaymentForm = () => {
         </p>
       </div>
 
-      <div className="flex flex-col gap-4 w-full">
+      <div className="flex flex-col w-full gap-4">
         <div className="flex flex-row gap-4">
           <input
             type="text"
             placeholder="First Name"
-            className="w-full px-4 py-3 bg-black border border-[#999] text-white text-[14px] font-[400] placeholder-[#D8D8D8] text-left rounded-none"
+            className="w-full px-4 py-3 bg-black border border-[#999] text-white text-[16px] font-[400] placeholder-[#999999] text-left rounded-none"
           />
           <input
             type="text"
             placeholder="Last Name"
-            className="w-full px-4 py-3 bg-black border border-[#999] text-white text-[14px] font-[400] placeholder-[#D8D8D8] text-left rounded-none"
+            className="w-full px-4 py-3 bg-black border border-[#999] text-white text-[16px] font-[400] placeholder-[#999999] text-left rounded-none"
           />
         </div>
 
         <input
           type="text"
           placeholder="Card Number"
-          className="w-full px-4 py-3 bg-black border border-[#999] text-white text-[14px] font-[400] placeholder-[#D8D8D8] text-left rounded-none"
+          className="w-full px-4 py-3 bg-black border border-[#999] text-white text-[16px] font-[400] placeholder-[#999999] text-left rounded-none"
         />
 
         <div className="flex flex-row gap-4">
           <input
             type="text"
             placeholder="CVV"
-            className="w-full px-4 py-3 bg-black border border-[#999] text-white text-[14px] font-[400] placeholder-[#D8D8D8] text-left rounded-none"
+            className="w-full px-4 py-3 bg-black border border-[#999] text-white text-[16px] font-[400] placeholder-[#999999] text-left rounded-none"
           />
           <input
             type="text"
             placeholder="Expiration Date"
-            className="w-full px-4 py-3 bg-black border border-[#999] text-white text-[14px] font-[400] placeholder-[#D8D8D8] text-left rounded-none"
+            className="w-full px-4 py-3 bg-black border border-[#999] text-white text-[16px] font-[400] placeholder-[#999999] text-left rounded-none"
           />
         </div>
       </div>
@@ -58,10 +58,10 @@ const CardPaymentForm = () => {
           Guaranteed Safe checkout
         </p>
         <div className="flex flex-row gap-3">
-          <img src={visaIcon} alt="Visa" className="w-14 h-10" />
-          <img src={mcIcon} alt="MasterCard" className="w-14 h-10" />
-          <img src={lockIcon} alt="Lock" className="w-14 h-10" />
-          <img src={lockIcon2} alt="Lock" className="w-14 h-10" />
+          <img src={visaIcon} alt="Visa" className="h-10 w-14" />
+          <img src={mcIcon} alt="MasterCard" className="h-10 w-14" />
+          <img src={lockIcon} alt="Lock" className="h-10 w-14" />
+          <img src={lockIcon2} alt="Lock" className="h-10 w-14" />
         </div>
       </div>
 
