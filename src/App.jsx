@@ -12,14 +12,17 @@ import ConfirmationPage from "./components/Home/mobile/ConfirmationPage";
 import MembershipPlan from "./components/Home/mobile/MembershipPlan";
 import ReviewAndPay from "./components/Home/desktop/Payment/desktop";
 import Congratulations from "./components/Home/desktop/Congratulations";
+
 import ScrollToTop from "./utils/ScrollToTop";
 import { useState } from "react";
+import NotFoundPage from "./pages/NotFoundPage";
+import Loader from "./components/Loader";
 
 function App() {
   const [selectedPlan, setSelectedPlan] = useState("monthly");
   return (
     <Router>
-      <ScrollToTop/>
+      <ScrollToTop />
       <Routes>
         <Route element={<Layout />}>
           <Route
@@ -40,7 +43,10 @@ function App() {
             element={
               <>
                 <div className="max-lg:hidden">
-                  <MembershipDesktop selectedPlan={selectedPlan} setSelectedPlan={setSelectedPlan} />
+                  <MembershipDesktop
+                    selectedPlan={selectedPlan}
+                    setSelectedPlan={setSelectedPlan}
+                  />
                 </div>
               </>
             }
@@ -60,7 +66,10 @@ function App() {
             element={
               <>
                 <div className="max-lg:hidden">
-                  <ReviewAndPay setSelectedPlan={setSelectedPlan} selectedPlan={selectedPlan} />
+                  <ReviewAndPay
+                    setSelectedPlan={setSelectedPlan}
+                    selectedPlan={selectedPlan}
+                  />
                 </div>
               </>
             }
@@ -80,7 +89,10 @@ function App() {
           <Route path="/member-details" element={<MemberDetails />} />
           <Route path="/member-Payment" element={<MemberPayment />} />
           <Route path="/confirmation" element={<ConfirmationPage />} />
+          <Route path="/loader" element={<Loader />} />
         </Route>
+        <Route path="*" element={<NotFoundPage />} />
+        
       </Routes>
     </Router>
   );

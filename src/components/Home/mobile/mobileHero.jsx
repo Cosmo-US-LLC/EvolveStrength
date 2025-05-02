@@ -3,11 +3,16 @@ import heroImage from "../../../assets/images/mobile/evolve-strength.webp";
 import UpDownArrow from "../../../assets/images/mobile/up-down-arrow.svg";
 import { useNavigate } from "react-router-dom";
 import { locations } from "../../../constant/locationsData";
+import Cookies from "js-cookie";
 
 const MobileHero = () => {
   const navigate = useNavigate();
   const [selected, setSelected] = useState(locations[0]);
   const [isOpen, setIsOpen] = useState(false);
+  console.log({selected})
+
+  Cookies.set("location", selected.clubName);
+
 
   const takeATourHandler = () => {
     navigate(`/location-details?location=${selected.postalCode}`);
@@ -24,7 +29,7 @@ const MobileHero = () => {
         LOCATION
       </div>
 
-      <div className="px-6 flex flex-col justify-center items-center">
+      <div className="flex flex-col items-center justify-center px-6">
         <div className="relative w-full max-w-xs">
           <div
             onClick={() => setIsOpen(!isOpen)}
