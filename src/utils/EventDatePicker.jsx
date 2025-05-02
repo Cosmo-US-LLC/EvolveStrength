@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import calendarIcon from "../assets/images/mobile/location-details/calendar.svg";
+import { formatDate } from "../libs/utils";
 
 const EventDatePicker = (props) => {
   const { title, selectedDate, setSelectedDate } = props;
@@ -44,9 +45,13 @@ const EventDatePicker = (props) => {
 
   const handleSelectDate = (day) => {
     const date = new Date(year, month, day);
-    setSelectedDate(date);
+    // setSelectedDate(date);
     setShowCalendar(false);
   };
+
+  useEffect(()=>{
+    setSelectedDate(formatDate(new Date()))
+  }, [])
 
   const isToday = (day) =>
     today.getFullYear() === year &&
@@ -62,29 +67,29 @@ const EventDatePicker = (props) => {
     return day > daysInMonth;
   };
 
-  const formatDate = (date) => {
-    if (!date) return "";
-    const day = date.getDate();
-    const month = date.getMonth();
-    const year = date.getFullYear();
-    const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-    const monthNames = [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
-    ];
-    const dayOfWeek = dayNames[date.getDay()];
-    return `${dayOfWeek}, ${day} ${monthNames[month]} ${year}`;
-  };
+  // const formatDate = (date) => {
+  //   if (!date) return "";
+  //   const day = date.getDate();
+  //   const month = date.getMonth();
+  //   const year = date.getFullYear();
+  //   const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  //   const monthNames = [
+  //     "Jan",
+  //     "Feb",
+  //     "Mar",
+  //     "Apr",
+  //     "May",
+  //     "Jun",
+  //     "Jul",
+  //     "Aug",
+  //     "Sep",
+  //     "Oct",
+  //     "Nov",
+  //     "Dec",
+  //   ];
+  //   const dayOfWeek = dayNames[date.getDay()];
+  //   return `${dayOfWeek}, ${day} ${monthNames[month]} ${year}`;
+  // };
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -100,18 +105,18 @@ const EventDatePicker = (props) => {
     <div className="relative w-full mb-4">
       {title && (
         <label className="text-[#FFFFFF] text-[16px] font-[vazirmatn] font-normal leading-[25.2px] mb-1 block">
-          Choose your start date
+          Your plan starts from:
         </label>
       )}
 
       <div
-        onClick={() => setShowCalendar(true)}
+        // onClick={() => setShowCalendar(true)}
         className="flex h-[46px] px-[14px] py-[10px] items-center justify-between w-full border border-[#999] bg-[rgba(3,3,3,0.41)] backdrop-blur-[15.9px] cursor-pointer"
       >
         <input
           type="text"
           readOnly
-          value={formatDate(selectedDate)}
+          value={formatDate(new Date())}
           placeholder="Pick a date"
           className="bg-transparent text-white text-[14px] font-[vazirmatn] w-full outline-none placeholder-[#D8D8D8] pt-1.5"
         />

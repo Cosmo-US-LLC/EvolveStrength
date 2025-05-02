@@ -1,30 +1,35 @@
-import { configureStore } from '@reduxjs/toolkit';
-import { setupListeners } from '@reduxjs/toolkit/query';
+import { configureStore, combineReducers } from '@reduxjs/toolkit';
+import { persistReducer, persistStore } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
 import { plansApi } from './services/plan';
 import planReducer from './slices/planSlice';
-import storage from 'redux-persist/lib/storage';
-import { persistReducer, persistStore } from 'redux-persist';
+
+// Combine all reducers
+const rootReducer = combineReducers({
+  [plansApi.reducerPath]: plansApi.reducer,
+  plan: planReducer,
+});
 
 // Redux Persist configuration
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['plan'], // Add the slices you want to persist
+  whitelist: ['plan'], // Only 'plan' slice will be persisted
 };
 
-const persistedReducer = persistReducer(persistConfig, planReducer);
+// Wrap the root reducer
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-// Create store with RTK Query and the persisted reducer
+// Create the store
 export const store = configureStore({
-  reducer: {
-    [plansApi.reducerPath]: plansApi.reducer,
-    plan: persistedReducer, // Plan slice for general state
-  },
+  reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(plansApi.middleware),
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: ['persist/PERSIST'],
+        ignoredPaths: ['plan'],
+      },
+    }).concat(plansApi.middleware),
 });
 
 export const persistor = persistStore(store);
-
-// optional, but required for refetchOnFocus/refetchOnReconnect behaviors
-setupListeners(store.dispatch);
