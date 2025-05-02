@@ -101,7 +101,7 @@ const MembershipPlan = ({ selectedPlan, setSelectedPlan }) => {
         ) : (
           <>
             <p className="text-white font-[kanit] text-[16px] font-[600] leading-[16px] uppercase mb-1">
-              YEARLY
+              BI-WEEKLY
             </p>
 
             <p className="text-[#2DDE28] font-[vazirmatn] text-[50px] font-[500] leading-[68px] mb-2">
