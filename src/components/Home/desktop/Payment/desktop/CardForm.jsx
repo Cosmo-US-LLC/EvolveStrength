@@ -1,16 +1,21 @@
 import React, { useState } from "react";
-import info_icon from "../../../../../assets/images/desktop/info_icon.svg";
 import guarantee_icons from "../../../../../assets/images/desktop/guarantee_icons.svg";
 
-function CardForm() {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [cardNumber, setCardNumber] = useState("");
-  const [cvv, setCvv] = useState("");
-  const [expirationDate, setExpirationDate] = useState("");
+function CardForm({
+  firstName,
+  setFirstName,
+  lastName,
+  setLastName,
+  cardNumber,
+  setCardNumber,
+  cvv,
+  setCvv,
+  expirationDate,
+  setExpirationDate,
+  confirm,
+  setConfirm,
+}) {
   const [termsAgreed, setTermsAgreed] = useState(false);
-  const [renewAgreed, setRenewAgreed] = useState(false);
-  const [confirm, setConfirm] = useState(false);
 
   return (
     <div className="max-w-[600px] space-y-4 text-white">

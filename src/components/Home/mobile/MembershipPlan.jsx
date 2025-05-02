@@ -93,6 +93,10 @@ const MembershipPlan = ({ selectedPlan, setSelectedPlan }) => {
   // console.log(planData);
   const selectedLocation = Cookies.get("location");
 
+  function continueToMember() {
+    navigate("/member-details");
+  }
+
   return (
     <div className="min-h-screen bg-black text-white px-4 pt-[80px] pb-[30px] flex flex-col gap-8">
       <StepIndicator
@@ -227,7 +231,7 @@ const MembershipPlan = ({ selectedPlan, setSelectedPlan }) => {
       </div>
 
       <button
-        onClick={() => navigate("/member-details")}
+        onClick={continueToMember}
         className="flex items-center justify-center h-[42px] pt-[12.801px] pb-[13.199px] w-full 
              bg-[#2DDE28] text-black text-center font-[kanit] text-[16px] font-medium leading-[16px] 
              uppercase   transition-all hover:opacity-90 active:scale-[0.98]"
