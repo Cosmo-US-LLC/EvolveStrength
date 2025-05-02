@@ -42,46 +42,46 @@ const MemberDetails = () => {
           <input
             type="text"
             placeholder="First Name"
-            className="w-full px-4 py-3 bg-transparent border border-white/40 placeholder-[#D8D8D8] text-[14px] font-[400]"
+            className="w-full px-4 py-3 bg-transparent border border-white/40 placeholder-[#999999] text-[16px] font-[400]"
           />
           <input
             type="text"
             placeholder="Last Name"
-            className="w-full px-4 py-3 bg-transparent border border-white/40 placeholder-[#D8D8D8] text-[14px] font-[400]"
+            className="w-full px-4 py-3 bg-transparent border border-white/40 placeholder-[#999999] text-[16px] font-[400]"
           />
         </div>
 
         <input
           type="email"
           placeholder="Email Address"
-          className="w-full px-4 py-3 bg-transparent border border-white/40 placeholder-[#D8D8D8] text-[14px] font-[400]"
+          className="w-full px-4 py-3 bg-transparent border border-white/40 placeholder-[#999999] text-[16px] font-[400]"
         />
         <input
           type="tel"
           placeholder="Phone Number"
-          className="w-full px-4 py-3 bg-transparent border border-white/40 placeholder-[#D8D8D8] text-[14px] font-[400]"
+          className="w-full px-4 py-3 bg-transparent border border-white/40 placeholder-[#999999] text-[16px] font-[400]"
         />
         <input
           type="text"
           placeholder="Mailing Address"
-          className="w-full px-4 py-3 bg-transparent border border-white/40 placeholder-[#D8D8D8] text-[14px] font-[400]"
+          className="w-full px-4 py-3 bg-transparent border border-white/40 placeholder-[#999999] text-[16px] font-[400]"
         />
         <input
           type="text"
           placeholder="Province"
-          className="w-full px-4 py-3 bg-transparent border border-white/40 placeholder-[#D8D8D8] text-[14px] font-[400]"
+          className="w-full px-4 py-3 bg-transparent border border-white/40 placeholder-[#999999] text-[16px] font-[400]"
         />
 
         <div className="flex flex-row gap-4">
           <input
             type="text"
             placeholder="City"
-            className="w-full px-4 py-3 bg-transparent border border-white/40 placeholder-[#D8D8D8] text-[14px] font-[400]"
+            className="w-full px-4 py-3 bg-transparent border border-white/40 placeholder-[#999999] text-[16px] font-[400]"
           />
           <input
             type="text"
             placeholder="Postal Code"
-            className="w-full px-4 py-3 bg-transparent border border-white/40 placeholder-[#D8D8D8] text-[14px] font-[400]"
+            className="w-full px-4 py-3 bg-transparent border border-white/40 placeholder-[#999999] text-[16px] font-[400]"
           />
         </div>
 
@@ -98,9 +98,9 @@ const MemberDetails = () => {
           <div className="relative w-full">
             <select
               onClick={toggleDropdown}
-              className="w-full appearance-none px-4 py-3 bg-[#1C1C1C] border border-white/40 placeholder-[#D8D8D8] text-[#D8D8D8] text-[14px] font-[400] outline-none"
+              className="w-full appearance-none px-4 py-3 bg-[#1C1C1C] border border-white/40 placeholder-[#999999] text-[#999999] text-[16px] font-[400] outline-none"
             >
-              <option className="bg-[#1C1C1C] text-[#D8D8D8]">Gender</option>
+              <option className="bg-[#1C1C1C] text-[#999999]">Gender</option>
               <option className="bg-[#1C1C1C] text-white">Male</option>
               <option className="bg-[#1C1C1C] text-white">Female</option>
               <option className="bg-[#1C1C1C] text-white">Other</option>
