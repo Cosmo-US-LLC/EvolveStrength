@@ -9,9 +9,10 @@ import Cookies from "js-cookie";
 function MembershipDesktop({ selectedPlan, setSelectedPlan }) {
   const [location, setLocation] = useState(null);
   const [planData, setPlanData] = useState([]);
+  console.log("location", planData?.[0]);
   const navigate = useNavigate();
   const scrollDirection = useScrollDirection();
-  const selectedLocation = Cookies.get("location")
+  const selectedLocation = Cookies.get("location");
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -29,7 +30,6 @@ function MembershipDesktop({ selectedPlan, setSelectedPlan }) {
   useEffect(() => {
     const getClubInfo = async () => {
       try {
-        console.log(import.meta.env.VITE_APP_API_URL);
         const response = await fetch(
           `${import.meta.env.VITE_APP_API_URL}/getClubInfo?location=${location}`
         );
@@ -38,7 +38,9 @@ function MembershipDesktop({ selectedPlan, setSelectedPlan }) {
         const planDataResponses = await Promise.all(
           data?.plans?.map((club) => {
             return fetch(
-              `${import.meta.env.VITE_APP_API_URL}/getPlanDetails?location=${location}&planId=${club.planId}`
+              `${
+                import.meta.env.VITE_APP_API_URL
+              }/getPlanDetails?location=${location}&planId=${club.planId}`
             )
               .then((res) => res.json())
               .catch((err) => {
@@ -88,6 +90,13 @@ function MembershipDesktop({ selectedPlan, setSelectedPlan }) {
   }, [location]);
 
   const handleJoinNow = () => {
+    if (selectedPlan === "monthly") {
+      Cookies.set("planId", planData?.[0]?.planId);
+      Cookies.set("planValidation", planData?.[0]?.planValidation);
+    } else {
+      Cookies.set("planId", planData?.[1]?.planId);
+      Cookies.set("planValidation", planData?.[1]?.planValidation);
+    }
     navigate(`/about-yourself`);
   };
 
