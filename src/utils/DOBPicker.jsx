@@ -126,7 +126,7 @@ const DOBPicker = (props) => {
           readOnly
           value={formatDate(selectedDate)}
           placeholder="Pick a date"
-          className="bg-transparent text-white text-[14px] font-[vazirmatn] w-full outline-none placeholder-[#D8D8D8]"
+          className="bg-transparent text-white text-[16px] font-[vazirmatn] w-full outline-none placeholder-[#999999]"
         />
         <img src={calendarIcon} alt="Calendar Icon" className="w-5 h-5 ml-2" />
       </div>
