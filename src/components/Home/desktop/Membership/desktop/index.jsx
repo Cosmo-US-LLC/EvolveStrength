@@ -29,15 +29,16 @@ function MembershipDesktop({ selectedPlan, setSelectedPlan }) {
   useEffect(() => {
     const getClubInfo = async () => {
       try {
+        console.log(import.meta.env.VITE_APP_API_URL);
         const response = await fetch(
-          `http://localhost:3002/api/getClubInfo?location=${location}`
+          `${import.meta.env.VITE_APP_API_URL}/getClubInfo?location=${location}`
         );
         const data = await response.json();
 
         const planDataResponses = await Promise.all(
           data?.plans?.map((club) => {
             return fetch(
-              `http://localhost:3002/api/getPlanDetails?location=${location}&planId=${club.planId}`
+              `${import.meta.env.VITE_APP_API_URL}/getPlanDetails?location=${location}&planId=${club.planId}`
             )
               .then((res) => res.json())
               .catch((err) => {

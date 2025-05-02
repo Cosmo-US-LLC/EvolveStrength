@@ -2,10 +2,10 @@ import React, { useState, useEffect, useRef } from "react";
 import calendarIcon from "../assets/images/mobile/location-details/calendar.svg";
 
 const EventDatePicker = (props) => {
-  const { title } = props;
+  const { title, selectedDate, setSelectedDate } = props;
   const today = new Date();
   const [currentDate, setCurrentDate] = useState(today);
-  const [selectedDate, setSelectedDate] = useState(null);
+  // const [selectedDate, setSelectedDate] = useState(null);
   const [showCalendar, setShowCalendar] = useState(false);
   const calendarRef = useRef(null);
 
@@ -113,7 +113,7 @@ const EventDatePicker = (props) => {
           readOnly
           value={formatDate(selectedDate)}
           placeholder="Pick a date"
-          className="bg-transparent text-white text-[14px] font-[vazirmatn] w-full outline-none placeholder-[#D8D8D8]"
+          className="bg-transparent text-white text-[14px] font-[vazirmatn] w-full outline-none placeholder-[#D8D8D8] pt-1.5"
         />
         <img src={calendarIcon} alt="Calendar Icon" className="w-5 h-5 ml-2" />
       </div>

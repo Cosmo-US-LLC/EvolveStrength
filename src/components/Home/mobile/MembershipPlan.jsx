@@ -1,12 +1,96 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import StepIndicator from "./common/StepIndicator";
 import MembershipVancouver from "./common/MembershipVancouver";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
+import useScrollDirection from "../../../hooks/useScrollDirection";
 
-const MembershipPlan = () => {
-  const [selectedPlan, setSelectedPlan] = useState("monthly");
+const MembershipPlan = ({ selectedPlan, setSelectedPlan }) => {
+  const [location, setLocation] = useState(null);
+  const [startDate, setStartDate] = useState(null);
+  console.log("location", location);
+  const [planData, setPlanData] = useState([]);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    let loc = params.get("location");
+    let startD = params.get("startDate");
+    setStartDate(new Date(startD))
+
+    if (loc && loc.startsWith("0")) {
+      loc = loc.slice(1);
+    }
+
+    if (loc) {
+      setLocation(loc);
+    }
+  }, []);
+
+  useEffect(() => {
+    const getClubInfo = async () => {
+      try {
+        console.log(import.meta.env.VITE_APP_API_URL);
+        const response = await fetch(
+          `${import.meta.env.VITE_APP_API_URL}/getClubInfo?location=${location}`
+        );
+        const data = await response.json();
+
+        const planDataResponses = await Promise.all(
+          data?.plans?.map((club) => {
+            return fetch(
+              `${
+                import.meta.env.VITE_APP_API_URL
+              }/getPlanDetails?location=${location}&planId=${club.planId}`
+            )
+              .then((res) => res.json())
+              .catch((err) => {
+                console.error(
+                  `Error fetching plan for planId ${club.planId}:`,
+                  err
+                );
+                return null;
+              });
+          })
+        );
+
+        setPlanData(planDataResponses);
+        console.log("planDataResponses", planDataResponses);
+        localStorage.setItem(
+          "noContractSubtotal",
+          planDataResponses?.[0]?.downPayments?.[0]?.subTotal
+        );
+        localStorage.setItem(
+          "contractSubtotal",
+          planDataResponses?.[1]?.downPayments?.[0]?.subTotal
+        );
+        localStorage.setItem(
+          "noContractTax",
+          planDataResponses?.[0]?.downPayments?.[0]?.tax
+        );
+        localStorage.setItem(
+          "contractTax",
+          planDataResponses?.[1]?.downPayments?.[0]?.tax
+        );
+        localStorage.setItem(
+          "noContractTotal",
+          planDataResponses?.[0]?.downPayments?.[0]?.total
+        );
+        localStorage.setItem(
+          "contractTotal",
+          planDataResponses?.[1]?.downPayments?.[0]?.total
+        );
+      } catch (error) {
+        console.error("Error fetching club information:", error.message);
+      }
+    };
+
+    if (location) {
+      getClubInfo();
+    }
+  }, [location]);
+
+  // console.log(planData);
   const selectedLocation = Cookies.get("location");
 
   return (
@@ -18,7 +102,7 @@ const MembershipPlan = () => {
         subtitle="Pick the membership that fits you best and choose your start date."
       />
 
-      <MembershipVancouver step={1}/>
+      <MembershipVancouver step={1} startDate={startDate} planData={selectedPlan === "monthly" ? planData[0] : planData[1]} />
 
       <div className="flex flex-col">
         <span className="text-white font-[kanit] text-[44px] font-[700] leading-[42px] uppercase">
@@ -76,7 +160,8 @@ const MembershipPlan = () => {
             </p>
 
             <p className="text-[#2DDE28] font-[vazirmatn] text-[50px] font-[500] leading-[68px] mb-2">
-              $34.99
+              {/* $34.99 */}
+              {planData[0]?.totalContractValue || "$--.--"}
             </p>
 
             <p className="text-[#999999] font-[vazirmatn] text-[16px] font-normal leading-[24px] mb-4">
@@ -91,7 +176,8 @@ const MembershipPlan = () => {
             </p>
 
             <p className="text-[#2DDE28] font-[vazirmatn] text-[50px] font-[500] leading-[68px] mb-2">
-              $899.00
+              {/* $899.00 */}
+              {planData[1]?.totalContractValue || "$--.--"}
             </p>
 
             <p className="text-[#999999] font-[vazirmatn] text-[16px] font-normal leading-[24px] mb-4">

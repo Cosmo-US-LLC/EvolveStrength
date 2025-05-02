@@ -8,13 +8,24 @@ const MembershipVancouver = (props) => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(props.step === 1 ? true : false);
   const selectedLocation = Cookies.get("location");
+  const {startDate, planData} = props;
+
+  function formatDate(date) {
+    const formattedDate = new Date(date).toLocaleDateString('en-US', {
+      weekday: 'short',
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    });
+    return `${formattedDate}`
+  }
 
   return (
     <div
       className="flex flex-col p-[14px] w-full
-             border border-white/40
-             bg-black/30
-             backdrop-blur-[22.271059036254883px]"
+      border border-white/40
+      bg-black/30
+      backdrop-blur-[22.271059036254883px]"
     >
       <div className="flex items-center justify-between">
         <div className="">
@@ -60,24 +71,30 @@ const MembershipVancouver = (props) => {
               Start Date
             </span>
             <span className="text-white text-[16px] font-[vazirmatn] font-normal leading-[20.382px] capitalize">
-              Wed 16 April 2025
+              {/* {formatDate(startDate)} */}
+              {formatDate(new Date())}
+              {/* {formatDate(planData?.firstDueDate)} */}
             </span>
           </div>
-          <div className="flex justify-between">
-            <span className="text-white text-[16px] font-[vazirmatn] font-normal leading-[20.382px] capitalize">
-              End Date
-            </span>
-            <span className="text-white text-[16px] font-[vazirmatn] font-normal leading-[20.382px] capitalize">
-              Wed 16 April 2025
-            </span>
-          </div>
+          {planData?.expirationDate?.length > 1 && (
+            <div className="flex justify-between">
+              <span className="text-white text-[16px] font-[vazirmatn] font-normal leading-[20.382px] capitalize">
+                End Date
+              </span>
+              <span className="text-white text-[16px] font-[vazirmatn] font-normal leading-[20.382px] capitalize">
+                {formatDate(planData?.expirationDate)}
+              </span>
+            </div>
+          )}
           <div className="w-full h-[1px] bg-white/20 my-2" />
           <div className="flex justify-between">
             <span className="text-white font-[vazirmatn] text-[16px] font-normal leading-[20.382px] capitalize">
-              Bi-Weekly
+              {/* Bi-Weekly */}
+              {planData?.scheduleFrequency || "Bi-Weekly"}
             </span>
             <span className="text-white font-[vazirmatn] text-[16px] font-normal leading-[20.382px] capitalize">
-              $96.66
+              {/* $96.66 */}
+              {planData?.scheduleTotalAmount || "$--.--"}
             </span>
           </div>
           <div className="flex justify-between">
