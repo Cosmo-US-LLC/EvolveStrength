@@ -16,7 +16,7 @@ const MembershipPlan = ({ selectedPlan, setSelectedPlan }) => {
     const params = new URLSearchParams(window.location.search);
     let loc = params.get("location");
     let startD = params.get("startDate");
-    setStartDate(new Date(startD))
+    setStartDate(new Date(startD));
 
     if (loc && loc.startsWith("0")) {
       loc = loc.slice(1);
@@ -106,7 +106,11 @@ const MembershipPlan = ({ selectedPlan, setSelectedPlan }) => {
         subtitle="Pick the membership that fits you best and choose your start date."
       />
 
-      <MembershipVancouver step={1} startDate={startDate} planData={selectedPlan === "monthly" ? planData[0] : planData[1]} />
+      <MembershipVancouver
+        step={1}
+        startDate={startDate}
+        planData={selectedPlan === "monthly" ? planData[0] : planData[1]}
+      />
 
       <div className="flex flex-col">
         <span className="text-white font-[kanit] text-[44px] font-[700] leading-[42px] uppercase">
@@ -176,7 +180,7 @@ const MembershipPlan = ({ selectedPlan, setSelectedPlan }) => {
         ) : (
           <>
             <p className="text-white font-[kanit] text-[16px] font-[600] leading-[16px] uppercase mb-1">
-              YEARLY
+              BI-WEEKLY
             </p>
 
             <p className="text-[#2DDE28] font-[vazirmatn] text-[50px] font-[500] leading-[68px] mb-2">
