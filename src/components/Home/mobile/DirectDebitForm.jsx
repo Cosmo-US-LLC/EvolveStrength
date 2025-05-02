@@ -8,7 +8,7 @@ const DirectDebitForm = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-black flex justify-center">
+    <div className="flex justify-center min-h-screen bg-black">
       <div className="w-full max-w-[600px] flex flex-col gap-4">
         <div>
           <p className="text-white text-[18px] font-[500] font-[kanit] uppercase">
@@ -20,17 +20,17 @@ const DirectDebitForm = () => {
           </p>
         </div>
 
-        <div className="flex flex-col gap-4 w-full">
+        <div className="flex flex-col w-full gap-4">
           <div className="flex flex-row gap-3">
             <input
               type="text"
               placeholder="First Name"
-              className="w-full px-2 py-3 border border-[#999] font-[vazirmatn] bg-black text-white text-[14px] font-[400] placeholder-[#D8D8D8] text-left"
+              className="w-full px-2 py-3 border border-[#999] font-[vazirmatn] bg-black text-white text-[16px] font-[400] placeholder-[#999999] text-left"
             />
             <input
               type="text"
               placeholder="Last Name"
-              className="w-full px-2 py-3 border border-[#999] font-[vazirmatn] bg-black text-white text-[14px] font-[400] placeholder-[#D8D8D8] text-left"
+              className="w-full px-2 py-3 border border-[#999] font-[vazirmatn] bg-black text-white text-[16px] font-[400] placeholder-[#999999] text-left"
             />
           </div>
 
@@ -38,18 +38,18 @@ const DirectDebitForm = () => {
             <input
               type="text"
               placeholder="Transit Number"
-              className="w-full px-2 py-3 border border-[#999] font-[vazirmatn] bg-black text-white text-[14px] font-[400] placeholder-[#D8D8D8] text-left"
+              className="w-full px-2 py-3 border border-[#999] font-[vazirmatn] bg-black text-white text-[16px] font-[400] placeholder-[#999999] text-left"
             />
             <input
               type="text"
               placeholder="Bank Number"
-              className="w-full px-2 py-3 border border-[#999] font-[vazirmatn] bg-black text-white text-[14px] font-[400] placeholder-[#D8D8D8] text-left"
+              className="w-full px-2 py-3 border border-[#999] font-[vazirmatn] bg-black text-white text-[16px] font-[400] placeholder-[#999999] text-left"
             />
           </div>
 
  
           <div className="flex flex-row gap-3 text-xs text-white">
-            <div className="flex items-center gap-2 w-full">
+            <div className="flex items-center w-full gap-2">
               <span className="text-[10px] font-[400] text-[#D8D8D8] font-[vazirmatn]">
                 Where is my Transit Number?
               </span>
@@ -57,7 +57,7 @@ const DirectDebitForm = () => {
                 i
               </div>
             </div>
-            <div className="flex items-center gap-2 w-full">
+            <div className="flex items-center w-full gap-2">
               <span className="text-[10px] font-[400] text-[#D8D8D8] font-[vazirmatn]">
                 Where is my Bank Number?
               </span>
@@ -71,12 +71,12 @@ const DirectDebitForm = () => {
             <input
               type="text"
               placeholder="Account Number"
-              className="w-full px-2 py-3 border font-[vazirmatn] border-[#999] bg-black text-white text-[14px] font-[400] placeholder-[#D8D8D8] text-left"
+              className="w-full px-2 py-3 border font-[vazirmatn] border-[#999] bg-black text-white text-[16px] font-[400] placeholder-[#999999] text-left"
             />
             <input
               type="text"
-              placeholder="Verify Account Number"
-              className="w-full px-2 py-3 font-[vazirmatn] border border-[#999] bg-black text-white text-[14px] font-[400] placeholder-[#D8D8D8] text-left"
+              placeholder="Verify Account"
+              className="w-full px-2 py-3 font-[vazirmatn] border border-[#999] bg-black text-white text-[16px] font-[400] placeholder-[#999999] text-left"
             />
           </div>
         </div>
@@ -87,9 +87,9 @@ const DirectDebitForm = () => {
             Guaranteed Safe checkout
           </p>
           <div className="flex flex-row gap-3">
-            <img src={visaIcon} alt="Visa" className="w-14 h-10" />
-            <img src={mcIcon} alt="MasterCard" className="w-14 h-10" />
-            <img src={lockIcon} alt="Lock" className="w-14 h-10" />
+            <img src={visaIcon} alt="Visa" className="h-10 w-14" />
+            <img src={mcIcon} alt="MasterCard" className="h-10 w-14" />
+            <img src={lockIcon} alt="Lock" className="h-10 w-14" />
           </div>
         </div>
 
