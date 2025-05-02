@@ -4,11 +4,12 @@ import MembershipPlanSelector from "./MembershipPlanSelector";
 import MembershipSummaryBoxDesktop from "./MembershipSummaryBoxDesktop";
 import { useNavigate } from "react-router-dom";
 import useScrollDirection from "../../../../../hooks/useScrollDirection";
+import Cookies from "js-cookie";
 
 function MembershipDesktop({ selectedPlan, setSelectedPlan }) {
   const [location, setLocation] = useState(null);
-  console.log("location", location);
   const [planData, setPlanData] = useState([]);
+  console.log("location", planData?.[0]?.planId);
   const navigate = useNavigate();
   const scrollDirection = useScrollDirection();
 
@@ -37,7 +38,9 @@ function MembershipDesktop({ selectedPlan, setSelectedPlan }) {
         const planDataResponses = await Promise.all(
           data?.plans?.map((club) => {
             return fetch(
-              `${import.meta.env.VITE_APP_API_URL}/getPlanDetails?location=${location}&planId=${club.planId}`
+              `${
+                import.meta.env.VITE_APP_API_URL
+              }/getPlanDetails?location=${location}&planId=${club.planId}`
             )
               .then((res) => res.json())
               .catch((err) => {
@@ -87,6 +90,11 @@ function MembershipDesktop({ selectedPlan, setSelectedPlan }) {
   }, [location]);
 
   const handleJoinNow = () => {
+    {
+      selectedPlan === "monthly"
+        ? Cookies.set("planId", planData?.[0]?.planId)
+        : Cookies.set("planId", planData?.[1]?.planId);
+    }
     navigate(`/about-yourself`);
   };
 
