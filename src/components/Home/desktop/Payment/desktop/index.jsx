@@ -8,14 +8,89 @@ import DebitForm from "./DebitForm";
 import CardForm from "./CardForm";
 import Turnstile from "react-turnstile";
 import useScrollDirection from "../../../../../hooks/useScrollDirection";
+import Cookies from "js-cookie";
 
 function ReviewAndPay({ selectedPlan, setSelectedPlan }) {
   const [selectPlan, setSelectPlan] = useState("direct_debit");
   const [isHuman, setIsHuman] = useState(false);
   const navigate = useNavigate();
   const scrollDirection = useScrollDirection();
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [transitNumber, setTransitNumber] = useState("");
+  const [institutionNumber, setInstitutionNumber] = useState("");
+  const [accountNumber, setAccountNumber] = useState("");
+  const [verifyAccountNumber, setVerifyAccountNumber] = useState("");
+  const [confirm, setConfirm] = useState(false);
+  const [cardNumber, setCardNumber] = useState("");
+  const [cvv, setCvv] = useState("");
+  const [expirationDate, setExpirationDate] = useState("");
+
+  console.log(
+    "firstNamefirstNamefirstName",
+    firstName,
+    lastName,
+    transitNumber,
+    institutionNumber,
+    accountNumber,
+    verifyAccountNumber,
+    confirm,
+    cardNumber,
+    cvv,
+    expirationDate
+  );
+
+  const getAgreementInfo = async () => {
+    try {
+      const response = await fetch(
+        "http://localhost:3002/api/submitAgreement",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            member: {
+              firstName: firstName || "John",
+              lastName: lastName || "Doe",
+              email: Cookies.get("email"),
+            },
+            membership: {
+              planId: "PLN123",
+              startDate: "2025-05-01",
+              term: "12",
+              frequency: "monthly",
+            },
+            paymentMethod: {
+              type: "creditCard",
+              cardNumber: "4111111111111111",
+              expiryDate: "12/27",
+              cvv: "123",
+              billingAddress: {
+                street: "123 Main St",
+                city: "Lahore",
+                state: "Punjab",
+                postalCode: "54000",
+                country: "PK",
+              },
+            },
+            agreement: {
+              accepted: true,
+              acceptedDate: new Date().toISOString(),
+              ipAddress: "203.0.113.42",
+            },
+            clubId: "CLUB456",
+          }),
+        }
+      );
+      const data = await response.json();
+      console.log("data", data);
+    } catch (error) {
+      console.error("Error fetching club information:", error.message);
+    }
+  };
 
   const handleJoinNow = () => {
+    getAgreementInfo();
+
     navigate(`/congratulations`);
   };
 
@@ -38,7 +113,39 @@ function ReviewAndPay({ selectedPlan, setSelectedPlan }) {
               selectPlan={selectPlan}
               setSelectPlan={setSelectPlan}
             />
-            {selectPlan === "direct_debit" ? <DebitForm /> : <CardForm />}
+            {selectPlan === "direct_debit" ? (
+              <DebitForm
+                firstName={firstName}
+                setFirstName={setFirstName}
+                lastName={lastName}
+                setLastName={setLastName}
+                transitNumber={transitNumber}
+                setTransitNumber={setTransitNumber}
+                institutionNumber={institutionNumber}
+                setInstitutionNumber={setInstitutionNumber}
+                accountNumber={accountNumber}
+                setAccountNumber={setAccountNumber}
+                verifyAccountNumber={verifyAccountNumber}
+                setVerifyAccountNumber={setVerifyAccountNumber}
+                confirm={confirm}
+                setConfirm={setConfirm}
+              />
+            ) : (
+              <CardForm
+                firstName={firstName}
+                setFirstName={setFirstName}
+                lastName={lastName}
+                setLastName={setLastName}
+                cardNumber={cardNumber}
+                setCardNumber={setCardNumber}
+                cvv={cvv}
+                setCvv={setCvv}
+                expirationDate={expirationDate}
+                setExpirationDate={setExpirationDate}
+                confirm={confirm}
+                setConfirm={setConfirm}
+              />
+            )}
           </div>
 
           <div>
