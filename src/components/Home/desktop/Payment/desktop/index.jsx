@@ -26,6 +26,7 @@ function ReviewAndPay({ selectedPlan, setSelectedPlan }) {
   const [cvv, setCvv] = useState("");
   const [expirationDate, setExpirationDate] = useState("");
   const [errors, setErrors] = useState({});
+  const [apiError, setApiError] = useState(null);
 
   const location = Cookies.get("locationCode");
   const planId = Cookies.get("planId");
@@ -36,7 +37,7 @@ function ReviewAndPay({ selectedPlan, setSelectedPlan }) {
   const email = Cookies.get("email");
   const gender = Cookies.get("gender");
   let number = Cookies.get("number") || "";
-  const accountId = Cookies.get("accountId")
+  const accountId = Cookies.get("accountId");
 
   const digitsOnly = number.replace(/\D/g, "");
   if (digitsOnly.length === 10) {
@@ -170,30 +171,40 @@ function ReviewAndPay({ selectedPlan, setSelectedPlan }) {
   }
 
   const createPeople = async () => {
-    const response = await fetch(
-      `${import.meta.env.VITE_APP_API_URL}/createPerson`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          first_name: fName || "John",
-          last_name: lName || "Doe",
-          email: email || "",
-          birthday: selectedDate || "",
-          phone_mobile: number || "",
-          address: address || "",
-          city: city || "",
-          province: stateCode || "",
-          postal_code: formattedPostalCode || "",
-          company_id: accountId || "",
-        }),
-      }
-    );
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_APP_API_URL}/createPerson`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            first_name: fName || "John",
+            last_name: lName || "Doe",
+            email: email || "",
+            birthday: selectedDate || "",
+            phone_mobile: number || "",
+            address: address || "",
+            city: city || "",
+            province: stateCode || "",
+            postal_code: formattedPostalCode || "",
+            company_id: accountId || "",
+          }),
+        }
+      );
 
-    const data = await response.json();
-    console.log(data);
+      const data = await response.json();
+      const person = data?.people_create_response;
+
+      if (person?.id) {
+        navigate("/congratulations");
+      } else {
+        console.warn("Person creation failed or missing ID.");
+      }
+    } catch (error) {
+      console.error("Error creating person:", error.message);
+    }
   };
 
   const getAgreementInfo = async () => {
@@ -212,13 +223,16 @@ function ReviewAndPay({ selectedPlan, setSelectedPlan }) {
       const message = data?.data?.restResponse?.status?.message;
       console.log("data", message);
 
-      if (message && message.toLowerCase() === "success") {
+      if (message && message.toLowerCase() !== "success") {
         createPeople();
       } else {
-        console.warn("API response did not return success message.");
+        setApiError(message);
       }
     } catch (error) {
       console.error("Error fetching club information:", error.message);
+      setApiError(
+        "Failed to submit. Please check your connection and try again."
+      );
     }
   };
 
@@ -248,7 +262,6 @@ function ReviewAndPay({ selectedPlan, setSelectedPlan }) {
   const handleJoinNow = () => {
     if (!validateFields()) return;
     getAgreementInfo();
-    navigate(`/congratulations`);
   };
 
   return (
@@ -322,7 +335,7 @@ function ReviewAndPay({ selectedPlan, setSelectedPlan }) {
               onError={() => setIsHuman(false)}
               onExpire={() => setIsHuman(false)}
             />
-            <div className="flex justify-end items-end mt-6 w-full">
+            <div className="flex justify-end items-end mt-6 w-full flex-col">
               <button
                 onClick={handleJoinNow}
                 className={`button mt-6 ${
@@ -332,6 +345,11 @@ function ReviewAndPay({ selectedPlan, setSelectedPlan }) {
               >
                 PAY NOW
               </button>
+              {apiError && (
+                <p className="text-red-500 mt-2 text-sm text-right w-full">
+                  {apiError}
+                </p>
+              )}
             </div>
           </div>
         </div>
