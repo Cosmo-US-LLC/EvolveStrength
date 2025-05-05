@@ -47,7 +47,7 @@ const MemberDetails = () => {
       errors.push("email");
     }
 
-    if (!phone.trim()) errors.push("phone");
+    if (!phone.trim() || phone.length < 10 || phone.length > 14) errors.push("phone");
     if (!address.trim()) errors.push("address");
     if (!province.trim()) errors.push("province");
     if (!city.trim()) errors.push("city");
@@ -69,6 +69,7 @@ const MemberDetails = () => {
       setErrors(errorStatus);
       return;
     }
+    setErrors([]);
     // proceed with submission
     const payload = {
       fname,

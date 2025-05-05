@@ -26,6 +26,7 @@ const MemberPayment = () => {
     error,
   } = useSelector((state) => state.plan);
 
+  const [errors, setErrors] = useState([]);
   const [fname, setFname] = useState(userInfo?.fname || "");
   const [lname, setLname] = useState(userInfo?.lname || "");
   const [transitNumber, setTransitNumber] = useState("");
@@ -43,26 +44,100 @@ const MemberPayment = () => {
     }
   }, []);
 
+  function updateErrs(valueToRemove) {
+    const updatedArr = errors.filter((item) => item !== valueToRemove);
+    setErrors(updatedArr);
+  }
+
+  const validateForm = () => {
+    const errors = [];
+
+    if (!fname.trim()) errors.push("fname");
+    if (!lname.trim()) errors.push("lname");
+
+    if (paymentMethod === "direct") {
+      if (!transitNumber.trim() || transitNumber?.length > 5) errors.push("transitNumber");
+      if (!institutionNumber.trim() || institutionNumber?.length > 4) errors.push("institutionNumber");
+      if (!accountNumber.trim() || accountNumber?.length != 10) errors.push("accountNumber");
+      if (!verifyAccountNumber.trim()) errors.push("verifyAccountNumber");
+      if (accountNumber !== verifyAccountNumber) {
+        errors.push("verifyAccountNumber");
+      }
+    } else if (paymentMethod === "card") {
+      if (
+        !cardNumber.trim() ||
+        cardNumber.length < 16 ||
+        cardNumber.length > 16
+      )
+        errors.push("cardNumber");
+      if (!cvv.trim() || cvv.length < 3 || cvv.length > 3) errors.push("cvv");
+      if (!expirationDate.trim() || expirationDate.length < 4)
+        errors.push("expirationDate");
+    }
+
+    if (errors.length > 0) {
+      console.error("Validation Errors:", errors);
+      return errors;
+    }
+    return false;
+  };
+
   const makeAgreement = async () => {
+    const errorStatus = validateForm();
+    if (errorStatus && errorStatus.length > 0) {
+      console.warn("Please fix the form errors.");
+      setErrors(errorStatus);
+      return;
+    }
+    setErrors([]);
+
     try {
       const routingNumber = `0${institutionNumber}${transitNumber}`;
       const [expMonth, expYearRaw] = expirationDate.split("/");
       const expYear = expYearRaw?.length === 2 ? `20${expYearRaw}` : expYearRaw;
+      const formattedPostalCode = (`${userInfo?.postal}` || "")
+        .toUpperCase()
+        .replace(/\s+/g, "")
+        .replace(/(.{3})(.{3})/, "$1 $2");
+      // Optional regex validation
+      const isValidPostalCode = /^[A-Z]\d[A-Z] \d[A-Z]\d$/.test(
+        formattedPostalCode
+      );
+      if (!isValidPostalCode) {
+        console.error(
+          "Invalid Canadian postal code format:",
+          formattedPostalCode
+        );
+      }
+      let selectedDate = userInfo?.dob || "";
+      if (selectedDate) {
+        const dateObj = new Date(selectedDate);
+        const month = String(dateObj.getMonth() + 1).padStart(2, "0");
+        const day = String(dateObj.getDate()).padStart(2, "0");
+        const year = dateObj.getFullYear();
+        selectedDate = `${month}/${day}/${year}`;
+      } else {
+        console.warn("Invalid or missing selectedDate");
+      }
 
       const payload = {
-        paymentPlanId: planId || "",
-        planValidationHash: planValidate || "",
+        paymentPlanId:
+          plan == "monthly" ? clubPlans[0]?.planId : clubPlans[1]?.planId || "",
+        planValidationHash:
+          plan == "monthly"
+            ? clubPlanMonthly?.planValidation
+            : clubPlanYearly?.planValidation || "",
         campaignId: "730E227DC96B7F9EE05302E014ACD689",
         activePresale: "true",
         sendAgreementEmail: "true",
         agreementContactInfo: {
-          firstName: fName || "John",
-          middleInitial: formattedLastName || "",
-          lastName: lName || "Doe",
-          email: email || "example@gmail.com",
-          gender: gender || "",
+          firstName: fname || "John",
+          middleInitial: `${lname[0]}`.toUpperCase() || "",
+          lastName: lname || "Doe",
+          email: userInfo?.email || "example@gmail.com",
+          gender: userInfo?.gender || "",
           homePhone: "",
-          cellPhone: number || "9495898283",
+          cellPhone: userInfo?.phone || "9495898283",
           workPhone: "",
           birthday: selectedDate || "",
           wellnessProgramId: "",
@@ -92,7 +167,7 @@ const MemberPayment = () => {
         },
       };
 
-      if (selectPlan !== "direct_debit") {
+      if (paymentMethod !== "direct") {
         payload.todayBillingInfo = {
           isTodayBillingSameAsDraft: "true",
           todayCcCvvCode: cvv || "",
@@ -100,18 +175,18 @@ const MemberPayment = () => {
         };
 
         payload.draftBillingInfo.draftCreditCard = {
-          creditCardFirstName: firstName || "John",
-          creditCardLastName: lastName || "Doe",
+          creditCardFirstName: fname || "John",
+          creditCardLastName: lname || "Doe",
           creditCardType: "visa",
           creditCardAccountNumber: cardNumber || "",
           creditCardExpMonth: expMonth || "00",
           creditCardExpYear: expYear || "",
         };
         // 👉 Debit (Bank Account) flow
-      } else if (selectPlan === "direct_debit") {
+      } else if (paymentMethod === "direct") {
         payload.draftBillingInfo.draftBankAccount = {
-          draftAccountFirstName: firstName || "John",
-          draftAccountLastName: lastName || "Doe",
+          draftAccountFirstName: fname || "John",
+          draftAccountLastName: lname || "Doe",
           draftAccountRoutingNumber: routingNumber || "",
           draftAccountNumber: accountNumber || "",
           draftAccountType: "Checking",
@@ -121,7 +196,7 @@ const MemberPayment = () => {
       const response = await fetch(
         `${
           import.meta.env.VITE_APP_API_URL
-        }/submitAgreement?location=${location}`,
+        }/submitAgreement?location=${clubLocationPostal}`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -130,6 +205,7 @@ const MemberPayment = () => {
       );
       const data = await response.json();
       console.log("data", data?.data?.restResponse?.request);
+      // navigate("/confirmation");
     } catch (error) {
       console.error("Error fetching club information:", error.message);
     }
@@ -163,7 +239,7 @@ const MemberPayment = () => {
         <div className="border border-white/40 flex overflow-hidden p-1">
           <button
             onClick={() => setPaymentMethod("direct")}
-            className={`w-1/2 py-2 text-[14px] font-[500] font-[vazirmatn] uppercase flex items-center justify-center gap-2 ${
+            className={`cursor-pointer w-1/2 py-2 text-[14px] font-[500] font-[vazirmatn] uppercase flex items-center justify-center gap-2 ${
               paymentMethod === "direct"
                 ? "bg-[#2DDE28] text-black"
                 : "text-white"
@@ -182,7 +258,7 @@ const MemberPayment = () => {
           </button>
           <button
             onClick={() => setPaymentMethod("card")}
-            className={`w-1/2 py-2 text-[14px] font-[500] font-[vazirmatn] uppercase flex items-center justify-center space-x-2 ${
+            className={`cursor-pointer w-1/2 py-2 text-[14px] font-[500] font-[vazirmatn] uppercase flex items-center justify-center space-x-2 ${
               paymentMethod === "card"
                 ? "bg-[#2DDE28] text-black"
                 : "text-white"
@@ -209,6 +285,16 @@ const MemberPayment = () => {
           setFname={setFname}
           lname={lname}
           setLname={setLname}
+          transitNumber={transitNumber}
+          setTransitNumber={setTransitNumber}
+          institutionNumber={institutionNumber}
+          setInstitutionNumber={setInstitutionNumber}
+          accountNumber={accountNumber}
+          setAccountNumber={setAccountNumber}
+          verifyAccountNumber={verifyAccountNumber}
+          setVerifyAccountNumber={setVerifyAccountNumber}
+          errors={errors}
+          updateErrs={updateErrs}
         />
       ) : (
         <CardPaymentForm
@@ -217,6 +303,14 @@ const MemberPayment = () => {
           setFname={setFname}
           lname={lname}
           setLname={setLname}
+          cardNumber={cardNumber}
+          setCardNumber={setCardNumber}
+          cvv={cvv}
+          setCvv={setCvv}
+          expirationDate={expirationDate}
+          setExpirationDate={setExpirationDate}
+          errors={errors}
+          updateErrs={updateErrs}
         />
       )}
     </div>

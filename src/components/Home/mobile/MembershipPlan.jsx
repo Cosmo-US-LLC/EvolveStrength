@@ -46,7 +46,7 @@ const MembershipPlan = ({ selectedPlan, setSelectedPlan }) => {
           Choose your pricing plan
         </p>
 
-        <div className="flex p-1 pt-2 overflow-hidden border border-white">
+        <div className="flex p-1 pt-1 overflow-hidden border border-white">
           <button
             // onClick={() => setSelectedPlan("monthly")}
             onClick={() => dispatch(setPlan("monthly"))}
