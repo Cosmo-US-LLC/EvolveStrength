@@ -16,6 +16,7 @@ function LocationDesktop() {
     }
     Cookies.set("locationCode", loc);
     Cookies.set("location", selectedLocation.clubName);
+    Cookies.set("accountId", selectedLocation.accountId)
   }, [selectedLocation]);
 
   const navigate = useNavigate();

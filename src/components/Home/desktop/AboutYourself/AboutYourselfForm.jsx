@@ -1,7 +1,24 @@
 import React from "react";
-import Cookies from "js-cookie";
 
-const AboutYourselfForm = () => {
+const AboutYourselfForm = ({
+  formData,
+  setFormData,
+  validationErrors,
+  setValidationErrors,
+}) => {
+  const handleChange = (field) => (e) => {
+    const value = e.target.value;
+
+    setFormData((prev) => ({ ...prev, [field]: value }));
+
+    if (validationErrors[field] && value.trim() !== "") {
+      setValidationErrors((prev) => {
+        const updated = { ...prev };
+        delete updated[field];
+        return updated;
+      });
+    }
+  };
   return (
     <div className="max-w-[600px] space-y-4">
       <p className="text-white font-[kanit] font-[400] text-[24px] leading-[10.734px] tracking-[-0.76px] capitalize">
@@ -12,66 +29,95 @@ const AboutYourselfForm = () => {
         <input
           type="text"
           placeholder="First Name"
-          className="flex-1 border border-white/40 px-4 py-3 placeholder-[#999999] text-white font-[vazirmatn] text-[16px] bg-[#000000]/60 backdrop-blur-[10px]"
-          onChange={(e) => Cookies.set("firstName", e.target.value)}
+          value={formData.firstName}
+          onChange={handleChange("firstName")}
+          className={`flex-1 border px-4 py-3 placeholder-[#999999] text-white font-[vazirmatn] text-[16px] bg-[#000000]/60 backdrop-blur-[10px] ${
+            validationErrors.firstName ? "border-red-500" : "border-white/40"
+          }`}
         />
         <input
           type="text"
           placeholder="Last Name"
-          className="flex-1 border border-white/40 px-4 py-3 placeholder-[#999999] text-white font-[vazirmatn] text-[16px]  bg-[#000000]/60 backdrop-blur-[10px]"
-          onChange={(e) => Cookies.set("lastName", e.target.value)}
+          value={formData.lastName}
+          onChange={handleChange("lastName")}
+          className={`flex-1 border px-4 py-3 placeholder-[#999999] text-white font-[vazirmatn] text-[16px] bg-[#000000]/60 backdrop-blur-[10px] ${
+            validationErrors.lastName ? "border-red-500" : "border-white/40"
+          }`}
         />
       </div>
 
       <input
         type="email"
         placeholder="Email Address"
-        className="w-full border border-white/40 px-4 py-3 placeholder-[#999999] text-white font-[vazirmatn] text-[16px]  bg-[#000000]/60 backdrop-blur-[10px]"
-        onChange={(e) => Cookies.set("email", e.target.value)}
+        value={formData.email}
+        onChange={handleChange("email")}
+        className={`w-full border px-4 py-3 placeholder-[#999999] text-white font-[vazirmatn] text-[16px]  bg-[#000000]/60 backdrop-blur-[10px] ${
+          validationErrors.email ? "border-red-500" : "border-white/40"
+        }`}
       />
 
       <input
         type="tel"
         placeholder="Phone Number"
-        className="w-full border border-white/40 px-4 py-3 placeholder-[#999999] text-white font-[vazirmatn] text-[16px]  bg-[#000000]/60 backdrop-blur-[10px]"
-        onChange={(e) => Cookies.set("number", e.target.value)}
+        value={formData.number}
+        onChange={handleChange("number")}
+        className={`w-full border px-4 py-3 placeholder-[#999999] text-white font-[vazirmatn] text-[16px]  bg-[#000000]/60 backdrop-blur-[10px] ${
+          validationErrors.number ? "border-red-500" : "border-white/40"
+        }`}
       />
 
       <input
         type="text"
         placeholder="Mailing Address"
-        className="w-full border border-white/40 px-4 py-3 placeholder-[#999999] text-white font-[vazirmatn] text-[16px]  bg-[#000000]/60 backdrop-blur-[10px]"
-        onChange={(e) => Cookies.set("address", e.target.value)}
+        value={formData.address}
+        onChange={handleChange("address")}
+        className={`w-full border px-4 py-3 placeholder-[#999999] text-white font-[vazirmatn] text-[16px]  bg-[#000000]/60 backdrop-blur-[10px] ${
+          validationErrors.address ? "border-red-500" : "border-white/40"
+        }`}
       />
 
       <input
         type="text"
         placeholder="Province"
-        className="w-full border border-white/40 px-4 py-3 placeholder-[#999999] text-white font-[vazirmatn] text-[16px]  bg-[#000000]/60 backdrop-blur-[10px]"
-        onChange={(e) => Cookies.set("province", e.target.value)}
+        value={formData.province}
+        onChange={handleChange("province")}
+        className={`w-full border px-4 py-3 placeholder-[#999999] text-white font-[vazirmatn] text-[16px]  bg-[#000000]/60 backdrop-blur-[10px] ${
+          validationErrors.province ? "border-red-500" : "border-white/40"
+        }`}
       />
 
       <div className="flex gap-4">
         <input
           type="text"
           placeholder="City"
-          className="flex-1 border border-white/40 px-4 py-3 placeholder-[#999999] text-white font-[vazirmatn] text-[16px]  bg-[#000000]/60 backdrop-blur-[10px]"
-          onChange={(e) => Cookies.set("city", e.target.value)}
+          value={formData.city}
+          onChange={handleChange("city")}
+          className={`flex-1 border px-4 py-3 placeholder-[#999999] text-white font-[vazirmatn] text-[16px]  bg-[#000000]/60 backdrop-blur-[10px] ${
+            validationErrors.city ? "border-red-500" : "border-white/40"
+          }`}
         />
         <input
           type="text"
           placeholder="Postal Code"
-          className="flex-1 border border-white/40 px-4 py-3 placeholder-[#999999] text-white font-[vazirmatn] text-[16px]  bg-[#000000]/60 backdrop-blur-[10px]"
-          onChange={(e) => Cookies.set("postalCode", e.target.value)}
+          value={formData.postalCode}
+          onChange={handleChange("postalCode")}
+          className={`flex-1 border px-4 py-3 placeholder-[#999999] text-white font-[vazirmatn] text-[16px]  bg-[#000000]/60 backdrop-blur-[10px] ${
+            validationErrors.postalCode ? "border-red-500" : "border-white/40"
+          }`}
         />
       </div>
 
       <div className="flex gap-4">
-        <div className="flex items-center gap-2 flex-1 border border-white/40 px-4 py-3  text-white font-[vazirmatn] text-[16px]  bg-[#000000]/60 backdrop-blur-[10px]">
+        <div
+          className={`flex items-center gap-2 flex-1 border px-4 py-3  text-white font-[vazirmatn] text-[16px]  bg-[#000000]/60 backdrop-blur-[10px] ${
+            validationErrors.selectedDate ? "border-red-500" : "border-white/40"
+          } `}
+        >
           <input
             type="date"
             className="bg-transparent text-[#999] w-full outline-none font-[vazirmatn] placeholder-[#999999]"
-            onChange={(e) => Cookies.set("selectedDate", e.target.value)}
+            value={formData.selectedDate}
+            onChange={handleChange("selectedDate")}
           />
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -90,8 +136,11 @@ const AboutYourselfForm = () => {
         </div>
 
         <select
-          className="flex-1 border border-white/40 px-4 py-3 text-[#999999] placeholder-[#999999] font-[vazirmatn] text-[16px] appearance-none relative  bg-[#000000]/60 backdrop-blur-[10px]"
-          onChange={(e) => Cookies.set("gender", e.target.value)}
+          className={`flex-1 border px-4 py-3 text-[#999999] placeholder-[#999999] font-[vazirmatn] text-[16px] appearance-none relative  bg-[#000000]/60 backdrop-blur-[10px] ${
+            validationErrors.gender ? "border-red-500" : "border-white/40"
+          }`}
+          value={formData.gender}
+          onChange={handleChange("gender")}
         >
           <option className="text-black">Gender</option>
           <option className="text-black">Male</option>
