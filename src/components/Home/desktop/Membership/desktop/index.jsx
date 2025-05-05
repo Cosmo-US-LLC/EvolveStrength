@@ -34,16 +34,14 @@ function MembershipDesktop({ selectedPlan, setSelectedPlan }) {
       try {
         setLoading(true);
         const response = await fetch(
-          `${import.meta.env.VITE_APP_API_URL}/getClubInfo?location=${location}`
+          `http://67.205.158.199:3009/api/getClubInfo?location=${location}`
         );
         const data = await response.json();
 
         const planDataResponses = await Promise.all(
           data?.plans?.map((club) => {
             return fetch(
-              `${
-                import.meta.env.VITE_APP_API_URL
-              }/getPlanDetails?location=${location}&planId=${club.planId}`
+              `http://67.205.158.199:3009/api/getPlanDetails?location=${location}&planId=${club.planId}`
             )
               .then((res) => res.json())
               .catch((err) => {

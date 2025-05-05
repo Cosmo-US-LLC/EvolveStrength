@@ -173,7 +173,7 @@ function ReviewAndPay({ selectedPlan, setSelectedPlan }) {
   const createPeople = async () => {
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_APP_API_URL}/createPerson`,
+        `http://67.205.158.199:3009/api/createPerson`,
         {
           method: "POST",
           headers: {
@@ -210,9 +210,7 @@ function ReviewAndPay({ selectedPlan, setSelectedPlan }) {
   const getAgreementInfo = async () => {
     try {
       const response = await fetch(
-        `${
-          import.meta.env.VITE_APP_API_URL
-        }/submitAgreement?location=${location}`,
+        `http://67.205.158.199:3009/api/submitAgreement?location=${location}`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
