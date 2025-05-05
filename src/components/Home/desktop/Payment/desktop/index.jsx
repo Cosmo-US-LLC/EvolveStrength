@@ -223,7 +223,7 @@ function ReviewAndPay({ selectedPlan, setSelectedPlan }) {
       const message = data?.data?.restResponse?.status?.message;
       console.log("data", message);
 
-      if (message && message.toLowerCase() !== "success") {
+      if (message && message.toLowerCase() === "success") {
         createPeople();
       } else {
         setApiError(message);
