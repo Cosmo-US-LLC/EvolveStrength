@@ -36,6 +36,7 @@ function ReviewAndPay({ selectedPlan, setSelectedPlan }) {
   const email = Cookies.get("email");
   const gender = Cookies.get("gender");
   let number = Cookies.get("number") || "";
+  const accountId = Cookies.get("accountId")
 
   const digitsOnly = number.replace(/\D/g, "");
   if (digitsOnly.length === 10) {
@@ -186,7 +187,7 @@ function ReviewAndPay({ selectedPlan, setSelectedPlan }) {
           city: city || "",
           province: stateCode || "",
           postal_code: formattedPostalCode || "",
-          company_id: "6687",
+          company_id: accountId || "",
         }),
       }
     );
