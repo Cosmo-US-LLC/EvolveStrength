@@ -205,7 +205,7 @@ const MemberPayment = () => {
       );
       const data = await response.json();
       console.log("data", data?.data?.restResponse?.request);
-      // navigate("/confirmation");
+      navigate("/confirmation");
     } catch (error) {
       console.error("Error fetching club information:", error.message);
     }
