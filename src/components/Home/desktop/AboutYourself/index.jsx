@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import MembershipSummaryBoxDesktop from "../Membership/desktop/MembershipSummaryBoxDesktop";
 
@@ -6,12 +6,42 @@ import StepperDesktop from "../commen/StepperDesktop";
 import AboutYourselfForm from "./AboutYourselfForm";
 import { useNavigate } from "react-router-dom";
 import useScrollDirection from "../../../../hooks/useScrollDirection";
+import Cookies from "js-cookie";
 
 function AboutYourself({ selectedPlan }) {
   const navigate = useNavigate();
   const scrollDirection = useScrollDirection();
+  const [validationErrors, setValidationErrors] = useState({});
+
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    number: "",
+    address: "",
+    province: "",
+    city: "",
+    postalCode: "",
+    selectedDate: "",
+    gender: "",
+  });
 
   const handleJoinNow = () => {
+    const errors = {};
+
+    Object.entries(formData).forEach(([key, value]) => {
+      if (!value.trim()) {
+        errors[key] = true;
+      }
+    });
+
+    setValidationErrors(errors);
+
+    if (Object.keys(errors).length > 0) return;
+
+    Object.entries(formData).forEach(([key, value]) => {
+      Cookies.set(key, value);
+    });
     navigate(`/review-and-pay`);
   };
 
@@ -28,7 +58,12 @@ function AboutYourself({ selectedPlan }) {
         </p>
 
         <div className="flex flex-row justify-between mt-16">
-          <AboutYourselfForm />
+          <AboutYourselfForm
+            formData={formData}
+            setFormData={setFormData}
+            validationErrors={validationErrors}
+            setValidationErrors={setValidationErrors}
+          />
 
           <div>
             <MembershipSummaryBoxDesktop selectedPlan={selectedPlan} />

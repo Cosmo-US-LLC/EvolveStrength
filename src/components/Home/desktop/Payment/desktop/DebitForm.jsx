@@ -17,15 +17,20 @@ function DebitForm({
   setVerifyAccountNumber,
   confirm,
   setConfirm,
+  selectedPlan,
+  errors,
+  setErrors,
 }) {
   const [termsAgreed, setTermsAgreed] = useState(false);
   const [renewAgreed, setRenewAgreed] = useState(false);
 
-
   return (
     <div className="max-w-[600px] space-y-4 text-white">
       <h1 className="text-[40px] font-[500] leading-[42px] font-[kanit] capitalize mb-6 text-left mt-4">
-        Set Your Monthly Payment Of <br /> $98.99
+        Set Your Monthly Payment Of <br />{" "}
+        {selectedPlan === "monthly"
+          ? localStorage.getItem("noContractTotal")
+          : localStorage.getItem("contractTotal")}
       </h1>
       <p className="mb-6 text-left text-[#FFFFFF] font-[vazirmatn] text-[18px] font-regular">
         This is your standard payment for your monthly direct debit before any
@@ -39,8 +44,16 @@ function DebitForm({
               type="text"
               id="firstName"
               value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-              className="p-3 border border-[#999999] text-white font-[vazirmatn] bg-[#000000]/60 backdrop-blur-[10px] placeholder-[#999999]"
+              onChange={(e) => {
+                const value = e.target.value;
+                setFirstName(value);
+                if (errors.firstName && value.trim() !== "") {
+                  setErrors((prev) => ({ ...prev, firstName: false }));
+                }
+              }}
+              className={`p-3 text-white font-[vazirmatn] bg-[#000000]/60 backdrop-blur-[10px] placeholder-[#999999] ${
+                errors.firstName ? "border-red-500" : "border-[#999999]"
+              } border`}
               placeholder="First Name"
             />
           </div>
@@ -50,8 +63,16 @@ function DebitForm({
               type="text"
               id="lastName"
               value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-              className="p-3 border border-[#999999] text-white font-[vazirmatn] bg-[#000000]/60 backdrop-blur-[10px] placeholder-[#999999]"
+              onChange={(e) => {
+                const value = e.target.value;
+                setLastName(value);
+                if (errors.lastName && value.trim() !== "") {
+                  setErrors((prev) => ({ ...prev, lastName: false }));
+                }
+              }}
+              className={`p-3 border text-white font-[vazirmatn] bg-[#000000]/60 backdrop-blur-[10px] placeholder-[#999999] ${
+                errors.lastName ? "border-red-500" : "border-[#999999]"
+              }`}
               placeholder="Last Name"
             />
           </div>
@@ -64,8 +85,16 @@ function DebitForm({
                 type="text"
                 id="transitNumber"
                 value={transitNumber}
-                onChange={(e) => setTransitNumber(e.target.value)}
-                className="p-3 bg-[#000000]/60 backdrop-blur-[10px] font-[vazirmatn] border border-[#999999] text-white w-full placeholder-[#999999]"
+                onChange={(e) => {
+                  const value = e.target.value;
+                  setTransitNumber(value);
+                  if (errors.transitNumber && value.trim() !== "") {
+                    setErrors((prev) => ({ ...prev, transitNumber: false }));
+                  }
+                }}
+                className={`p-3 bg-[#000000]/60 backdrop-blur-[10px] font-[vazirmatn] border text-white w-full placeholder-[#999999] ${
+                  errors.transitNumber ? "border-red-500" : "border-[#999999]"
+                }`}
                 placeholder="Transit Number"
               />
             </div>
@@ -77,8 +106,21 @@ function DebitForm({
                 type="text"
                 id="institutionNumber"
                 value={institutionNumber}
-                onChange={(e) => setInstitutionNumber(e.target.value)}
-                className="p-3 bg-[#000000]/60 backdrop-blur-[10px] font-[vazirmatn] border border-[#999999] text-white w-full placeholder-[#999999]"
+                onChange={(e) => {
+                  const value = e.target.value;
+                  setInstitutionNumber(value);
+                  if (errors.institutionNumber && value.trim() !== "") {
+                    setErrors((prev) => ({
+                      ...prev,
+                      institutionNumber: false,
+                    }));
+                  }
+                }}
+                className={`p-3 bg-[#000000]/60 backdrop-blur-[10px] font-[vazirmatn] border text-white w-full placeholder-[#999999] ${
+                  errors.institutionNumber
+                    ? "border-red-500"
+                    : "border-[#999999]"
+                }`}
                 placeholder="Institution Number"
               />
             </div>
@@ -108,8 +150,16 @@ function DebitForm({
                 type="text"
                 id="accountNumber"
                 value={accountNumber}
-                onChange={(e) => setAccountNumber(e.target.value)}
-                className="p-3 bg-[#000000]/60 backdrop-blur-[10px] font-[vazirmatn] border border-[#999999] text-white placeholder-[#999999]"
+                onChange={(e) => {
+                  const value = e.target.value;
+                  setAccountNumber(value);
+                  if (errors.accountNumber && value.trim() !== "") {
+                    setErrors((prev) => ({ ...prev, accountNumber: false }));
+                  }
+                }}
+                className={`p-3 bg-[#000000]/60 backdrop-blur-[10px] font-[vazirmatn] border text-white placeholder-[#999999] ${
+                  errors.accountNumber ? "border-red-500" : "border-[#999999]"
+                }`}
                 placeholder="Account Number"
               />
             </div>
@@ -150,8 +200,21 @@ function DebitForm({
               type="text"
               id="verifyAccountNumber"
               value={verifyAccountNumber}
-              onChange={(e) => setVerifyAccountNumber(e.target.value)}
-              className="p-3 bg-[#000000]/60 backdrop-blur-[10px] font-[vazirmatn] border border-[#999999] text-white placeholder-[#999999]"
+              onChange={(e) => {
+                const value = e.target.value;
+                setVerifyAccountNumber(value);
+                if (errors.verifyAccountNumber && value.trim() !== "") {
+                  setErrors((prev) => ({
+                    ...prev,
+                    verifyAccountNumber: false,
+                  }));
+                }
+              }}
+              className={`p-3 bg-[#000000]/60 backdrop-blur-[10px] font-[vazirmatn] border text-white placeholder-[#999999] ${
+                errors.verifyAccountNumber
+                  ? "border-red-500"
+                  : "border-[#999999]"
+              }`}
               placeholder="Verify Account Number"
             />
           </div>

@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-function Congratulations() {
+function Congratulations({ selectedPlan }) {
   const navigate = useNavigate();
 
   const handleBackHome = () => {
@@ -36,11 +36,15 @@ function Congratulations() {
           </div>{" "}
           <div className="flex justify-between font-[vazirmatn] text-white/90 text-[16px] font-regular border-t border-white/20 pt-4">
             <span>Subscription</span>
-            <span>Month To Month</span>
+            <span>{selectedPlan == "monthly" ? "Month To Month" : "1 Year Contract"}</span>
           </div>
           <div className="flex justify-between text-white/90 text-sm text-[20px] leading-[24px] capitalize font-semibold border-t border-white/20 pt-4">
             <span>Amount Paid</span>
-            <span>$98.66</span>
+            <span>
+              {selectedPlan === "monthly"
+                ? localStorage.getItem("noContractTotal")
+                : localStorage.getItem("contractTotal")}
+            </span>
           </div>
         </div>
 

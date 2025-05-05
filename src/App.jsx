@@ -79,7 +79,7 @@ function App() {
             element={
               <>
                 <div className="max-lg:hidden">
-                  <Congratulations />
+                  <Congratulations selectedPlan={selectedPlan} />
                 </div>
               </>
             }

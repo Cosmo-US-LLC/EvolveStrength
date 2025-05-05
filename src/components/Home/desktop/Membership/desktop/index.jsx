@@ -5,10 +5,12 @@ import MembershipSummaryBoxDesktop from "./MembershipSummaryBoxDesktop";
 import { useNavigate } from "react-router-dom";
 import useScrollDirection from "../../../../../hooks/useScrollDirection";
 import Cookies from "js-cookie";
+import Loader from "../../../../Loader";
 
 function MembershipDesktop({ selectedPlan, setSelectedPlan }) {
   const [location, setLocation] = useState(null);
   const [planData, setPlanData] = useState([]);
+  const [loading, setLoading] = useState(true)
   console.log("location", planData?.[0]);
   const navigate = useNavigate();
   const scrollDirection = useScrollDirection();
@@ -30,6 +32,7 @@ function MembershipDesktop({ selectedPlan, setSelectedPlan }) {
   useEffect(() => {
     const getClubInfo = async () => {
       try {
+        setLoading(true);
         const response = await fetch(
           `${import.meta.env.VITE_APP_API_URL}/getClubInfo?location=${location}`
         );
@@ -79,8 +82,10 @@ function MembershipDesktop({ selectedPlan, setSelectedPlan }) {
           "contractTotal",
           planDataResponses?.[1]?.downPayments?.[0]?.total
         );
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching club information:", error.message);
+        setLoading(true);
       }
     };
 
@@ -99,7 +104,7 @@ function MembershipDesktop({ selectedPlan, setSelectedPlan }) {
     }
     navigate(`/about-yourself`);
   };
-
+  if (loading) return <Loader />;
   return (
     <div className="relative w-full membership_bg">
       <StepperDesktop stepNumber={1} scrollDirection={scrollDirection} />

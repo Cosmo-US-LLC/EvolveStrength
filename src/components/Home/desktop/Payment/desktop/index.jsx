@@ -25,6 +25,7 @@ function ReviewAndPay({ selectedPlan, setSelectedPlan }) {
   const [cardNumber, setCardNumber] = useState("");
   const [cvv, setCvv] = useState("");
   const [expirationDate, setExpirationDate] = useState("");
+  const [errors, setErrors] = useState({});
 
   const location = Cookies.get("locationCode");
   const planId = Cookies.get("planId");
@@ -56,13 +57,13 @@ function ReviewAndPay({ selectedPlan, setSelectedPlan }) {
   } else {
     console.warn("Invalid or missing selectedDate");
   }
-  // const address = Cookies.get("address");
-  // const city = Cookies.get("city");
+  const address = Cookies.get("address");
+  const city = Cookies.get("city");
   const rawPostalCode = Cookies.get("postalCode") || "";
   const formattedPostalCode = rawPostalCode
     .toUpperCase()
-    .replace(/\s+/g, "") 
-    .replace(/(.{3})(.{3})/, "$1 $2"); 
+    .replace(/\s+/g, "")
+    .replace(/(.{3})(.{3})/, "$1 $2");
 
   // Optional regex validation
   const isValidPostalCode = /^[A-Z]\d[A-Z] \d[A-Z]\d$/.test(
@@ -76,18 +77,23 @@ function ReviewAndPay({ selectedPlan, setSelectedPlan }) {
   console.log("formattedPostalCode", formattedPostalCode);
 
   const provinceMap = {
-    Punjab: "PB",
-    Sindh: "SD",
-    "Khyber Pakhtunkhwa": "KP",
-    Balochistan: "BL",
+    Alberta: "AB",
+    "British Columbia": "BC",
+    Manitoba: "MB",
+    "New Brunswick": "NB",
+    Newfoundland: "NL",
+    "Northwest Territories": "NT",
+    "Nova Scotia": "NS",
+    Nunavut: "NU",
     Ontario: "ON",
-    California: "CA",
-    "New York": "NY",
+    "Prince Edward Island": "PE",
+    Quebec: "QC",
+    Saskatchewan: "SK",
+    Yukon: "YT",
   };
 
   const provinceName = Cookies.get("province") || "";
   const stateCode = provinceMap[provinceName] || "";
-  console.log("provinceName", provinceName, stateCode);
 
   const routingNumber = `0${institutionNumber}${transitNumber}`;
   const [expMonth, expYearRaw] = expirationDate.split("/");
@@ -103,19 +109,19 @@ function ReviewAndPay({ selectedPlan, setSelectedPlan }) {
       firstName: fName || "John",
       middleInitial: formattedLastName || "",
       lastName: lName || "Doe",
-      email: email || "example@gmail.com",
+      email: email || "",
       gender: gender || "",
       homePhone: "",
-      cellPhone: number || "9495898283",
+      cellPhone: digitsOnly || "9495898283",
       workPhone: "",
       birthday: selectedDate || "",
       wellnessProgramId: "",
       barcode: "",
       agreementAddressInfo: {
-        addressLine1: "123 Queen Street West",
+        addressLine1: address || "",
         addressLine2: "",
-        city: "Toronto",
-        state: "ON",
+        city: city || "",
+        state: stateCode || "ON",
         country: "CA",
         zipCode: formattedPostalCode || "",
       },
@@ -162,6 +168,33 @@ function ReviewAndPay({ selectedPlan, setSelectedPlan }) {
     };
   }
 
+  const createPeople = async () => {
+    const response = await fetch(
+      `${import.meta.env.VITE_APP_API_URL}/createPerson`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          first_name: fName || "John",
+          last_name: lName || "Doe",
+          email: email || "",
+          birthday: selectedDate || "",
+          phone_mobile: number || "",
+          address: address || "",
+          city: city || "",
+          province: stateCode || "",
+          postal_code: formattedPostalCode || "",
+          company_id: "6687",
+        }),
+      }
+    );
+
+    const data = await response.json();
+    console.log(data);
+  };
+
   const getAgreementInfo = async () => {
     try {
       const response = await fetch(
@@ -175,15 +208,45 @@ function ReviewAndPay({ selectedPlan, setSelectedPlan }) {
         }
       );
       const data = await response.json();
-      console.log("data", data?.data?.restResponse?.request);
+      const message = data?.data?.restResponse?.status?.message;
+      console.log("data", message);
+
+      if (message && message.toLowerCase() === "success") {
+        createPeople();
+      } else {
+        console.warn("API response did not return success message.");
+      }
     } catch (error) {
       console.error("Error fetching club information:", error.message);
     }
   };
 
-  const handleJoinNow = () => {
-    getAgreementInfo();
+  const validateFields = () => {
+    const newErrors = {};
 
+    if (selectPlan === "direct_debit") {
+      if (!firstName.trim()) newErrors.firstName = true;
+      if (!lastName.trim()) newErrors.lastName = true;
+      if (!transitNumber.trim()) newErrors.transitNumber = true;
+      if (!institutionNumber.trim()) newErrors.institutionNumber = true;
+      if (!accountNumber.trim()) newErrors.accountNumber = true;
+      if (accountNumber !== verifyAccountNumber)
+        newErrors.verifyAccountNumber = true;
+    } else {
+      if (!firstName.trim()) newErrors.firstName = true;
+      if (!lastName.trim()) newErrors.lastName = true;
+      if (!cardNumber.trim()) newErrors.cardNumber = true;
+      if (!cvv.trim()) newErrors.cvv = true;
+      if (!expirationDate.trim()) newErrors.expirationDate = true;
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleJoinNow = () => {
+    if (!validateFields()) return;
+    getAgreementInfo();
     navigate(`/congratulations`);
   };
 
@@ -222,6 +285,9 @@ function ReviewAndPay({ selectedPlan, setSelectedPlan }) {
                 setVerifyAccountNumber={setVerifyAccountNumber}
                 confirm={confirm}
                 setConfirm={setConfirm}
+                selectedPlan={selectedPlan}
+                errors={errors}
+                setErrors={setErrors}
               />
             ) : (
               <CardForm
@@ -237,6 +303,9 @@ function ReviewAndPay({ selectedPlan, setSelectedPlan }) {
                 setExpirationDate={setExpirationDate}
                 confirm={confirm}
                 setConfirm={setConfirm}
+                selectedPlan={selectedPlan}
+                errors={errors}
+                setErrors={setErrors}
               />
             )}
           </div>
