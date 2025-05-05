@@ -56,9 +56,12 @@ const MemberPayment = () => {
     if (!lname.trim()) errors.push("lname");
 
     if (paymentMethod === "direct") {
-      if (!transitNumber.trim() || transitNumber?.length > 5) errors.push("transitNumber");
-      if (!institutionNumber.trim() || institutionNumber?.length > 4) errors.push("institutionNumber");
-      if (!accountNumber.trim() || accountNumber?.length != 10) errors.push("accountNumber");
+      if (!transitNumber.trim() || transitNumber?.length > 5)
+        errors.push("transitNumber");
+      if (!institutionNumber.trim() || institutionNumber?.length > 4)
+        errors.push("institutionNumber");
+      if (!accountNumber.trim() || accountNumber?.length != 10)
+        errors.push("accountNumber");
       if (!verifyAccountNumber.trim()) errors.push("verifyAccountNumber");
       if (accountNumber !== verifyAccountNumber) {
         errors.push("verifyAccountNumber");
@@ -204,11 +207,72 @@ const MemberPayment = () => {
         }
       );
       const data = await response.json();
-      console.log("data", data?.data?.restResponse?.request);
-      navigate("/confirmation");
+      const message = data?.data?.restResponse?.status?.message;
+      console.log("data", message);
+
+      if (message && message.toLowerCase() === "success") {
+        createPeople();
+      } else {
+        console.warn("API response did not return success message.");
+      }
+      // navigate("/confirmation");
     } catch (error) {
       console.error("Error fetching club information:", error.message);
     }
+  };
+
+  const createPeople = async () => {
+    let selectedDate = userInfo?.dob || "";
+    if (selectedDate) {
+      const dateObj = new Date(selectedDate);
+      const month = String(dateObj.getMonth() + 1).padStart(2, "0");
+      const day = String(dateObj.getDate()).padStart(2, "0");
+      const year = dateObj.getFullYear();
+      selectedDate = `${month}/${day}/${year}`;
+    } else {
+      console.warn("Invalid or missing selectedDate");
+    }
+    const formattedPostalCode = (`${userInfo?.postal}` || "")
+      .toUpperCase()
+      .replace(/\s+/g, "")
+      .replace(/(.{3})(.{3})/, "$1 $2");
+    // Optional regex validation
+    const isValidPostalCode = /^[A-Z]\d[A-Z] \d[A-Z]\d$/.test(
+      formattedPostalCode
+    );
+    if (!isValidPostalCode) {
+      console.error(
+        "Invalid Canadian postal code format:",
+        formattedPostalCode
+      );
+      return;
+    }
+
+    const response = await fetch(
+      `${import.meta.env.VITE_APP_API_URL}/createPerson`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          first_name: fname || "John",
+          last_name: lname || "Doe",
+          email: userInfo?.email || "",
+          birthday: selectedDate || "",
+          phone_mobile: userInfo?.phone || "",
+          address: userInfo?.address || "",
+           city: userInfo?.city || "",
+          province: userInfo?.province || "",
+          postal_code: formattedPostalCode || "",
+          company_id: clubLocationPostal,
+        }),
+      }
+    );
+
+    const data = await response.json();
+    console.log(data);
+    navigate("/confirmation");
   };
 
   return (
