@@ -28,8 +28,6 @@ function MembershipDesktop() {
     clubLocation,
     clubLocationPostal,
     clubPlans,
-    isLoading,
-    error,
   } = useSelector((state) => state.plan);
   const {
     data,

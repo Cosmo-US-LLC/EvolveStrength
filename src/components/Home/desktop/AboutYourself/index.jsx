@@ -10,45 +10,12 @@ import Cookies from "js-cookie";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserInfo } from "../../../../redux/slices/planSlice";
 
-function AboutYourself({ selectedPlan }) {
+function AboutYourself() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { userInfo, isLoading, error } = useSelector((state) => state.plan);
+  const { userInfo } = useSelector((state) => state.plan);
   const scrollDirection = useScrollDirection();
   const [validationErrors, setValidationErrors] = useState({});
-  const [errors, setErrors] = useState([]);
-
-  function updateErrs(valueToRemove) {
-    const updatedArr = errors.filter((item) => item !== valueToRemove);
-    setErrors(updatedArr);
-  }
-
-  const validateForm = () => {
-    const errors = [];
-
-    if (!fname.trim()) errors.push("fname");
-    if (!lname.trim()) errors.push("lname");
-    if (!email.trim()) {
-      errors.push("email");
-    } else if (!/^\S+@\S+\.\S+$/.test(email)) {
-      errors.push("email");
-    }
-
-    if (!phone.trim() || phone.length < 10 || phone.length > 14)
-      errors.push("phone");
-    if (!address.trim()) errors.push("address");
-    if (!province.trim()) errors.push("province");
-    if (!city.trim()) errors.push("city");
-    if (!postal.trim()) errors.push("postal");
-    if (!dob) errors.push("dob");
-    if (!gender) errors.push("gender");
-
-    if (errors.length > 0) {
-      console.error("Validation Errors:", errors);
-      return errors;
-    }
-    return false;
-  };
 
   const [formData, setFormData] = useState({
     firstName: userInfo?.fname || "",
@@ -63,22 +30,59 @@ function AboutYourself({ selectedPlan }) {
     gender: userInfo?.gender || "",
   });
 
-  const handleJoinNow = () => {
+  const handleChange = (field) => (e) => {
+    setFormData((prev) => ({
+      ...prev,
+      [field]: e.target.value,
+    }));
+
+    setValidationErrors((prev) => ({
+      ...prev,
+      [field]: null,
+    }));
+  };
+
+  const validateForm = () => {
     const errors = {};
 
-    Object.entries(formData).forEach(([key, value]) => {
-      if (!value.trim()) {
-        errors[key] = true;
-      }
-    });
+    if (!formData.firstName.trim()) errors.firstName = true;
+    if (!formData.lastName.trim()) errors.lastName = true;
+    if (!/^\S+@\S+\.\S+$/.test(formData.email)) errors.email = true;
+    if (
+      !formData.number ||
+      formData.number.length < 10 ||
+      formData.number.length > 14
+    )
+      errors.number = true;
+    if (!formData.address.trim()) errors.address = true;
+    if (!formData.province.trim()) errors.province = true;
+    if (!formData.city.trim()) errors.city = true;
+    if (!formData.postalCode.trim()) errors.postalCode = true;
+    if (!formData.selectedDate) errors.selectedDate = true;
+    if (!formData.gender) errors.gender = true;
 
     setValidationErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
 
-    if (Object.keys(errors).length > 0) return;
+  const handleJoinNow = () => {
+    if (!validateForm()) return;
 
-    Object.entries(formData).forEach(([key, value]) => {
-      Cookies.set(key, value);
-    });
+    dispatch(
+      setUserInfo({
+        fname: formData.firstName,
+        lname: formData.lastName,
+        email: formData.email,
+        phone: formData.number,
+        address: formData.address,
+        province: formData.province,
+        city: formData.city,
+        postal: formData.postalCode,
+        dob: formData.selectedDate,
+        gender: formData.gender,
+      })
+    );
+
     navigate(`/review-and-pay`);
   };
 
@@ -97,13 +101,12 @@ function AboutYourself({ selectedPlan }) {
         <div className="flex flex-row justify-between mt-16">
           <AboutYourselfForm
             formData={formData}
-            setFormData={setFormData}
+            handleChange={handleChange}
             validationErrors={validationErrors}
-            setValidationErrors={setValidationErrors}
           />
 
           <div>
-            <MembershipSummaryBoxDesktop selectedPlan={selectedPlan} />
+            <MembershipSummaryBoxDesktop />
           </div>
         </div>
         <div className="flex justify-end items-end mt-8 w-full">

@@ -11,11 +11,6 @@ const MembershipSummaryBoxDesktop = () => {
     clubPlanMonthly,
     clubPlanYearly,
   } = useSelector((state) => state.plan);
-  console.log(
-    "clubPlanMonthly",
-    clubPlanMonthly?.downPayments?.[0]?.subTotal,
-    clubPlanYearly
-  );
   const handleEdit = () => {
     navigate(`/`);
   };
