@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import info_icon from "../../../../../assets/images/desktop/info_icon.svg";
 import guarantee_icons from "../../../../../assets/images/desktop/guarantee_icons.svg";
+import { useSelector } from "react-redux";
 
 function DebitForm({
   firstName,
@@ -17,20 +18,22 @@ function DebitForm({
   setVerifyAccountNumber,
   confirm,
   setConfirm,
-  selectedPlan,
   errors,
   setErrors,
 }) {
   const [termsAgreed, setTermsAgreed] = useState(false);
   const [renewAgreed, setRenewAgreed] = useState(false);
+  const { plan, clubPlanMonthly, clubPlanYearly } = useSelector(
+    (state) => state.plan
+  );
 
   return (
     <div className="max-w-[600px] space-y-4 text-white">
       <h1 className="text-[40px] font-[500] leading-[42px] font-[kanit] capitalize mb-6 text-left mt-4">
         Set Your Monthly Payment Of <br />{" "}
-        {selectedPlan === "monthly"
-          ? localStorage.getItem("noContractTotal")
-          : localStorage.getItem("contractTotal")}
+        {plan === "monthly"
+          ? clubPlanMonthly?.scheduleTotalAmount
+          : clubPlanYearly?.scheduleTotalAmount}
       </h1>
       <p className="mb-6 text-left text-[#FFFFFF] font-[vazirmatn] text-[18px] font-regular">
         This is your standard payment for your monthly direct debit before any

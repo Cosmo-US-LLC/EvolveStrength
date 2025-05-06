@@ -1,10 +1,16 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
+import { useSelector } from "react-redux";
 
-const MembershipSummaryBoxDesktop = ({ selectedPlan }) => {
+const MembershipSummaryBoxDesktop = () => {
   const navigate = useNavigate();
-  const selectedLocation = Cookies.get("location");
+  const {
+    clubLocation,
+    plan,
+    clubPlanMonthly,
+    clubPlanYearly,
+  } = useSelector((state) => state.plan);
   const handleEdit = () => {
     navigate(`/`);
   };
@@ -16,7 +22,7 @@ const MembershipSummaryBoxDesktop = ({ selectedPlan }) => {
             Your Membership at
           </p>
           <p className="text-[#2DDE28] text-[30px] font-[700] tracking-[-0.76px] leading-[27.73px] uppercase font-[kanit]">
-            {selectedLocation}
+            {clubLocation}
           </p>
         </div>
         <div>
@@ -42,25 +48,25 @@ const MembershipSummaryBoxDesktop = ({ selectedPlan }) => {
         <div className="flex pt-4 justify-between text-white/90 text-[18px] font-[400] leading-[24px] font-[vazirmatn] capitalize border-t border-white/20">
           <span>Bi-Weekly</span>
           <span>
-            {selectedPlan == "monthly"
-              ? localStorage.getItem("noContractSubtotal")
-              : localStorage.getItem("contractSubtotal")}
+            {plan == "monthly"
+              ? clubPlanMonthly?.downPayments?.[0]?.subTotal
+              : clubPlanYearly?.downPayments?.[0]?.subTotal}
           </span>
         </div>
         <div className="flex pb-4 pt-1 justify-between text-white/90 text-[18px] font-[400] font-[vazirmatn] leading-[24px] capitalize">
           <span>Initiation Fee</span>
           <span>
-            {selectedPlan == "monthly"
-              ? localStorage.getItem("noContractTax")
-              : localStorage.getItem("contractTax")}
+            {plan == "monthly"
+              ? clubPlanMonthly?.downPayments?.[0]?.tax
+              : clubPlanYearly?.downPayments?.[0]?.tax}
           </span>
         </div>
         <div className="flex pt-4 justify-between text-white/90 text-[20px] font-[500] font-[vazirmatn] leading-[24px] capitalize  border-t border-white/20">
           <span>Total</span>
           <span>
-            {selectedPlan == "monthly"
-              ? localStorage.getItem("noContractTotal")
-              : localStorage.getItem("contractTotal")}
+          {plan == "monthly"
+              ? clubPlanMonthly?.downPayments?.[0]?.total
+              : clubPlanYearly?.downPayments?.[0]?.total}
           </span>
         </div>
         <p className="text-[#CACACA] pt-6 pb-2 text-[16px] font-regular font-[vazirmatn]">

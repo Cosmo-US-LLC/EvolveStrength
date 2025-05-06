@@ -6,102 +6,81 @@ import { useNavigate } from "react-router-dom";
 import useScrollDirection from "../../../../../hooks/useScrollDirection";
 import Cookies from "js-cookie";
 import Loader from "../../../../Loader";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  plansApi,
+  useGetClubPlansQuery,
+} from "../../../../../redux/services/plan";
+import {
+  resetClubPlanMonthly,
+  resetClubPlanYearly,
+  setClubPlanMonthly,
+  setClubPlanYearly,
+  setClubPlans,
+} from "../../../../../redux/slices/planSlice";
 
-function MembershipDesktop({ selectedPlan, setSelectedPlan }) {
-  const [location, setLocation] = useState(null);
-  const [planData, setPlanData] = useState([]);
-  const [loading, setLoading] = useState(true)
-  console.log("location", planData?.[0]);
+function MembershipDesktop() {
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const scrollDirection = useScrollDirection();
-  const selectedLocation = Cookies.get("location");
+  const dispatch = useDispatch();
+  const {
+    clubLocation,
+    clubLocationPostal,
+    clubPlans,
+  } = useSelector((state) => state.plan);
+  const {
+    data,
+    error: queryError,
+    isLoading: queryLoading,
+  } = useGetClubPlansQuery(clubLocationPostal);
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    let loc = params.get("location");
+    const fetchClubPlanDetails = async () => {
+      setLoading(true);
+      if (data && data?.plans) {
+        dispatch(setClubPlans(data?.plans));
+        for (let [index, club] of clubPlans.entries()) {
+          try {
+            const result = await dispatch(
+              plansApi.endpoints.getClubPlanDetails.initiate({
+                location: clubLocationPostal,
+                planId: club.planId,
+              })
+            ).unwrap();
 
-    if (loc && loc.startsWith("0")) {
-      loc = loc.slice(1);
-    }
-
-    if (loc) {
-      setLocation(loc);
-    }
-  }, []);
-
-  useEffect(() => {
-    const getClubInfo = async () => {
-      try {
-        setLoading(true);
-        const response = await fetch(
-          `http://67.205.158.199:3009/api/getClubInfo?location=${location}`
-        );
-        const data = await response.json();
-
-        const planDataResponses = await Promise.all(
-          data?.plans?.map((club) => {
-            return fetch(
-              `http://67.205.158.199:3009/api/getPlanDetails?location=${location}&planId=${club.planId}`
-            )
-              .then((res) => res.json())
-              .catch((err) => {
-                console.error(
-                  `Error fetching plan for planId ${club.planId}:`,
-                  err
-                );
-                return null;
-              });
-          })
-        );
-
-        setPlanData(planDataResponses);
-        console.log("planDataResponses", planDataResponses);
-        localStorage.setItem(
-          "noContractSubtotal",
-          planDataResponses?.[0]?.downPayments?.[0]?.subTotal
-        );
-        localStorage.setItem(
-          "contractSubtotal",
-          planDataResponses?.[1]?.downPayments?.[0]?.subTotal
-        );
-        localStorage.setItem(
-          "noContractTax",
-          planDataResponses?.[0]?.downPayments?.[0]?.tax
-        );
-        localStorage.setItem(
-          "contractTax",
-          planDataResponses?.[1]?.downPayments?.[0]?.tax
-        );
-        localStorage.setItem(
-          "noContractTotal",
-          planDataResponses?.[0]?.downPayments?.[0]?.total
-        );
-        localStorage.setItem(
-          "contractTotal",
-          planDataResponses?.[1]?.downPayments?.[0]?.total
-        );
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching club information:", error.message);
-        setLoading(true);
+            if (index === 0) {
+              dispatch(setClubPlanMonthly(result));
+            } else {
+              dispatch(setClubPlanYearly(result));
+            }
+          } catch (err) {
+            console.error(
+              `Failed to fetch plan details for club ${club.planId}:`,
+              err
+            );
+          } finally {
+            setLoading(false);
+          }
+        }
       }
     };
 
-    if (location) {
-      getClubInfo();
+    fetchClubPlanDetails();
+  }, [data, dispatch]);
+
+  useEffect(() => {
+    if (!clubLocationPostal) {
+      navigate(`/`);
     }
-  }, [location]);
+    dispatch(resetClubPlanMonthly());
+    dispatch(resetClubPlanYearly());
+  }, []);
 
   const handleJoinNow = () => {
-    if (selectedPlan === "monthly") {
-      Cookies.set("planId", planData?.[0]?.planId);
-      Cookies.set("planValidation", planData?.[0]?.planValidation);
-    } else {
-      Cookies.set("planId", planData?.[1]?.planId);
-      Cookies.set("planValidation", planData?.[1]?.planValidation);
-    }
     navigate(`/about-yourself`);
   };
+
   if (loading) return <Loader />;
   return (
     <div className="relative w-full membership_bg">
@@ -112,21 +91,14 @@ function MembershipDesktop({ selectedPlan, setSelectedPlan }) {
           Your membership at
         </p>
         <p className="text-[#2DDE28] font-[kanit] text-[79px] font-[700] leading-[66px] tracking-[-1.32ppx] uppercase">
-          {selectedLocation}
+          {clubLocation}
         </p>
 
         <div className="flex flex-row justify-between mt-16">
-          <MembershipPlanSelector
-            selectedPlan={selectedPlan}
-            setSelectedPlan={setSelectedPlan}
-            planData={planData}
-          />
+          <MembershipPlanSelector />
 
           <div>
-            <MembershipSummaryBoxDesktop
-              planData={planData}
-              selectedPlan={selectedPlan}
-            />
+            <MembershipSummaryBoxDesktop />
           </div>
         </div>
         <div className="flex items-end justify-end w-full mt-4">

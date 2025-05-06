@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import guarantee_icons from "../../../../../assets/images/desktop/guarantee_icons.svg";
+import { useSelector } from "react-redux";
 
 function CardForm({
   firstName,
@@ -14,19 +15,21 @@ function CardForm({
   setExpirationDate,
   confirm,
   setConfirm,
-  selectedPlan,
   errors,
   setErrors,
 }) {
   const [termsAgreed, setTermsAgreed] = useState(false);
+  const { plan, clubPlanMonthly, clubPlanYearly } = useSelector(
+    (state) => state.plan
+  );
 
   return (
     <div className="max-w-[600px] space-y-4 text-white">
       <h1 className="text-[40px] leading-[42px] font-[kanit] font-[500] capitalize  mb-6 text-left mt-4">
         Set your Bi-Weekly Payment of <br />{" "}
-        {selectedPlan === "monthly"
-          ? localStorage.getItem("noContractTotal")
-          : localStorage.getItem("contractTotal")}
+        {plan === "monthly"
+          ? clubPlanMonthly?.scheduleTotalAmount
+          : clubPlanYearly?.scheduleTotalAmount}
       </h1>
       <p className="mb-6 text-left text-[#FFFFFF] font-[400] text-[18px] font-[vazirmatn]">
         Visa and master cards are accepted here

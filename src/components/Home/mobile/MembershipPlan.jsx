@@ -7,7 +7,7 @@ import useScrollDirection from "../../../hooks/useScrollDirection";
 import { useDispatch, useSelector } from "react-redux";
 import { setPlan } from "../../../redux/slices/planSlice";
 
-const MembershipPlan = ({ selectedPlan, setSelectedPlan }) => {
+const MembershipPlan = () => {
   const dispatch = useDispatch();
   // const [location, setLocation] = useState(null);
   // const [startDate, setStartDate] = useState(null);

@@ -1,24 +1,6 @@
 import React from "react";
 
-const AboutYourselfForm = ({
-  formData,
-  setFormData,
-  validationErrors,
-  setValidationErrors,
-}) => {
-  const handleChange = (field) => (e) => {
-    const value = e.target.value;
-
-    setFormData((prev) => ({ ...prev, [field]: value }));
-
-    if (validationErrors[field] && value.trim() !== "") {
-      setValidationErrors((prev) => {
-        const updated = { ...prev };
-        delete updated[field];
-        return updated;
-      });
-    }
-  };
+const AboutYourselfForm = ({ formData, handleChange, validationErrors }) => {
   return (
     <div className="max-w-[600px] space-y-4">
       <p className="text-white font-[kanit] font-[400] text-[24px] leading-[10.734px] tracking-[-0.76px] capitalize">
