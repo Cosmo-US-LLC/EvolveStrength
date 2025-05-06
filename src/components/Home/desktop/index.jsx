@@ -31,7 +31,7 @@ function LocationDesktop() {
         SELECT LOCATION
       </p>
 
-      {/* <Listbox value={selectedLocation} onChange={setSelectedLocation}>
+      <Listbox value={selectedLocation} onChange={setSelectedLocation}>
         <div className="relative w-[627px]">
           <Listbox.Button className="w-full font-[vazirmatn] bg-black/40 backdrop-blur-xl border border-[#656c72] text-left p-4 text-white flex items-center justify-between">
             <div>
@@ -76,7 +76,7 @@ function LocationDesktop() {
             ))}
           </Listbox.Options>
         </div>
-      </Listbox> */}
+      </Listbox>
       <button
         onClick={handleTakeTour}
         className="button bg-[#2DDE28] text-black text-[16px] font-[kanit] font-[500] w-[129px] h-[42px] leading-[21px] uppercase"
