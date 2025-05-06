@@ -4,7 +4,6 @@ import MembershipPlanSelector from "./MembershipPlanSelector";
 import MembershipSummaryBoxDesktop from "./MembershipSummaryBoxDesktop";
 import { useNavigate } from "react-router-dom";
 import useScrollDirection from "../../../../../hooks/useScrollDirection";
-import Cookies from "js-cookie";
 import Loader from "../../../../Loader";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -34,6 +33,14 @@ function MembershipDesktop() {
     error: queryError,
     isLoading: queryLoading,
   } = useGetClubPlansQuery(clubLocationPostal);
+
+  useEffect(() => {
+    if (!clubLocationPostal) {
+      navigate(`/`);
+    }
+    dispatch(resetClubPlanMonthly());
+    dispatch(resetClubPlanYearly());
+  }, []);
 
   useEffect(() => {
     const fetchClubPlanDetails = async () => {
@@ -68,14 +75,6 @@ function MembershipDesktop() {
 
     fetchClubPlanDetails();
   }, [data, dispatch]);
-
-  useEffect(() => {
-    if (!clubLocationPostal) {
-      navigate(`/`);
-    }
-    dispatch(resetClubPlanMonthly());
-    dispatch(resetClubPlanYearly());
-  }, []);
 
   const handleJoinNow = () => {
     navigate(`/about-yourself`);

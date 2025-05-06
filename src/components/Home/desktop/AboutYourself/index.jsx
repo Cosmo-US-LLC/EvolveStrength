@@ -6,7 +6,6 @@ import StepperDesktop from "../commen/StepperDesktop";
 import AboutYourselfForm from "./AboutYourselfForm";
 import { useNavigate } from "react-router-dom";
 import useScrollDirection from "../../../../hooks/useScrollDirection";
-import Cookies from "js-cookie";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserInfo } from "../../../../redux/slices/planSlice";
 
