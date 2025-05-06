@@ -3,30 +3,47 @@ import { Listbox } from "@headlessui/react";
 import { locations } from "../../../constant/locationsData";
 import ChevronDownFilled from "../../../assets/images/desktop/chevron-down-filled.svg";
 import { useNavigate } from "react-router-dom";
-import Cookies from "js-cookie";
+import { useDispatch } from "react-redux";
+import {
+  resetClubLocation,
+  resetClubLocationId,
+  resetClubLocationPostal,
+  setClubLocation,
+  setClubLocationId,
+  setClubLocationPostal,
+} from "../../../redux/slices/planSlice";
+import Loader from "../../Loader";
 
 function LocationDesktop() {
+  const dispatch = useDispatch();
   const [selectedLocation, setSelectedLocation] = useState(locations[0]);
-  console.log("selectedLocation", selectedLocation.postalCode);
-  useEffect(() => {
-    let loc = selectedLocation.postalCode;
-
-    if (loc && loc.startsWith("0")) {
-      loc = loc.slice(1);
-    }
-    Cookies.set("locationCode", loc);
-    Cookies.set("location", selectedLocation.clubName);
-    Cookies.set("accountId", selectedLocation.accountId)
-  }, [selectedLocation]);
+  const [loading, setLoading] = useState(true)
 
   const navigate = useNavigate();
 
   const handleTakeTour = () => {
+    dispatch(setClubLocation(selectedLocation.clubName));
+    dispatch(setClubLocationPostal(parseInt(selectedLocation.postalCode)));
+    dispatch(setClubLocationId(parseInt(selectedLocation.accountId)))
     navigate(`/membership?location=${selectedLocation.postalCode}`);
   };
 
+  useEffect(() => {
+    dispatch(resetClubLocation());
+    dispatch(resetClubLocationPostal());
+    dispatch(resetClubLocationId())
+
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1000); // 2 seconds delay
+
+    // Clean up the timeout on component unmount
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) return <Loader />;
   return (
-    <div className="relative z-10 flex flex-col items-center justify-center min-h-screen gap-6 overflow-hidden location-bg">
+    <div className="relative z-10 flex flex-col items-center bg-black justify-center min-h-screen gap-6 overflow-hidden location-bg">
       <p className="text-white text-center font-[kanit] text-[79px] font-bold leading-[66px] tracking-[-1.329px] uppercase">
         SELECT LOCATION
       </p>

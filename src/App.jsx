@@ -14,12 +14,10 @@ import ReviewAndPay from "./components/Home/desktop/Payment/desktop";
 import Congratulations from "./components/Home/desktop/Congratulations";
 
 import ScrollToTop from "./utils/ScrollToTop";
-import { useState } from "react";
 import NotFoundPage from "./pages/NotFoundPage";
 import Loader from "./components/Loader";
 
 function App() {
-  const [selectedPlan, setSelectedPlan] = useState("monthly");
   return (
     <Router>
       <ScrollToTop />
@@ -43,10 +41,7 @@ function App() {
             element={
               <>
                 <div className="max-lg:hidden">
-                  <MembershipDesktop
-                    selectedPlan={selectedPlan}
-                    setSelectedPlan={setSelectedPlan}
-                  />
+                  <MembershipDesktop />
                 </div>
               </>
             }
@@ -56,7 +51,7 @@ function App() {
             element={
               <>
                 <div className="max-lg:hidden">
-                  <AboutYourself selectedPlan={selectedPlan} />
+                  <AboutYourself />
                 </div>
               </>
             }
@@ -66,10 +61,7 @@ function App() {
             element={
               <>
                 <div className="max-lg:hidden">
-                  <ReviewAndPay
-                    setSelectedPlan={setSelectedPlan}
-                    selectedPlan={selectedPlan}
-                  />
+                  <ReviewAndPay />
                 </div>
               </>
             }
@@ -79,20 +71,19 @@ function App() {
             element={
               <>
                 <div className="max-lg:hidden">
-                  <Congratulations selectedPlan={selectedPlan} />
+                  <Congratulations />
                 </div>
               </>
             }
           />
           <Route path="/location-details" element={<LocationDetails />} />
-          <Route path="/membership-plan" element={<MembershipPlan selectedPlan={selectedPlan} setSelectedPlan={setSelectedPlan} />} />
+          <Route path="/membership-plan" element={<MembershipPlan />} />
           <Route path="/member-details" element={<MemberDetails />} />
           <Route path="/member-Payment" element={<MemberPayment />} />
           <Route path="/confirmation" element={<ConfirmationPage />} />
           <Route path="/loader" element={<Loader />} />
         </Route>
         <Route path="*" element={<NotFoundPage />} />
-        
       </Routes>
     </Router>
   );

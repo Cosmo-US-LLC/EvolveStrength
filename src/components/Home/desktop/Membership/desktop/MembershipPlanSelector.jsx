@@ -1,11 +1,9 @@
 import React from "react";
 import check_with_circle from "../../../../../assets/images/desktop/check_with_circle.svg";
+import { useDispatch, useSelector } from "react-redux";
+import { setPlan } from "../../../../../redux/slices/planSlice";
 
-const MembershipPlanSelector = ({
-  selectedPlan,
-  setSelectedPlan,
-  planData,
-}) => {
+const MembershipPlanSelector = () => {
   const monthlyPlanBenefits = [
     "$0 Enrollment Fee",
     "$0 Maintenance fee",
@@ -13,6 +11,12 @@ const MembershipPlanSelector = ({
     "Access to all locations",
   ];
 
+  const dispatch = useDispatch();
+  const {
+    plan,
+    clubPlanMonthly,
+    clubPlanYearly
+  } = useSelector((state) => state.plan);
   return (
     <div className="max-w-[1280px]">
       <div>
@@ -22,32 +26,28 @@ const MembershipPlanSelector = ({
 
         <div className="flex flex-row items-center mt-1 p-[6px] bg-[#000000]/60 backdrop-blur-[20px] w-[607px] h-[72px] border border-[#464646]">
           <button
-            onClick={() => setSelectedPlan("monthly")}
+            onClick={() => dispatch(setPlan("monthly"))}
             className={`cursor-pointer w-[326px] h-[59px] flex items-center justify-center font-[vazirmatn] ${
-              selectedPlan === "monthly" ? "bg-[#2DDE28]" : "bg-transparent"
+              plan === "monthly" ? "bg-[#2DDE28]" : "bg-transparent"
             }`}
           >
             <p
               className={`font-[400] uppercase text-[20px] font-[vazirmatn] leading-[24px] ${
-                selectedPlan === "monthly"
-                  ? "text-black font-[700]"
-                  : "text-white"
+                plan === "monthly" ? "text-black font-[700]" : "text-white"
               }`}
             >
               MONTH TO MONTH
             </p>
           </button>
           <button
-            onClick={() => setSelectedPlan("yearly")}
+            onClick={() => dispatch(setPlan("yearly"))}
             className={`cursor-pointer w-[326px] h-[59px] flex items-center justify-center ${
-              selectedPlan === "yearly" ? "bg-[#2DDE28]" : "bg-transparent"
+              plan === "yearly" ? "bg-[#2DDE28]" : "bg-transparent"
             }`}
           >
             <p
               className={`font-[400] text-[20px] font-[vazirmatn] leading-[24px] ${
-                selectedPlan === "yearly"
-                  ? "text-black font-[700]"
-                  : "text-white"
+                plan === "yearly" ? "text-black font-[700]" : "text-white"
               }`}
             >
               1 YEAR CONTRACT
@@ -61,9 +61,9 @@ const MembershipPlanSelector = ({
           BI-WEEKLY
         </p>
         <p className="text-[#2DDE28] text-[68px] font-medium font-[vazirmatn]">
-          {selectedPlan == "monthly"
-            ? planData?.[0]?.downPayments?.[0]?.subTotal
-            : planData?.[1]?.downPayments?.[0]?.subTotal}
+          {plan == "monthly"
+            ? clubPlanMonthly?.scheduleTotalAmount || "$--.--"
+            : clubPlanYearly?.scheduleTotalAmount || "$--.--"}
         </p>
         <div className="w-[537.2px] h-[1px] bg-white/20"></div>
 

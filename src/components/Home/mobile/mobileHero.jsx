@@ -5,33 +5,49 @@ import { useNavigate } from "react-router-dom";
 import { locations } from "../../../constant/locationsData";
 import Cookies from "js-cookie";
 import { useDispatch, useSelector } from "react-redux";
-import { resetClubLocation, resetClubLocationPostal, setClubLocation, setClubLocationPostal } from "../../../redux/slices/planSlice";
+import {
+  resetClubLocation,
+  resetClubLocationPostal,
+  setClubLocation,
+  setClubLocationPostal,
+} from "../../../redux/slices/planSlice";
+import Loader from "../../Loader";
 
 const MobileHero = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const [selected, setSelected] = useState(locations[0]);
   const [isOpen, setIsOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
   // console.log({selected})
-  const { clubLocation, clubLocationPostal, clubPlans, isLoading, error } = useSelector((state) => state.plan);
-  console.log(clubLocation, clubLocationPostal)
+  const { clubLocation, clubLocationPostal, clubPlans, isLoading, error } =
+    useSelector((state) => state.plan);
+  console.log(clubLocation, clubLocationPostal);
 
   Cookies.set("location", selected.clubName);
 
   const takeATourHandler = () => {
-    dispatch(setClubLocation(selected.clubName))
-    dispatch(setClubLocationPostal(parseInt(selected.postalCode)))
+    dispatch(setClubLocation(selected.clubName));
+    dispatch(setClubLocationPostal(parseInt(selected.postalCode)));
     navigate(`/location-details?location=${selected.postalCode}`);
   };
 
-  useEffect(()=>{
-    dispatch(resetClubLocation())
-    dispatch(resetClubLocationPostal())
-  }, [])
+  useEffect(() => {
+    dispatch(resetClubLocation());
+    dispatch(resetClubLocationPostal());
 
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1000); // 2 seconds delay
+
+    // Clean up the timeout on component unmount
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) return <Loader />;
   return (
     <div
-      className="min-h-screen bg-cover bg-no-repeat flex flex-col justify-center sm:bg-center bg-[center_top_10%]"
+      className="min-h-screen bg-black bg-cover bg-no-repeat flex flex-col justify-center sm:bg-center bg-[center_top_10%]"
       style={{ backgroundImage: `url(${heroImage})` }}
     >
       <div className="text-white text-center font-[kanit] font-[700] text-[50px] leading-[42px] uppercase px-6 mb-8">

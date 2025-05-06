@@ -8,10 +8,18 @@ import DebitForm from "./DebitForm";
 import CardForm from "./CardForm";
 import Turnstile from "react-turnstile";
 import useScrollDirection from "../../../../../hooks/useScrollDirection";
-import Cookies from "js-cookie";
+import { useSelector } from "react-redux";
 
-function ReviewAndPay({ selectedPlan, setSelectedPlan }) {
+function ReviewAndPay() {
   const [selectPlan, setSelectPlan] = useState("direct_debit");
+  const {
+    clubLocationPostal,
+    clubLocationId,
+    plan,
+    clubPlanMonthly,
+    clubPlanYearly,
+    userInfo,
+  } = useSelector((state) => state.plan);
   const [isHuman, setIsHuman] = useState(false);
   const navigate = useNavigate();
   const scrollDirection = useScrollDirection();
@@ -28,16 +36,20 @@ function ReviewAndPay({ selectedPlan, setSelectedPlan }) {
   const [errors, setErrors] = useState({});
   const [apiError, setApiError] = useState(null);
 
-  const location = Cookies.get("locationCode");
-  const planId = Cookies.get("planId");
-  const planValidate = Cookies.get("planValidation");
-  const fName = Cookies.get("firstName");
-  const lName = Cookies.get("lastName");
+  const location = clubLocationPostal;
+  const planId =
+    plan === "monthly" ? clubPlanMonthly?.planId : clubPlanYearly?.planId;
+  const planValidate =
+    plan === "monthly"
+      ? clubPlanMonthly?.planValidation
+      : clubPlanYearly?.planValidation;
+  const fName = userInfo?.fname;
+  const lName = userInfo?.lname;
   const formattedLastName = lName.charAt(0).toUpperCase();
-  const email = Cookies.get("email");
-  const gender = Cookies.get("gender");
-  let number = Cookies.get("number") || "";
-  const accountId = Cookies.get("accountId");
+  const email = userInfo?.email;
+  const gender = userInfo?.gender;
+  let number = userInfo?.phone;
+  const accountId = clubLocationId;
 
   const digitsOnly = number.replace(/\D/g, "");
   if (digitsOnly.length === 10) {
@@ -47,7 +59,7 @@ function ReviewAndPay({ selectedPlan, setSelectedPlan }) {
     console.warn("Invalid phone number format");
     number = "";
   }
-  let selectedDate = Cookies.get("selectedDate") || "";
+  let selectedDate = userInfo?.dob;
 
   if (selectedDate) {
     const dateObj = new Date(selectedDate);
@@ -59,9 +71,9 @@ function ReviewAndPay({ selectedPlan, setSelectedPlan }) {
   } else {
     console.warn("Invalid or missing selectedDate");
   }
-  const address = Cookies.get("address");
-  const city = Cookies.get("city");
-  const rawPostalCode = Cookies.get("postalCode") || "";
+  const address = userInfo?.address;
+  const city = userInfo?.city;
+  const rawPostalCode = userInfo?.postal;
   const formattedPostalCode = rawPostalCode
     .toUpperCase()
     .replace(/\s+/g, "")
@@ -75,8 +87,6 @@ function ReviewAndPay({ selectedPlan, setSelectedPlan }) {
   if (!isValidPostalCode) {
     console.error("Invalid Canadian postal code format:", formattedPostalCode);
   }
-
-  console.log("formattedPostalCode", formattedPostalCode);
 
   const provinceMap = {
     Alberta: "AB",
@@ -94,7 +104,7 @@ function ReviewAndPay({ selectedPlan, setSelectedPlan }) {
     Yukon: "YT",
   };
 
-  const provinceName = Cookies.get("province") || "";
+  const provinceName = userInfo?.province;
   const stateCode = provinceMap[provinceName] || "";
 
   const routingNumber = `0${institutionNumber}${transitNumber}`;
@@ -170,6 +180,8 @@ function ReviewAndPay({ selectedPlan, setSelectedPlan }) {
     };
   }
 
+  console.log("payload", payload);
+
   const createPeople = async () => {
     try {
       const response = await fetch(
@@ -219,7 +231,6 @@ function ReviewAndPay({ selectedPlan, setSelectedPlan }) {
       );
       const data = await response.json();
       const message = data?.data?.restResponse?.status?.message;
-      console.log("data", message);
 
       if (message && message.toLowerCase() === "success") {
         createPeople();
@@ -237,20 +248,31 @@ function ReviewAndPay({ selectedPlan, setSelectedPlan }) {
   const validateFields = () => {
     const newErrors = {};
 
+    if (!firstName.trim()) newErrors.firstName = true;
+    if (!lastName.trim()) newErrors.lastName = true;
+
     if (selectPlan === "direct_debit") {
-      if (!firstName.trim()) newErrors.firstName = true;
-      if (!lastName.trim()) newErrors.lastName = true;
-      if (!transitNumber.trim()) newErrors.transitNumber = true;
-      if (!institutionNumber.trim()) newErrors.institutionNumber = true;
-      if (!accountNumber.trim()) newErrors.accountNumber = true;
+      if (!transitNumber.trim() || transitNumber.length > 5)
+        newErrors.transitNumber = true;
+
+      if (!institutionNumber.trim() || institutionNumber.length > 4)
+        newErrors.institutionNumber = true;
+
+      if (!accountNumber.trim() || accountNumber.length !== 10)
+        newErrors.accountNumber = true;
+
+      if (!verifyAccountNumber.trim()) newErrors.verifyAccountNumber = true;
+
       if (accountNumber !== verifyAccountNumber)
         newErrors.verifyAccountNumber = true;
     } else {
-      if (!firstName.trim()) newErrors.firstName = true;
-      if (!lastName.trim()) newErrors.lastName = true;
-      if (!cardNumber.trim()) newErrors.cardNumber = true;
-      if (!cvv.trim()) newErrors.cvv = true;
-      if (!expirationDate.trim()) newErrors.expirationDate = true;
+      if (!cardNumber.trim() || cardNumber.length !== 16)
+        newErrors.cardNumber = true;
+
+      if (!cvv.trim() || cvv.length !== 3) newErrors.cvv = true;
+
+      if (!expirationDate.trim() || expirationDate.length < 4)
+        newErrors.expirationDate = true;
     }
 
     setErrors(newErrors);
@@ -297,7 +319,6 @@ function ReviewAndPay({ selectedPlan, setSelectedPlan }) {
                 setVerifyAccountNumber={setVerifyAccountNumber}
                 confirm={confirm}
                 setConfirm={setConfirm}
-                selectedPlan={selectedPlan}
                 errors={errors}
                 setErrors={setErrors}
               />
@@ -315,7 +336,6 @@ function ReviewAndPay({ selectedPlan, setSelectedPlan }) {
                 setExpirationDate={setExpirationDate}
                 confirm={confirm}
                 setConfirm={setConfirm}
-                selectedPlan={selectedPlan}
                 errors={errors}
                 setErrors={setErrors}
               />
@@ -323,10 +343,7 @@ function ReviewAndPay({ selectedPlan, setSelectedPlan }) {
           </div>
 
           <div>
-            <MembershipSummaryBoxDesktop
-              selectedPlan={selectedPlan}
-              setSelectedPlan={setSelectedPlan}
-            />
+            <MembershipSummaryBoxDesktop />
             <Turnstile
               sitekey="0x4AAAAAABWSTWCqAhOt104z"
               onSuccess={() => setIsHuman(true)}

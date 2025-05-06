@@ -1,11 +1,18 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { resetState } from "../../../../redux/slices/planSlice";
 
-function Congratulations({ selectedPlan }) {
+function Congratulations() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { plan, clubPlanMonthly, clubPlanYearly } = useSelector(
+    (state) => state.plan
+  );
 
   const handleBackHome = () => {
     navigate(`/`);
+    dispatch(resetState());
   };
 
   return (
@@ -36,14 +43,16 @@ function Congratulations({ selectedPlan }) {
           </div>{" "}
           <div className="flex justify-between font-[vazirmatn] text-white/90 text-[16px] font-regular border-t border-white/20 pt-4">
             <span>Subscription</span>
-            <span>{selectedPlan == "monthly" ? "Month To Month" : "1 Year Contract"}</span>
+            <span>
+              {plan == "monthly" ? "Month To Month" : "1 Year Contract"}
+            </span>
           </div>
           <div className="flex justify-between text-white/90 text-sm text-[20px] leading-[24px] capitalize font-semibold border-t border-white/20 pt-4">
             <span>Amount Paid</span>
             <span>
-              {selectedPlan === "monthly"
-                ? localStorage.getItem("noContractTotal")
-                : localStorage.getItem("contractTotal")}
+              {plan === "monthly"
+                ? clubPlanMonthly?.scheduleTotalAmount
+                : clubPlanYearly?.scheduleTotalAmount}
             </span>
           </div>
         </div>
