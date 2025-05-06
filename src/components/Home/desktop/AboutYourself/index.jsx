@@ -7,23 +7,60 @@ import AboutYourselfForm from "./AboutYourselfForm";
 import { useNavigate } from "react-router-dom";
 import useScrollDirection from "../../../../hooks/useScrollDirection";
 import Cookies from "js-cookie";
+import { useDispatch, useSelector } from "react-redux";
+import { setUserInfo } from "../../../../redux/slices/planSlice";
 
 function AboutYourself({ selectedPlan }) {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { userInfo, isLoading, error } = useSelector((state) => state.plan);
   const scrollDirection = useScrollDirection();
   const [validationErrors, setValidationErrors] = useState({});
+  const [errors, setErrors] = useState([]);
+
+  function updateErrs(valueToRemove) {
+    const updatedArr = errors.filter((item) => item !== valueToRemove);
+    setErrors(updatedArr);
+  }
+
+  const validateForm = () => {
+    const errors = [];
+
+    if (!fname.trim()) errors.push("fname");
+    if (!lname.trim()) errors.push("lname");
+    if (!email.trim()) {
+      errors.push("email");
+    } else if (!/^\S+@\S+\.\S+$/.test(email)) {
+      errors.push("email");
+    }
+
+    if (!phone.trim() || phone.length < 10 || phone.length > 14)
+      errors.push("phone");
+    if (!address.trim()) errors.push("address");
+    if (!province.trim()) errors.push("province");
+    if (!city.trim()) errors.push("city");
+    if (!postal.trim()) errors.push("postal");
+    if (!dob) errors.push("dob");
+    if (!gender) errors.push("gender");
+
+    if (errors.length > 0) {
+      console.error("Validation Errors:", errors);
+      return errors;
+    }
+    return false;
+  };
 
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    number: "",
-    address: "",
-    province: "",
-    city: "",
-    postalCode: "",
-    selectedDate: "",
-    gender: "",
+    firstName: userInfo?.fname || "",
+    lastName: userInfo?.lname || "",
+    email: userInfo?.email || "",
+    number: userInfo?.phone || "",
+    address: userInfo?.address || "",
+    province: userInfo?.province || "",
+    city: userInfo?.city || "",
+    postalCode: userInfo?.postal || "",
+    selectedDate: userInfo?.dob || "",
+    gender: userInfo?.gender || "",
   });
 
   const handleJoinNow = () => {

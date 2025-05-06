@@ -6,6 +6,7 @@ const initialState = {
   plan: "monthly",
   clubLocation: "",
   clubLocationPostal: null,
+  clubLocationId: null,
   clubPlans: [],
   clubPlanMonthly: null,
   clubPlanYearly: null,
@@ -28,6 +29,9 @@ const planSlice = createSlice({
     },
     setClubLocationPostal(state, action) {
       state.clubLocationPostal = action.payload;
+    },
+    setClubLocationId(state, action) {
+      state.clubLocationId = action.payload;
     },
     setClubPlans(state, action) {
       state.clubPlans = action.payload;
@@ -65,6 +69,11 @@ const planSlice = createSlice({
       state.isLoading = false;
       state.error = null;
     },
+    resetClubLocationId: (state) => {
+      state.clubLocationId = null;
+      state.isLoading = false;
+      state.error = null;
+    },
     resetClubPlans: (state) => {
       state.clubPlans = [];
       state.isLoading = false;
@@ -94,6 +103,7 @@ const planSlice = createSlice({
       state.plan = "monthly";
       state.clubLocation = "";
       state.clubLocationPostal = null;
+      state.clubLocationId = null;
       state.clubPlans = [];
       state.clubPlanMonthly = null;
       state.clubPlanYearly = null;
@@ -146,6 +156,7 @@ export const {
   setPlan,
   setClubLocation,
   setClubLocationPostal,
+  setClubLocationId,
   setClubPlans,
   setClubPlanMonthly,
   setClubPlanYearly,
@@ -155,6 +166,7 @@ export const {
   setError,
   resetPlan,
   resetClubLocation,
+  resetClubLocationId,
   resetClubLocationPostal,
   resetClubPlans,
   resetClubPlanMonthly,

@@ -4,10 +4,21 @@ import { locations } from "../../../constant/locationsData";
 import ChevronDownFilled from "../../../assets/images/desktop/chevron-down-filled.svg";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  resetClubLocation,
+  resetClubLocationId,
+  resetClubLocationPostal,
+  setClubLocation,
+  setClubLocationId,
+  setClubLocationPostal,
+} from "../../../redux/slices/planSlice";
 
 function LocationDesktop() {
+  const dispatch = useDispatch();
+  const { clubLocation, clubLocationPostal, clubLocationId, clubPlans, isLoading, error } = useSelector((state) => state.plan);
+  console.log("clubLocation", clubLocation, clubLocationPostal, clubLocationId)
   const [selectedLocation, setSelectedLocation] = useState(locations[0]);
-  console.log("selectedLocation", selectedLocation.postalCode);
   useEffect(() => {
     let loc = selectedLocation.postalCode;
 
@@ -16,14 +27,23 @@ function LocationDesktop() {
     }
     Cookies.set("locationCode", loc);
     Cookies.set("location", selectedLocation.clubName);
-    Cookies.set("accountId", selectedLocation.accountId)
+    Cookies.set("accountId", selectedLocation.accountId);
   }, [selectedLocation]);
 
   const navigate = useNavigate();
 
   const handleTakeTour = () => {
+    dispatch(setClubLocation(selectedLocation.clubName));
+    dispatch(setClubLocationPostal(parseInt(selectedLocation.postalCode)));
+    dispatch(setClubLocationId(parseInt(selectedLocation.accountId)))
     navigate(`/membership?location=${selectedLocation.postalCode}`);
   };
+
+  useEffect(() => {
+    dispatch(resetClubLocation());
+    dispatch(resetClubLocationPostal());
+    dispatch(resetClubLocationId())
+  }, []);
 
   return (
     <div className="relative z-10 flex flex-col items-center justify-center min-h-screen gap-6 overflow-hidden location-bg">

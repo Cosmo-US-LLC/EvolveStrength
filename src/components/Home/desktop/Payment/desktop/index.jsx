@@ -76,7 +76,6 @@ function ReviewAndPay({ selectedPlan, setSelectedPlan }) {
     console.error("Invalid Canadian postal code format:", formattedPostalCode);
   }
 
-  console.log("formattedPostalCode", formattedPostalCode);
 
   const provinceMap = {
     Alberta: "AB",
@@ -219,7 +218,6 @@ function ReviewAndPay({ selectedPlan, setSelectedPlan }) {
       );
       const data = await response.json();
       const message = data?.data?.restResponse?.status?.message;
-      console.log("data", message);
 
       if (message && message.toLowerCase() === "success") {
         createPeople();
