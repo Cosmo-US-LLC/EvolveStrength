@@ -34,14 +34,14 @@ function MembershipDesktop({ selectedPlan, setSelectedPlan }) {
       try {
         setLoading(true);
         const response = await fetch(
-          `http://67.205.158.199:3009/api/getClubInfo?location=${location}`
+          `http://138.197.175.219:8081/api/getClubInfo?location=${location}`
         );
         const data = await response.json();
 
         const planDataResponses = await Promise.all(
           data?.plans?.map((club) => {
             return fetch(
-              `http://67.205.158.199:3009/api/getPlanDetails?location=${location}&planId=${club.planId}`
+              `http://138.197.175.219:8081/api/getPlanDetails?location=${location}&planId=${club.planId}`
             )
               .then((res) => res.json())
               .catch((err) => {

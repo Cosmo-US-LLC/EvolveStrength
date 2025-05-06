@@ -197,7 +197,7 @@ const MemberPayment = () => {
       }
 
       const response = await fetch(
-        `http://67.205.158.199:3009/api/submitAgreement?location=${clubLocationPostal}`,
+        `http://138.197.175.219:8081/api/submitAgreement?location=${clubLocationPostal}`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -247,7 +247,7 @@ const MemberPayment = () => {
     }
 
     const response = await fetch(
-      `http://67.205.158.199:3009/api/createPerson`,
+      `http://138.197.175.219:8081/api/createPerson`,
       {
         method: "POST",
         headers: {

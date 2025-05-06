@@ -173,7 +173,7 @@ function ReviewAndPay({ selectedPlan, setSelectedPlan }) {
   const createPeople = async () => {
     try {
       const response = await fetch(
-        `http://67.205.158.199:3009/api/createPerson`,
+        `http://138.197.175.219:8081/api/createPerson`,
         {
           method: "POST",
           headers: {
@@ -210,7 +210,7 @@ function ReviewAndPay({ selectedPlan, setSelectedPlan }) {
   const getAgreementInfo = async () => {
     try {
       const response = await fetch(
-        `http://67.205.158.199:3009/api/submitAgreement?location=${location}`,
+        `http://138.197.175.219:8081/api/submitAgreement?location=${location}`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

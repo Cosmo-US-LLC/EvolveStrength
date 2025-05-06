@@ -4,7 +4,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 // Define a service using a base URL and expected endpoints
 export const plansApi = createApi({
   reducerPath: 'plansApi',
-  baseQuery: fetchBaseQuery({ baseUrl: "http://67.205.158.199:3009/api" }),
+  baseQuery: fetchBaseQuery({ baseUrl: "http://138.197.175.219:8081/api" }),
   endpoints: (builder) => ({
     getClubPlans: builder.query({
       query: (location) => `/getClubInfo?location=${location}`,
