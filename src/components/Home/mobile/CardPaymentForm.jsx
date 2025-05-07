@@ -16,24 +16,14 @@ const CardPaymentForm = ({
   setCardNumber,
   cvv,
   setCvv,
-  expirationDate, 
+  expirationDate,
   setExpirationDate,
   errors,
   updateErrs,
 }) => {
   const navigate = useNavigate();
-  const {
-    userInfo,
-    startDate,
-    clubLocation,
-    plan,
-    clubLocationPostal,
-    clubPlans,
-    clubPlanMonthly,
-    clubPlanYearly,
-    isLoading,
-    error,
-  } = useSelector((state) => state.plan);
+  const { plan, clubPlanMonthly, clubPlanYearly, isLoading, error } =
+    useSelector((state) => state.plan);
 
   const [confirm, setConfirm] = useState(false);
 
@@ -42,7 +32,7 @@ const CardPaymentForm = ({
       <div className="text-white ">
         <p className="text-white text-[18px] font-medium leading-[42px] capitalize">
           Set Your Monthly Payment Of&nbsp;
-          {plan == "monthly"
+          {plan === "monthly"
             ? clubPlanMonthly?.downPaymentTotalAmount
             : clubPlanYearly?.downPaymentTotalAmount}
         </p>
@@ -54,70 +44,99 @@ const CardPaymentForm = ({
 
       <div className="flex flex-col w-full gap-4">
         <div className="flex flex-row gap-4">
-          <input
-            type="text"
-            placeholder="First Name"
-            value={fname}
-            onChange={(e) => {
-              setFname(e.target.value);
-              updateErrs("fname");
-            }}
-            className={`w-full px-4 py-3 bg-black border border-[#999] text-white text-[16px] font-[400] placeholder-[#999999] text-left rounded-none ${
-              errors?.includes("fname") && "!border-red-500"
-            }`}
-          />
-          <input
-            type="text"
-            placeholder="Last Name"
-            value={lname}
-            onChange={(e) => {
-              setLname(e.target.value);
-              updateErrs("lname");
-            }}
-            className={`w-full px-4 py-3 bg-black border border-[#999] text-white text-[16px] font-[400] placeholder-[#999999] text-left rounded-none ${
-              errors?.includes("lname") && "!border-red-500"
-            }`}
-          />
+          <div className="w-full">
+            <input
+              type="text"
+              placeholder="First Name"
+              value={fname}
+              onChange={(e) => {
+                setFname(e.target.value);
+                updateErrs("fname");
+              }}
+              className={`w-full px-4 py-3 bg-black border border-[#999] text-white text-[16px] font-[400] placeholder-[#999999] text-left rounded-none ${
+                errors?.fname && "!border-red-500"
+              }`}
+            />
+            {errors?.fname && (
+              <p className="text-red-500 text-[12px] mt-1">{errors.fname}</p>
+            )}
+          </div>
+
+          <div className="w-full">
+            <input
+              type="text"
+              placeholder="Last Name"
+              value={lname}
+              onChange={(e) => {
+                setLname(e.target.value);
+                updateErrs("lname");
+              }}
+              className={`w-full px-4 py-3 bg-black border border-[#999] text-white text-[16px] font-[400] placeholder-[#999999] text-left rounded-none ${
+                errors?.lname && "!border-red-500"
+              }`}
+            />
+            {errors?.lname && (
+              <p className="text-red-500 text-[12px] mt-1">{errors.lname}</p>
+            )}
+          </div>
         </div>
 
-        <input
-          type="text"
-          placeholder="Card Number"
-          value={cardNumber}
-          onChange={(e) => {
-            setCardNumber(e.target.value);
-            updateErrs("cardNumber");
-          }}
-          className={`w-full px-4 py-3 bg-black border border-[#999] text-white text-[16px] font-[400] placeholder-[#999999] text-left rounded-none ${
-            errors?.includes("cardNumber") && "!border-red-500"
-          }`}
-        />
+        <div className="w-full">
+          <input
+            type="text"
+            placeholder="Card Number"
+            value={cardNumber}
+            onChange={(e) => {
+              setCardNumber(e.target.value);
+              updateErrs("cardNumber");
+            }}
+            className={`w-full px-4 py-3 bg-black border border-[#999] text-white text-[16px] font-[400] placeholder-[#999999] text-left rounded-none ${
+              errors?.cardNumber && "!border-red-500"
+            }`}
+          />
+          {errors?.cardNumber && (
+            <p className="text-red-500 text-[12px] mt-1">{errors.cardNumber}</p>
+          )}
+        </div>
 
         <div className="flex flex-row gap-4">
-          <input
-            type="text"
-            placeholder="CVV"
-            value={cvv}
-            onChange={(e) => {
-              setCvv(e.target.value);
-              updateErrs("cvv");
-            }}
-            className={`w-full px-4 py-3 bg-black border border-[#999] text-white text-[16px] font-[400] placeholder-[#999999] text-left rounded-none ${
-              errors?.includes("cvv") && "!border-red-500"
-            }`}
-          />
-          <input
-            type="text"
-            placeholder="Expiration Date"
-            value={expirationDate}
-            onChange={(e) => {
-              setExpirationDate(e.target.value);
-              updateErrs("expirationDate");
-            }}
-            className={`w-full px-4 py-3 bg-black border border-[#999] text-white text-[16px] font-[400] placeholder-[#999999] text-left rounded-none ${
-              errors?.includes("expirationDate") && "!border-red-500"
-            }`}
-          />
+          <div className="w-full">
+            <input
+              type="text"
+              placeholder="CVV"
+              value={cvv}
+              onChange={(e) => {
+                setCvv(e.target.value);
+                updateErrs("cvv");
+              }}
+              className={`w-full px-4 py-3 bg-black border border-[#999] text-white text-[16px] font-[400] placeholder-[#999999] text-left rounded-none ${
+                errors?.cvv && "!border-red-500"
+              }`}
+            />
+            {errors?.cvv && (
+              <p className="text-red-500 text-[12px] mt-1">{errors.cvv}</p>
+            )}
+          </div>
+
+          <div className="w-full">
+            <input
+              type="text"
+              placeholder="Expiration Date"
+              value={expirationDate}
+              onChange={(e) => {
+                setExpirationDate(e.target.value);
+                updateErrs("expirationDate");
+              }}
+              className={`w-full px-4 py-3 bg-black border border-[#999] text-white text-[16px] font-[400] placeholder-[#999999] text-left rounded-none ${
+                errors?.expirationDate && "!border-red-500"
+              }`}
+            />
+            {errors?.expirationDate && (
+              <p className="text-red-500 text-[12px] mt-1">
+                {errors.expirationDate}
+              </p>
+            )}
+          </div>
         </div>
       </div>
 
@@ -134,7 +153,12 @@ const CardPaymentForm = ({
       </div>
 
       <label className="flex items-start gap-2 text-[16px] font-[vazirmatn] text-[#D8D8D8] font-[400] mt-4">
-        <input type="checkbox" className="mt-1" checked={confirm} onChange={(e)=>setConfirm(e.target.checked)} />
+        <input
+          type="checkbox"
+          className="mt-1"
+          checked={confirm}
+          onChange={(e) => setConfirm(e.target.checked)}
+        />
         <span>
           Please confirm you have read our{" "}
           <span className="text-[#2DDE28] text-[16px]">

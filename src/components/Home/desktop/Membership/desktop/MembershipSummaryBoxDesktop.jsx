@@ -28,7 +28,7 @@ const MembershipSummaryBoxDesktop = () => {
         <div>
           <button
             onClick={handleEdit}
-            className="button w-[80px] h-[36px] leading-[15px] flex justify-center items-center border font-[vazirmatn] border-[white] text-[white] cursor-pointer font-[500] uppercase text-[14px]"
+            className="button w-[80px] leading-[15px] flex justify-center items-center border font-[vazirmatn] border-[white] text-[white] cursor-pointer font-[500] uppercase text-[14px]" style={{paddingBottom: "8px", paddingTop: "12px"}}
           >
             Edit
           </button>

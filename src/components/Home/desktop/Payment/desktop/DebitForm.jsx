@@ -28,7 +28,10 @@ function DebitForm({
   );
 
   return (
-    <div className="max-w-[600px] space-y-4 text-white">
+    <div
+      className="max-w-[600px] space-y-4 text-white"
+      style={{ height: "700px" }}
+    >
       <h1 className="text-[40px] font-[500] leading-[42px] font-[kanit] capitalize mb-6 text-left mt-4">
         Set Your Monthly Payment Of <br />{" "}
         {plan === "monthly"
@@ -55,10 +58,13 @@ function DebitForm({
                 }
               }}
               className={`p-3 text-white font-[vazirmatn] bg-[#000000]/60 backdrop-blur-[10px] placeholder-[#999999] ${
-                errors.firstName ? "border-red-500" : "border-[#999999]"
+                errors.firstName ? "border-[#c20000]" : "border-[#999999]"
               } border`}
               placeholder="First Name"
             />
+            {errors.firstName && (
+              <p className="text-[#c20000] mt-1 text-sm">{errors.firstName}</p>
+            )}
           </div>
 
           <div className="flex flex-col">
@@ -74,16 +80,19 @@ function DebitForm({
                 }
               }}
               className={`p-3 border text-white font-[vazirmatn] bg-[#000000]/60 backdrop-blur-[10px] placeholder-[#999999] ${
-                errors.lastName ? "border-red-500" : "border-[#999999]"
+                errors.lastName ? "border-[#c20000]" : "border-[#999999]"
               }`}
               placeholder="Last Name"
             />
+            {errors.lastName && (
+              <p className="text-[#c20000] mt-1 text-sm">{errors.lastName}</p>
+            )}
           </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
           <div className="flex flex-col">
-            <div className="flex items-center">
+            <div className="items-center">
               <input
                 type="text"
                 id="transitNumber"
@@ -96,15 +105,20 @@ function DebitForm({
                   }
                 }}
                 className={`p-3 bg-[#000000]/60 backdrop-blur-[10px] font-[vazirmatn] border text-white w-full placeholder-[#999999] ${
-                  errors.transitNumber ? "border-red-500" : "border-[#999999]"
+                  errors.transitNumber ? "border-[#c20000]" : "border-[#999999]"
                 }`}
                 placeholder="Transit Number"
               />
+              {errors.transitNumber && (
+                <p className="text-[#c20000] mt-1 text-sm">
+                  {errors.transitNumber}
+                </p>
+              )}
             </div>
           </div>
 
           <div className="flex flex-col">
-            <div className="flex items-center">
+            <div className="items-center">
               <input
                 type="text"
                 id="institutionNumber"
@@ -121,11 +135,16 @@ function DebitForm({
                 }}
                 className={`p-3 bg-[#000000]/60 backdrop-blur-[10px] font-[vazirmatn] border text-white w-full placeholder-[#999999] ${
                   errors.institutionNumber
-                    ? "border-red-500"
+                    ? "border-[#c20000]"
                     : "border-[#999999]"
                 }`}
                 placeholder="Institution Number"
               />
+              {errors.institutionNumber && (
+                <p className="text-[#c20000] mt-1 text-sm">
+                  {errors.institutionNumber}
+                </p>
+              )}
             </div>
           </div>
         </div>
@@ -161,10 +180,15 @@ function DebitForm({
                   }
                 }}
                 className={`p-3 bg-[#000000]/60 backdrop-blur-[10px] font-[vazirmatn] border text-white placeholder-[#999999] ${
-                  errors.accountNumber ? "border-red-500" : "border-[#999999]"
+                  errors.accountNumber ? "border-[#c20000]" : "border-[#999999]"
                 }`}
                 placeholder="Account Number"
               />
+              {errors.accountNumber && (
+                <p className="text-[#c20000] mt-1 text-sm">
+                  {errors.accountNumber}
+                </p>
+              )}
             </div>
             <label className="text-[14px] font-[vazirmatn] flex flex-row items-center mt-2 gap-2">
               Where is my Account Number?
@@ -215,11 +239,16 @@ function DebitForm({
               }}
               className={`p-3 bg-[#000000]/60 backdrop-blur-[10px] font-[vazirmatn] border text-white placeholder-[#999999] ${
                 errors.verifyAccountNumber
-                  ? "border-red-500"
+                  ? "border-[#c20000]"
                   : "border-[#999999]"
               }`}
               placeholder="Verify Account Number"
             />
+            {errors.verifyAccountNumber && (
+              <p className="text-[#c20000] mt-1 text-sm">
+                {errors.verifyAccountNumber}
+              </p>
+            )}
           </div>
         </div>
 
@@ -234,13 +263,14 @@ function DebitForm({
           />
         </div>
 
-        <div className="flex items-center mb-6 mt-4">
+        <div className="flex items-start mb-6 mt-4">
           <input
             type="checkbox"
             id="accountHolder"
             checked={termsAgreed}
             onChange={() => setTermsAgreed(!termsAgreed)}
             className="mr-2"
+            style={{ marginTop: "3.5px" }}
           />
           <label
             htmlFor="accountHolder"
@@ -251,13 +281,14 @@ function DebitForm({
           </label>
         </div>
 
-        <div className="flex items-center mb-6">
+        <div className="flex items-start mb-6">
           <input
             type="checkbox"
             id="renewAgreed"
             checked={renewAgreed}
             onChange={() => setRenewAgreed(!renewAgreed)}
             className="mr-2"
+            style={{ marginTop: "3.5px" }}
           />
           <label
             htmlFor="renewAgreed"
@@ -270,13 +301,14 @@ function DebitForm({
           </label>
         </div>
 
-        <div className="flex items-center mb-6 ">
+        <div className="flex items-start mb-6 ">
           <input
             type="checkbox"
             id="terms"
             checked={confirm}
             onChange={() => setConfirm(!confirm)}
             className="mr-2"
+            style={{ marginTop: "3.5px" }}
           />
           <label
             htmlFor="terms"

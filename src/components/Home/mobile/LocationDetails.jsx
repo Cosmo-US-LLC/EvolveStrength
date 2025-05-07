@@ -10,15 +10,38 @@ import { useLocation, useNavigate } from "react-router-dom";
 import EventDatePicker from "../../../utils/EventDatePicker";
 import Cookies from "js-cookie";
 import { useDispatch, useSelector } from "react-redux";
-import { plansApi, useGetClubPlanDetailsQuery, useGetClubPlansQuery } from "../../../redux/services/plan";
-import { resetClubPlanMonthly, resetClubPlanYearly, setClubPlanMonthly, setClubPlans, setClubPlanYearly, setStartDate } from "../../../redux/slices/planSlice";
+import {
+  plansApi,
+  useGetClubPlanDetailsQuery,
+  useGetClubPlansQuery,
+} from "../../../redux/services/plan";
+import {
+  resetClubPlanMonthly,
+  resetClubPlanYearly,
+  setClubPlanMonthly,
+  setClubPlans,
+  setClubPlanYearly,
+  setStartDate,
+} from "../../../redux/slices/planSlice";
 import { formatDate } from "../../../libs/utils";
 
 const LocationDetails = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { clubLocation, clubLocationPostal, clubPlans, clubPlanMonthly, clubPlanYearly, isLoading, error } = useSelector((state) => state.plan);
-  const { data, error: queryError, isLoading: queryLoading } = useGetClubPlansQuery(clubLocationPostal);
+  const {
+    clubLocation,
+    clubLocationPostal,
+    clubPlans,
+    clubPlanMonthly,
+    clubPlanYearly,
+    isLoading,
+    error,
+  } = useSelector((state) => state.plan);
+  const {
+    data,
+    error: queryError,
+    isLoading: queryLoading,
+  } = useGetClubPlansQuery(clubLocationPostal);
   const [localLoad, setLocalLoad] = useState(true);
 
   useEffect(() => {
@@ -27,25 +50,24 @@ const LocationDetails = () => {
     }
   }, [data, dispatch]);
 
-  console.log(clubLocation, clubLocationPostal)
-  useEffect(()=>{
+  useEffect(() => {
     if (!clubLocationPostal) {
       navigate(`/`);
     }
-    dispatch(resetClubPlanMonthly())
-    dispatch(resetClubPlanYearly())
-  }, [])
-  useEffect(()=>{
+    dispatch(resetClubPlanMonthly());
+    dispatch(resetClubPlanYearly());
+  }, []);
+  useEffect(() => {
     if (clubPlans?.length > 1) {
-      setLocalLoad(false)
+      setLocalLoad(false);
     }
-  }, [clubPlans])
+  }, [clubPlans]);
 
-  useEffect(()=>{
+  useEffect(() => {
     if (clubPlanMonthly && clubPlanYearly && !localLoad) {
       navigate(`/membership-plan`);
     }
-  }, [clubPlanMonthly, clubPlanYearly])
+  }, [clubPlanMonthly, clubPlanYearly]);
   // const selectedLocation = Cookies.get("location");
 
   const spaceIndex = clubLocation.indexOf(" ");
@@ -59,39 +81,36 @@ const LocationDetails = () => {
     { icon: equipmentIcon, label: "Top of the Line Equipment" },
     { icon: locationIcon, label: "Access to All Locations" },
   ];
- 
+
   const handleContinue = async () => {
-    setLocalLoad(true)
-    console.log(formatDate(selectedDate));
+    setLocalLoad(true);
     dispatch(setStartDate(formatDate(selectedDate)));
-  
+
     for (let [index, club] of clubPlans.entries()) {
       try {
         const result = await dispatch(
-          plansApi.endpoints.getClubPlanDetails.initiate(
-            {
-              location: clubLocationPostal,
-              planId: club.planId
-            }
-          )
+          plansApi.endpoints.getClubPlanDetails.initiate({
+            location: clubLocationPostal,
+            planId: club.planId,
+          })
         ).unwrap();
-  
+
         if (index === 0) {
-          console.log(result)
           dispatch(setClubPlanMonthly(result));
         } else {
-          console.log(result)
           dispatch(setClubPlanYearly(result));
         }
         // navigate(`/membership-plan${searchParams}&startDate=${formattedDate}`);
       } catch (err) {
-        console.error(`Failed to fetch plan details for club ${club.planId}:`, err);
+        console.error(
+          `Failed to fetch plan details for club ${club.planId}:`,
+          err
+        );
       } finally {
-        setLocalLoad(false)
+        setLocalLoad(false);
       }
     }
-  };  
-  console.log(clubPlanMonthly, clubPlanYearly)
+  };
 
   return (
     <div className="min-h-screen pt-[74px] bg-black text-white px-4 flex flex-col">
@@ -142,7 +161,7 @@ const LocationDetails = () => {
              px-0 py-[12.801px] border border-[#2DDE28] font-[kanit] 
              bg-[#2DDE28] text-black text-[16px] font-[500] 
              uppercase mb-5 disabled:opacity-60"
-        disabled={(selectedDate == null) || localLoad}
+        disabled={selectedDate == null || localLoad}
       >
         Continue
       </button>

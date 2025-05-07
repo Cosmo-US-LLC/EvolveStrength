@@ -28,43 +28,78 @@ const MemberDetails = () => {
   const [province, setProvince] = useState(userInfo?.province || "");
   const [city, setCity] = useState(userInfo?.city || "");
   const [postal, setPostal] = useState(userInfo?.postal || "");
-  const [dob, setDob] = useState(userInfo?.dob && new Date(userInfo?.dob) || "");
+  const [dob, setDob] = useState(
+    (userInfo?.dob && new Date(userInfo?.dob)) || ""
+  );
   const [gender, setGender] = useState(userInfo?.gender || "");
 
-  function updateErrs(valueToRemove) {
-    const updatedArr = errors.filter((item) => item !== valueToRemove);
-    setErrors(updatedArr);
+  function updateErrs(field, value) {
+    const newErrors = { ...errors };
+
+    switch (field) {
+      case "fname":
+      case "lname":
+      case "address":
+      case "province":
+      case "city":
+      case "postal":
+        if (value.trim()) delete newErrors[field];
+        break;
+      case "email":
+        if (/^\S+@\S+\.\S+$/.test(value)) delete newErrors[field];
+        break;
+      case "phone":
+        if (value.length >= 10 && value.length <= 14) delete newErrors[field];
+        break;
+      case "dob":
+        if (value) delete newErrors[field];
+        break;
+      case "gender":
+        if (value) delete newErrors[field];
+        break;
+      default:
+        break;
+    }
+
+    setErrors(newErrors);
   }
 
   const validateForm = () => {
-    const errors = [];
+    const errors = {};
 
-    if (!fname.trim()) errors.push("fname");
-    if (!lname.trim()) errors.push("lname");
+    if (!fname.trim()) errors.fname = "First name is required.";
+    if (!lname.trim()) errors.lname = "Last name is required.";
+
     if (!email.trim()) {
-      errors.push("email");
+      errors.email = "Email is required.";
     } else if (!/^\S+@\S+\.\S+$/.test(email)) {
-      errors.push("email");
+      errors.email = "Invalid email format.";
     }
 
-    if (!phone.trim() || phone.length < 10 || phone.length > 14) errors.push("phone");
-    if (!address.trim()) errors.push("address");
-    if (!province.trim()) errors.push("province");
-    if (!city.trim()) errors.push("city");
-    if (!postal.trim()) errors.push("postal");
-    if (!dob) errors.push("dob");
-    if (!gender) errors.push("gender");
+    if (!phone.trim()) {
+      errors.phone = "Phone number is required.";
+    } else if (phone.length < 10 || phone.length > 14) {
+      errors.phone = "Phone number must be between 10 and 14 digits.";
+    }
 
-    if (errors.length > 0) {
+    if (!address.trim()) errors.address = "Address is required.";
+    if (!province.trim()) errors.province = "Province is required.";
+    if (!city.trim()) errors.city = "City is required.";
+    if (!postal.trim()) errors.postal = "Postal code is required.";
+    if (!dob) errors.dob = "Date of birth is required.";
+    if (!gender) errors.gender = "Gender is required.";
+
+    if (Object.keys(errors).length > 0) {
       console.error("Validation Errors:", errors);
       return errors;
     }
+
     return false;
   };
 
   function addUser() {
     const errorStatus = validateForm();
-    if (errorStatus && errorStatus.length > 0) {
+    if (errorStatus) {
       console.warn("Please fix the form errors.");
       setErrors(errorStatus);
       return;
@@ -81,8 +116,8 @@ const MemberDetails = () => {
       city,
       postal,
       dob: formatDate(dob),
-      gender
-    }
+      gender,
+    };
     console.log(payload);
     dispatch(setUserInfo(payload));
     navigate("/member-Payment");
@@ -114,131 +149,207 @@ const MemberDetails = () => {
         </p>
 
         <div className="flex flex-row gap-4">
-          <input
-            type="text"
-            placeholder="First Name"
-            value={fname}
-            onChange={(e) => {
-              setFname(e.target.value);
-              updateErrs("fname");
-            }}
-            className={`w-full px-4 py-3 bg-transparent border border-white/40 placeholder-[#999999] text-[16px] font-[400] ${
-              errors?.includes("fname") && "!border-red-500"
-            }`}
-          />
-          <input
-            type="text"
-            placeholder="Last Name"
-            value={lname}
-            onChange={(e) => {
-              setLname(e.target.value);
-              updateErrs("lname");
-            }}
-            className={`w-full px-4 py-3 bg-transparent border border-white/40 placeholder-[#999999] text-[16px] font-[400] ${
-              errors?.includes("lname") && "!border-red-500"
-            }`}
-          />
+          <div className="w-full">
+            <input
+              type="text"
+              placeholder="First Name"
+              value={fname}
+              onChange={(e) => {
+                setFname(e.target.value);
+                updateErrs("fname", e.target.value);
+              }}
+              className={`w-full px-4 py-3 bg-transparent border ${
+                errors?.fname ? "!border-red-500" : "border-white/40"
+              } placeholder-[#999999] text-[16px] font-[400]`}
+            />
+            {errors?.fname && (
+              <p className="text-red-500 text-sm mt-1">{errors.fname}</p>
+            )}
+          </div>
+
+          <div className="w-full">
+            <input
+              type="text"
+              placeholder="Last Name"
+              value={lname}
+              onChange={(e) => {
+                setLname(e.target.value);
+                updateErrs("lname", e.target.value);
+              }}
+              className={`w-full px-4 py-3 bg-transparent border ${
+                errors?.lname ? "!border-red-500" : "border-white/40"
+              } placeholder-[#999999] text-[16px] font-[400]`}
+            />
+            {errors?.lname && (
+              <p className="text-red-500 text-sm mt-1">{errors.lname}</p>
+            )}
+          </div>
         </div>
 
-        <input
-          type="email"
-          placeholder="Email Address"
-          value={email}
-          onChange={(e) => {
-            setEmail(e.target.value);
-            updateErrs("email");
-          }}
-          className={`w-full px-4 py-3 bg-transparent border border-white/40 placeholder-[#999999] text-[16px] font-[400] ${
-            errors?.includes("email") && "!border-red-500"
-          }`}
-        />
-        <input
-          type="tel"
-          placeholder="Phone Number"
-          value={phone}
-          onChange={(e) => {
-            setPhone(e.target.value);
-            updateErrs("phone");
-          }}
-          className={`w-full px-4 py-3 bg-transparent border border-white/40 placeholder-[#999999] text-[16px] font-[400] ${
-            errors?.includes("phone") && "!border-red-500"
-          }`}
-        />
-        <input
-          type="text"
-          placeholder="Mailing Address"
-          value={address}
-          onChange={(e) => {
-            setAddress(e.target.value);
-            updateErrs("address");
-          }}
-          className={`w-full px-4 py-3 bg-transparent border border-white/40 placeholder-[#999999] text-[16px] font-[400] ${
-            errors?.includes("address") && "!border-red-500"
-          }`}
-        />
-        <input
-          type="text"
-          placeholder="Province"
-          value={province}
-          onChange={(e) => {
-            setProvince(e.target.value);
-            updateErrs("province");
-          }}
-          className={`w-full px-4 py-3 bg-transparent border border-white/40 placeholder-[#999999] text-[16px] font-[400] ${
-            errors?.includes("province") && "!border-red-500"
-          }`}
-        />
+        <div>
+          <input
+            type="email"
+            placeholder="Email Address"
+            value={email}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              updateErrs("email", e.target.value);
+            }}
+            className={`w-full px-4 py-3 bg-transparent border ${
+              errors?.email ? "!border-red-500" : "border-white/40"
+            } placeholder-[#999999] text-[16px] font-[400]`}
+          />
+          {errors?.email && (
+            <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+          )}
+        </div>
 
-        <div className="flex flex-row gap-4">
+        <div>
+          <input
+            type="tel"
+            placeholder="Phone Number"
+            value={phone}
+            onChange={(e) => {
+              setPhone(e.target.value);
+              updateErrs("phone", e.target.value);
+            }}
+            className={`w-full px-4 py-3 bg-transparent border ${
+              errors?.phone ? "!border-red-500" : "border-white/40"
+            } placeholder-[#999999] text-[16px] font-[400]`}
+          />
+          {errors?.phone && (
+            <p className="text-red-500 text-sm mt-1">{errors.phone}</p>
+          )}
+        </div>
+
+        <div>
           <input
             type="text"
-            placeholder="City"
-            value={city}
+            placeholder="Mailing Address"
+            value={address}
             onChange={(e) => {
-              setCity(e.target.value);
-              updateErrs("city");
+              setAddress(e.target.value);
+              updateErrs("address", e.target.value);
             }}
-            className={`w-full px-4 py-3 bg-transparent border border-white/40 placeholder-[#999999] text-[16px] font-[400] ${
-              errors?.includes("city") && "!border-red-500"
-            }`}
+            className={`w-full px-4 py-3 bg-transparent border ${
+              errors?.address ? "!border-red-500" : "border-white/40"
+            } placeholder-[#999999] text-[16px] font-[400]`}
           />
+          {errors?.address && (
+            <p className="text-red-500 text-sm mt-1">{errors.address}</p>
+          )}
+        </div>
+
+        <div>
           <input
             type="text"
-            placeholder="Postal Code"
-            value={postal}
+            placeholder="Province"
+            value={province}
             onChange={(e) => {
-              setPostal(e.target.value);
-              updateErrs("postal");
+              setProvince(e.target.value);
+              updateErrs("province", e.target.value);
             }}
-            className={`w-full px-4 py-3 bg-transparent border border-white/40 placeholder-[#999999] text-[16px] font-[400] ${
-              errors?.includes("postal") && "!border-red-500"
-            }`}
+            className={`w-full px-4 py-3 bg-transparent border ${
+              errors?.province ? "!border-red-500" : "border-white/40"
+            } placeholder-[#999999] text-[16px] font-[400]`}
           />
+          {errors?.province && (
+            <p className="text-red-500 text-sm mt-1">{errors.province}</p>
+          )}
         </div>
 
         <div className="flex flex-row gap-4">
-          <DOBPicker dob={dob} setDob={setDob} errors={errors} />
+          <div className="w-full">
+            <input
+              type="text"
+              placeholder="City"
+              value={city}
+              onChange={(e) => {
+                setCity(e.target.value);
+                updateErrs("city", e.target.value);
+              }}
+              className={`w-full px-4 py-3 bg-transparent border ${
+                errors?.city ? "!border-red-500" : "border-white/40"
+              } placeholder-[#999999] text-[16px] font-[400]`}
+            />
+            {errors?.city && (
+              <p className="text-red-500 text-sm mt-1">{errors.city}</p>
+            )}
+          </div>
+
+          <div className="w-full">
+            <input
+              type="text"
+              placeholder="Postal Code"
+              value={postal}
+              onChange={(e) => {
+                setPostal(e.target.value);
+                updateErrs("postal", e.target.value);
+              }}
+              className={`w-full px-4 py-3 bg-transparent border ${
+                errors?.postal ? "!border-red-500" : "border-white/40"
+              } placeholder-[#999999] text-[16px] font-[400]`}
+            />
+            {errors?.postal && (
+              <p className="text-red-500 text-sm mt-1">{errors.postal}</p>
+            )}
+          </div>
+        </div>
+
+        <div className="flex flex-row gap-4">
+          <div className="w-full">
+            <DOBPicker
+              dob={dob}
+              setDob={setDob}
+              errors={errors}
+              updateErrs={updateErrs}
+            />
+            {errors?.dob && (
+              <p className="text-red-500 text-sm mt-1">{errors.dob}</p>
+            )}
+          </div>
 
           <div className="relative w-full">
             <select
               value={gender}
-              onChange={(e) => setGender(e.target.value)} // ✅ Update gender
+              onChange={(e) => {
+                setGender(e.target.value);
+                updateErrs("gender", e.target.value);
+              }}
               onClick={toggleDropdown}
-              className={`w-full appearance-none px-4 py-2.5 bg-[#1C1C1C] border border-white/40 placeholder-[#999999] text-[#999999] text-[16px] font-[400] outline-none ${errors?.includes("gender") && "!border-red-500"}`}
+              className={`w-full appearance-none px-4 py-2.5 bg-transparent border ${
+                errors?.gender ? "!border-red-500" : "border-white/40"
+              } placeholder-[#999999] text-[#999999] text-[16px] font-[400] outline-none`}
             >
-              <option className="bg-[#1C1C1C] cursor-pointer text-[#999999]" value="">
+              <option
+                className="bg-[#1C1C1C] cursor-pointer text-[#999999]"
+                value=""
+              >
                 Gender
               </option>
-              <option className="bg-[#1C1C1C] cursor-pointer text-white" value="Male">
+              <option
+                className="bg-[#1C1C1C] cursor-pointer text-white"
+                value="Male"
+              >
                 Male
               </option>
-              <option className="bg-[#1C1C1C] cursor-pointer text-white" value="Female">
+              <option
+                className="bg-[#1C1C1C] cursor-pointer text-white"
+                value="Female"
+              >
                 Female
               </option>
-              <option className="bg-[#1C1C1C] cursor-pointer text-white" value="Other">
+              <option
+                className="bg-[#1C1C1C] cursor-pointer text-white"
+                value="Other"
+              >
                 Other
               </option>
             </select>
+
+            {errors?.gender && (
+              <p className="text-red-500 text-sm mt-1">{errors.gender}</p>
+            )}
 
             <img
               src={dropdownIcon}

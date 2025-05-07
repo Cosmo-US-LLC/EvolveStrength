@@ -9,9 +9,18 @@ const MembershipVancouver = (props) => {
   // console.log(props);
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(props.step === 1 ? true : false);
-  const selectedLocation = Cookies.get("location");
   // const {startDate, planData} = props;
-  const { startDate, clubLocation, plan, clubLocationPostal, clubPlans, clubPlanMonthly, clubPlanYearly, isLoading, error } = useSelector((state) => state.plan);
+  const {
+    startDate,
+    clubLocation,
+    plan,
+    clubLocationPostal,
+    clubPlans,
+    clubPlanMonthly,
+    clubPlanYearly,
+    isLoading,
+    error,
+  } = useSelector((state) => state.plan);
 
   return (
     <div
@@ -27,7 +36,7 @@ const MembershipVancouver = (props) => {
           </span>
           <br />
           <span className="text-[#2DDE28] font-[kanit] text-[18px] font-[700] leading-[18.046px] tracking-[-0.645px] uppercase">
-            {selectedLocation}
+            {clubLocation}
           </span>
         </div>
         <div className="flex items-center gap-[2px]">
@@ -70,13 +79,17 @@ const MembershipVancouver = (props) => {
               {startDate}
             </span>
           </div>
-          {(plan == "monthly" ? clubPlanMonthly : clubPlanYearly)?.expirationDate?.length > 1 && (
+          {(plan == "monthly" ? clubPlanMonthly : clubPlanYearly)
+            ?.expirationDate?.length > 1 && (
             <div className="flex justify-between">
               <span className="text-white text-[16px] font-[vazirmatn] font-normal leading-[20.382px] capitalize">
                 End Date
               </span>
               <span className="text-white text-[16px] font-[vazirmatn] font-normal leading-[20.382px] capitalize">
-                {formatDate((plan == "monthly" ? clubPlanMonthly : clubPlanYearly)?.expirationDate)}
+                {formatDate(
+                  (plan == "monthly" ? clubPlanMonthly : clubPlanYearly)
+                    ?.expirationDate
+                )}
               </span>
             </div>
           )}
@@ -84,11 +97,13 @@ const MembershipVancouver = (props) => {
           <div className="flex justify-between">
             <span className="text-white font-[vazirmatn] text-[16px] font-normal leading-[20.382px] capitalize">
               {/* Bi-Weekly */}
-              {(plan == "monthly" ? clubPlanMonthly : clubPlanYearly)?.scheduleFrequency || "Bi-Weekly"}
+              {(plan == "monthly" ? clubPlanMonthly : clubPlanYearly)
+                ?.scheduleFrequency || "Bi-Weekly"}
             </span>
             <span className="text-white font-[vazirmatn] text-[16px] font-normal leading-[20.382px] capitalize">
               {/* $96.66 */}
-              {(plan == "monthly" ? clubPlanMonthly : clubPlanYearly)?.scheduleTotalAmount || "$--.--"}
+              {(plan == "monthly" ? clubPlanMonthly : clubPlanYearly)
+                ?.downPayments?.[0]?.subTotal || "$--.--"}
             </span>
           </div>
           <div className="flex justify-between">
@@ -96,7 +111,18 @@ const MembershipVancouver = (props) => {
               Initiation Fee
             </span>
             <span className="text-white font-[vazirmatn] text-[16px] font-normal leading-[20.382px] capitalize">
-              $0.00
+              {(plan == "monthly" ? clubPlanMonthly : clubPlanYearly)
+                ?.downPayments?.[0]?.tax || "$--.--"}
+            </span>
+          </div>
+          <div className="w-full h-[1px] bg-white/20 my-2" />
+          <div className="flex justify-between">
+            <span className="text-white font-[vazirmatn] text-[16px] font-normal leading-[20.382px] capitalize">
+              Total
+            </span>
+            <span className="text-white font-[vazirmatn] text-[16px] font-normal leading-[20.382px] capitalize">
+              {(plan == "monthly" ? clubPlanMonthly : clubPlanYearly)
+                ?.downPayments?.[0]?.total || "$--.--"}
             </span>
           </div>
         </div>

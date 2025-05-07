@@ -12,7 +12,7 @@ import { useSelector } from "react-redux";
 
 const MemberPayment = () => {
   const navigate = useNavigate();
-  const [paymentMethod, setPaymentMethod] = useState("direct");
+  const [paymentMethod, setPaymentMethod] = useState("card");
   const {
     userInfo,
     startDate,
@@ -26,7 +26,7 @@ const MemberPayment = () => {
     error,
   } = useSelector((state) => state.plan);
 
-  const [errors, setErrors] = useState([]);
+  const [errors, setErrors] = useState({});
   const [fname, setFname] = useState(userInfo?.fname || "");
   const [lname, setLname] = useState(userInfo?.lname || "");
   const [transitNumber, setTransitNumber] = useState("");
@@ -45,49 +45,63 @@ const MemberPayment = () => {
   }, []);
 
   function updateErrs(valueToRemove) {
-    const updatedArr = errors.filter((item) => item !== valueToRemove);
-    setErrors(updatedArr);
+    const updatedErrs = { ...errors };
+    delete updatedErrs[valueToRemove];
+    setErrors(updatedErrs);
   }
 
   const validateForm = () => {
-    const errors = [];
+    const newErrors = {};
 
-    if (!fname.trim()) errors.push("fname");
-    if (!lname.trim()) errors.push("lname");
+    if (!fname.trim()) newErrors.fname = "First name is required.";
+    if (!lname.trim()) newErrors.lname = "Last name is required.";
 
     if (paymentMethod === "direct") {
-      if (!transitNumber.trim() || transitNumber?.length > 5)
-        errors.push("transitNumber");
-      if (!institutionNumber.trim() || institutionNumber?.length > 4)
-        errors.push("institutionNumber");
-      if (!accountNumber.trim() || accountNumber?.length != 10)
-        errors.push("accountNumber");
-      if (!verifyAccountNumber.trim()) errors.push("verifyAccountNumber");
-      if (accountNumber !== verifyAccountNumber) {
-        errors.push("verifyAccountNumber");
-      }
+      if (!transitNumber.trim())
+        newErrors.transitNumber = "Transit number is required.";
+      else if (transitNumber.length > 5)
+        newErrors.transitNumber = "Transit number must be 5 digits or fewer.";
+
+      if (!institutionNumber.trim())
+        newErrors.institutionNumber = "Institution number is required.";
+      else if (institutionNumber.length > 4)
+        newErrors.institutionNumber =
+          "Institution number must be 4 digits or fewer.";
+
+      if (!accountNumber.trim())
+        newErrors.accountNumber = "Account number is required.";
+      else if (accountNumber.length !== 10)
+        newErrors.accountNumber = "Account number must be exactly 10 digits.";
+
+      if (!verifyAccountNumber.trim())
+        newErrors.verifyAccountNumber = "Please re-enter your account number.";
+      else if (accountNumber !== verifyAccountNumber)
+        newErrors.verifyAccountNumber = "Account numbers do not match.";
     } else if (paymentMethod === "card") {
-      if (
-        !cardNumber.trim() ||
-        cardNumber.length < 16 ||
-        cardNumber.length > 16
-      )
-        errors.push("cardNumber");
-      if (!cvv.trim() || cvv.length < 3 || cvv.length > 3) errors.push("cvv");
-      if (!expirationDate.trim() || expirationDate.length < 4)
-        errors.push("expirationDate");
+      if (!cardNumber.trim()) newErrors.cardNumber = "Card number is required.";
+      else if (cardNumber.length !== 16)
+        newErrors.cardNumber = "Card number must be exactly 16 digits.";
+
+      if (!cvv.trim()) newErrors.cvv = "CVV is required.";
+      else if (cvv.length !== 3)
+        newErrors.cvv = "CVV must be exactly 3 digits.";
+
+      if (!expirationDate.trim())
+        newErrors.expirationDate = "Expiration date is required.";
+      else if (expirationDate.length < 4)
+        newErrors.expirationDate = "Expiration date must be in MMYY format.";
     }
 
-    if (errors.length > 0) {
-      console.error("Validation Errors:", errors);
-      return errors;
+    if (Object.keys(newErrors).length > 0) {
+      console.error("Validation Errors:", newErrors);
+      return newErrors;
     }
     return false;
   };
 
   const makeAgreement = async () => {
     const errorStatus = validateForm();
-    if (errorStatus && errorStatus.length > 0) {
+    if (errorStatus && Object.keys(errorStatus).length > 0) {
       console.warn("Please fix the form errors.");
       setErrors(errorStatus);
       return;
@@ -260,7 +274,7 @@ const MemberPayment = () => {
           birthday: selectedDate || "",
           phone_mobile: userInfo?.phone || "",
           address: userInfo?.address || "",
-           city: userInfo?.city || "",
+          city: userInfo?.city || "",
           province: userInfo?.province || "",
           postal_code: formattedPostalCode || "",
           company_id: clubLocationPostal,
@@ -300,25 +314,6 @@ const MemberPayment = () => {
 
         <div className="border border-white/40 flex overflow-hidden p-1">
           <button
-            onClick={() => setPaymentMethod("direct")}
-            className={`cursor-pointer w-1/2 py-2 text-[14px] font-[500] font-[vazirmatn] uppercase flex items-center justify-center gap-2 ${
-              paymentMethod === "direct"
-                ? "bg-[#2DDE28] text-black"
-                : "text-white"
-            }`}
-          >
-            <img
-              src={
-                paymentMethod === "direct"
-                  ? debit_icon_active
-                  : debit_icon_inactive
-              }
-              alt="Direct Debit Icon"
-              className="w-4 h-4"
-            />
-            <span>Direct Debit</span>
-          </button>
-          <button
             onClick={() => setPaymentMethod("card")}
             className={`cursor-pointer w-1/2 py-2 text-[14px] font-[500] font-[vazirmatn] uppercase flex items-center justify-center space-x-2 ${
               paymentMethod === "card"
@@ -336,6 +331,25 @@ const MemberPayment = () => {
               className="w-4 h-4"
             />
             <span>Card pay</span>
+          </button>
+          <button
+            onClick={() => setPaymentMethod("direct")}
+            className={`cursor-pointer w-1/2 py-2 text-[14px] font-[500] font-[vazirmatn] uppercase flex items-center justify-center gap-2 ${
+              paymentMethod === "direct"
+                ? "bg-[#2DDE28] text-black"
+                : "text-white"
+            }`}
+          >
+            <img
+              src={
+                paymentMethod === "direct"
+                  ? debit_icon_active
+                  : debit_icon_inactive
+              }
+              alt="Direct Debit Icon"
+              className="w-4 h-4"
+            />
+            <span>Direct Debit</span>
           </button>
         </div>
       </div>
