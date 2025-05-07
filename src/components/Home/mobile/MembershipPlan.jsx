@@ -14,8 +14,17 @@ const MembershipPlan = () => {
   // console.log("location", location);
   // const [planData, setPlanData] = useState([]);
   const navigate = useNavigate();
-  const { startDate, clubLocation, plan, clubLocationPostal, clubPlans, clubPlanMonthly, clubPlanYearly, isLoading, error } = useSelector((state) => state.plan);
-
+  const {
+    startDate,
+    clubLocation,
+    plan,
+    clubLocationPostal,
+    clubPlans,
+    clubPlanMonthly,
+    clubPlanYearly,
+    isLoading,
+    error,
+  } = useSelector((state) => state.plan);
   function continueToMember() {
     navigate("/member-details");
   }
@@ -29,7 +38,11 @@ const MembershipPlan = () => {
         subtitle="Pick the membership that fits you best and choose your start date."
       />
 
-      <MembershipVancouver step={1} startDate={startDate} planData={plan === "monthly" ? clubPlanMonthly : clubPlanYearly} />
+      <MembershipVancouver
+        step={1}
+        startDate={startDate}
+        planData={plan === "monthly" ? clubPlanMonthly : clubPlanYearly}
+      />
 
       <div className="flex flex-col">
         <span className="text-white font-[kanit] text-[44px] font-[700] leading-[42px] uppercase">
@@ -90,7 +103,7 @@ const MembershipPlan = () => {
 
             <p className="text-[#2DDE28] font-[vazirmatn] text-[50px] font-[500] leading-[68px] mb-2">
               {/* $34.99 */}
-              {clubPlanMonthly?.totalContractValue || "$--.--"}
+              {clubPlanMonthly?.scheduleTotalAmount || "$--.--"}
             </p>
 
             <p className="text-[#999999] font-[vazirmatn] text-[16px] font-normal leading-[24px] mb-4">
@@ -106,7 +119,7 @@ const MembershipPlan = () => {
 
             <p className="text-[#2DDE28] font-[vazirmatn] text-[50px] font-[500] leading-[68px] mb-2">
               {/* $899.00 */}
-              {clubPlanYearly?.totalContractValue || "$--.--"}
+              {clubPlanYearly?.scheduleTotalAmount || "$--.--"}
             </p>
 
             <p className="text-[#999999] font-[vazirmatn] text-[16px] font-normal leading-[24px] mb-4">

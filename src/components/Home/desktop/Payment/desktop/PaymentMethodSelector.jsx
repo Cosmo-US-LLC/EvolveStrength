@@ -8,6 +8,29 @@ const PaymentMethodSelector = ({ selectPlan, setSelectPlan }) => {
   return (
     <div className="flex flex-row items-center mt-4 p-2 bg-[#000000]/60 backdrop-blur-[20px] w-[607px] h-[72px] border border-[1px] border-[#464646]">
       {/* DIRECT DEBIT */}
+
+      <button
+        onClick={() => setSelectPlan("card")}
+        className={`cursor-pointer w-[326px] h-[59px] flex items-center justify-center ${
+          selectPlan === "card" ? "bg-[#2DDE28]" : "bg-transparent"
+        }`}
+      >
+        <img
+          src={
+            selectPlan === "card" ? credit_icon_active : credit_icon_inactive
+          }
+          alt="Card Pay Icon"
+          className="w-6 h-6 mr-2"
+        />
+        <p
+          className={`font-[400] text-[20px] font-[vazirmatn] ${
+            selectPlan === "card" ? "text-black font-[700]" : "text-white"
+          }`}
+        >
+          CARD PAY
+        </p>
+      </button>
+
       <button
         onClick={() => setSelectPlan("direct_debit")}
         className={`cursor-pointer w-[326px] h-[59px] flex items-center justify-center ${
@@ -31,28 +54,6 @@ const PaymentMethodSelector = ({ selectPlan, setSelectPlan }) => {
           }`}
         >
           DIRECT DEBIT
-        </p>
-      </button>
-
-      <button
-        onClick={() => setSelectPlan("card")}
-        className={`cursor-pointer w-[326px] h-[59px] flex items-center justify-center ${
-          selectPlan === "card" ? "bg-[#2DDE28]" : "bg-transparent"
-        }`}
-      >
-        <img
-          src={
-            selectPlan === "card" ? credit_icon_active : credit_icon_inactive
-          }
-          alt="Card Pay Icon"
-          className="w-6 h-6 mr-2"
-        />
-        <p
-          className={`font-[400] text-[20px] font-[vazirmatn] ${
-            selectPlan === "card" ? "text-black font-[700]" : "text-white"
-          }`}
-        >
-          CARD PAY
         </p>
       </button>
     </div>

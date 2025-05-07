@@ -11,7 +11,7 @@ import useScrollDirection from "../../../../../hooks/useScrollDirection";
 import { useSelector } from "react-redux";
 
 function ReviewAndPay() {
-  const [selectPlan, setSelectPlan] = useState("direct_debit");
+  const [selectPlan, setSelectPlan] = useState("card");
   const {
     clubLocationPostal,
     clubLocationId,
@@ -25,6 +25,8 @@ function ReviewAndPay() {
   const scrollDirection = useScrollDirection();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [firstCardName, setFirstCardName] = useState("");
+  const [lastCardName, setLastCardName] = useState("");
   const [transitNumber, setTransitNumber] = useState("");
   const [institutionNumber, setInstitutionNumber] = useState("");
   const [accountNumber, setAccountNumber] = useState("");
@@ -162,8 +164,8 @@ function ReviewAndPay() {
     };
 
     payload.draftBillingInfo.draftCreditCard = {
-      creditCardFirstName: firstName || "John",
-      creditCardLastName: lastName || "Doe",
+      creditCardFirstName: firstCardName || "John",
+      creditCardLastName: lastCardName || "Doe",
       creditCardType: "visa",
       creditCardAccountNumber: cardNumber || "",
       creditCardExpMonth: expMonth || "00",
@@ -248,31 +250,45 @@ function ReviewAndPay() {
   const validateFields = () => {
     const newErrors = {};
 
-    if (!firstName.trim()) newErrors.firstName = true;
-    if (!lastName.trim()) newErrors.lastName = true;
-
     if (selectPlan === "direct_debit") {
-      if (!transitNumber.trim() || transitNumber.length > 5)
-        newErrors.transitNumber = true;
+      if (!firstName.trim()) newErrors.firstName = "First name is required.";
+      if (!lastName.trim()) newErrors.lastName = "Last name is required.";
+      if (!transitNumber.trim())
+        newErrors.transitNumber = "Transit number is required.";
+      else if (transitNumber.length > 5)
+        newErrors.transitNumber = "Transit number cannot exceed 5 digits.";
 
-      if (!institutionNumber.trim() || institutionNumber.length > 4)
-        newErrors.institutionNumber = true;
+      if (!institutionNumber.trim())
+        newErrors.institutionNumber = "Institution number is required.";
+      else if (institutionNumber.length > 4)
+        newErrors.institutionNumber =
+          "Institution number cannot exceed 4 digits.";
 
-      if (!accountNumber.trim() || accountNumber.length !== 10)
-        newErrors.accountNumber = true;
+      if (!accountNumber.trim())
+        newErrors.accountNumber = "Account number is required.";
+      else if (accountNumber.length !== 10)
+        newErrors.accountNumber = "Account number must be exactly 10 digits.";
 
-      if (!verifyAccountNumber.trim()) newErrors.verifyAccountNumber = true;
-
-      if (accountNumber !== verifyAccountNumber)
-        newErrors.verifyAccountNumber = true;
+      if (!verifyAccountNumber.trim())
+        newErrors.verifyAccountNumber = "Please re-enter your account number.";
+      else if (accountNumber !== verifyAccountNumber)
+        newErrors.verifyAccountNumber = "Account numbers do not match.";
     } else {
-      if (!cardNumber.trim() || cardNumber.length !== 16)
-        newErrors.cardNumber = true;
+      if (!firstCardName.trim())
+        newErrors.firstCardName = "First name is required.";
+      if (!lastCardName.trim())
+        newErrors.lastCardName = "Last name is required.";
+      if (!cardNumber.trim()) newErrors.cardNumber = "Card number is required.";
+      else if (cardNumber.length !== 16)
+        newErrors.cardNumber = "Card number must be 16 digits.";
 
-      if (!cvv.trim() || cvv.length !== 3) newErrors.cvv = true;
+      if (!cvv.trim()) newErrors.cvv = "CVV is required.";
+      else if (cvv.length !== 3) newErrors.cvv = "CVV must be 3 digits.";
 
-      if (!expirationDate.trim() || expirationDate.length < 4)
-        newErrors.expirationDate = true;
+      if (!expirationDate.trim())
+        newErrors.expirationDate = "Expiration date is required.";
+      else if (expirationDate.length < 4)
+        newErrors.expirationDate = "Expiration date is invalid.";
     }
 
     setErrors(newErrors);
@@ -324,10 +340,10 @@ function ReviewAndPay() {
               />
             ) : (
               <CardForm
-                firstName={firstName}
-                setFirstName={setFirstName}
-                lastName={lastName}
-                setLastName={setLastName}
+                firstCardName={firstCardName}
+                setFirstCardName={setFirstCardName}
+                lastCardName={lastCardName}
+                setLastCardName={setLastCardName}
                 cardNumber={cardNumber}
                 setCardNumber={setCardNumber}
                 cvv={cvv}

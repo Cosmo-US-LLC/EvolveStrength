@@ -44,21 +44,25 @@ function AboutYourself() {
   const validateForm = () => {
     const errors = {};
 
-    if (!formData.firstName.trim()) errors.firstName = true;
-    if (!formData.lastName.trim()) errors.lastName = true;
-    if (!/^\S+@\S+\.\S+$/.test(formData.email)) errors.email = true;
+    if (!formData.firstName.trim()) errors.firstName = "First name is required";
+    if (!formData.lastName.trim()) errors.lastName = "Last name is required";
+    if (!/^\S+@\S+\.\S+$/.test(formData.email))
+      errors.email = "Enter a valid email address";
     if (
       !formData.number ||
       formData.number.length < 10 ||
       formData.number.length > 14
     )
-      errors.number = true;
-    if (!formData.address.trim()) errors.address = true;
-    if (!formData.province.trim()) errors.province = true;
-    if (!formData.city.trim()) errors.city = true;
-    if (!formData.postalCode.trim()) errors.postalCode = true;
-    if (!formData.selectedDate) errors.selectedDate = true;
-    if (!formData.gender) errors.gender = true;
+      errors.number = "Enter a valid phone number";
+    if (!formData.address.trim())
+      errors.address = "Mailing address is required";
+    if (!formData.province.trim()) errors.province = "Province is required";
+    if (!formData.city.trim()) errors.city = "City is required";
+    if (!formData.postalCode.trim())
+      errors.postalCode = "Postal code is required";
+    if (!formData.selectedDate)
+      errors.selectedDate = "Date of birth is required";
+    if (!formData.gender) errors.gender = "Gender is required";
 
     setValidationErrors(errors);
     return Object.keys(errors).length === 0;
@@ -111,7 +115,8 @@ function AboutYourself() {
         <div className="flex justify-end items-end mt-8 w-full">
           <button
             onClick={handleJoinNow}
-            className="button  bg-[#2DDE28] text-black text-[16px] font-[vazirmatn] leading-[16px] uppercase font-medium w-[139px] h-[42px]"
+            className="button  bg-[#2DDE28] text-black text-[16px] font-[vazirmatn] leading-[16px] uppercase font-medium w-[139px]"
+            style={{ paddingBottom: "11px", paddingTop: "15px" }}
           >
             Next
           </button>

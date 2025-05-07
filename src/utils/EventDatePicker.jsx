@@ -49,9 +49,9 @@ const EventDatePicker = (props) => {
     setShowCalendar(false);
   };
 
-  useEffect(()=>{
-    setSelectedDate(formatDate(new Date()))
-  }, [])
+  useEffect(() => {
+    setSelectedDate(formatDate(new Date()));
+  }, []);
 
   const isToday = (day) =>
     today.getFullYear() === year &&
@@ -113,6 +113,7 @@ const EventDatePicker = (props) => {
         // onClick={() => setShowCalendar(true)}
         className="flex h-[46px] px-[14px] py-[10px] items-center justify-between w-full border border-[#999] bg-[rgba(3,3,3,0.41)] backdrop-blur-[15.9px] cursor-pointer"
       >
+        <img src={calendarIcon} alt="Calendar Icon" className="w-5 h-5 mr-2" />
         <input
           type="text"
           readOnly
@@ -120,7 +121,6 @@ const EventDatePicker = (props) => {
           placeholder="Pick a date"
           className="bg-transparent text-white text-[16px] font-[vazirmatn] w-full outline-none placeholder-[#999999] pt-1.5"
         />
-        <img src={calendarIcon} alt="Calendar Icon" className="w-5 h-5 ml-2" />
       </div>
 
       {showCalendar && (

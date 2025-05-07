@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import calendarIcon from "../assets/images/mobile/location-details/calendar.svg";
 
-const DOBPicker = (props) => {
+const DOBPickerDesktop = (props) => {
   const { title, dob, setDob, errors, updateErrs } = props;
+  console.log("dob", dob);
   const today = new Date();
   const minYear = 1900;
   const maxYear = today.getFullYear();
@@ -58,8 +59,18 @@ const DOBPicker = (props) => {
   };
 
   const handleSelectDate = (day) => {
-    const date = new Date(year, month, day);
-    setDob(date);
+    const selected = new Date(year, month, day);
+    if (isNaN(selected.getTime())) {
+      console.error("Invalid Date:", selected);
+      return;
+    }
+
+    console.log("selected", selected);
+
+    if (selected > today) return;
+
+    setDob(selected);
+    updateErrs("dob");
     setShowCalendar(false);
   };
 
@@ -74,9 +85,12 @@ const DOBPicker = (props) => {
   const formatDate = (date) => {
     if (!date) return "";
 
-    const day = date.getDate();
-    const month = date.getMonth();
-    const year = date.getFullYear();
+    const parsedDate = typeof date === "string" ? new Date(date) : date;
+    if (isNaN(parsedDate.getTime())) return "";
+
+    const day = parsedDate.getDate();
+    const month = parsedDate.getMonth();
+    const year = parsedDate.getFullYear();
 
     const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
     const monthNames = [
@@ -93,8 +107,7 @@ const DOBPicker = (props) => {
       "Nov",
       "Dec",
     ];
-
-    const dayOfWeek = dayNames[date.getDay()];
+    const dayOfWeek = dayNames[parsedDate.getDay()];
 
     return `${dayOfWeek}, ${day} ${monthNames[month]} ${year}`;
   };
@@ -110,7 +123,7 @@ const DOBPicker = (props) => {
   }, []);
 
   return (
-    <div className="relative w-full mb-4">
+    <div className="relative w-full">
       {title && (
         <label className="text-[#FFFFFF] text-[16px] font-[vazirmatn] font-normal leading-[25.2px] mb-1 block">
           Choose your start date
@@ -119,21 +132,20 @@ const DOBPicker = (props) => {
 
       <div
         onClick={() => setShowCalendar(true)}
-        className={`flex h-[46px] px-[14px] py-[10px] items-center justify-between w-full border border-[#999] bg-[rgba(3,3,3,0.41)] backdrop-blur-[15.9px] cursor-pointer ${
-          errors?.dob && "!border-red-500"
+        style={{ minWidth: "292px" }}
+        className={`flex px-4 py-3 items-center justify-between w-full border border-[#999] bg-[rgba(3,3,3,0.41)] backdrop-blur-[15.9px] cursor-pointer ${
+          errors?.includes("dob") && "!border-[#c20000]"
         }`}
       >
         <input
           type="text"
           readOnly
           value={formatDate(dob)}
-          onChange={(e) => updateErrs("dob", e.target.value)}
           placeholder="Pick a date"
           className="bg-transparent text-white text-[16px] font-[vazirmatn] w-full outline-none placeholder-[#999999]"
         />
         <img src={calendarIcon} alt="Calendar Icon" className="w-5 h-5 ml-2" />
       </div>
-
 
       {showCalendar && (
         <>
@@ -142,6 +154,7 @@ const DOBPicker = (props) => {
           <div
             ref={calendarRef}
             className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-[90%] max-w-md bg-[#1A1A1A] border border-[#FFFFFF] p-4 text-white shadow-lg"
+            style={{ minHeight: "320px" }}
           >
             <div className="flex items-center justify-between mb-3">
               <button
@@ -265,4 +278,4 @@ const DOBPicker = (props) => {
   );
 };
 
-export default DOBPicker;
+export default DOBPickerDesktop;

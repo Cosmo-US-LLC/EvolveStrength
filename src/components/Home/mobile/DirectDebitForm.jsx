@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import visaIcon from "../../../assets/images/mobile/payment/dabit1.svg";
 import mcIcon from "../../../assets/images/mobile/payment/dabit2.svg";
 import lockIcon from "../../../assets/images/mobile/payment/dabit3.svg";
-import { useSelector } from "react-redux";
 
 const DirectDebitForm = ({
   makeAgreement,
@@ -22,19 +21,9 @@ const DirectDebitForm = ({
   errors,
   updateErrs,
 }) => {
-  const navigate = useNavigate();
-  const {
-    userInfo,
-    startDate,
-    clubLocation,
-    plan,
-    clubLocationPostal,
-    clubPlans,
-    clubPlanMonthly,
-    clubPlanYearly,
-    isLoading,
-    error,
-  } = useSelector((state) => state.plan);
+  const { plan, clubPlanMonthly, clubPlanYearly } = useSelector(
+    (state) => state.plan
+  );
 
   const [holder, setHolder] = useState(false);
   const [agree, setAgree] = useState(false);
@@ -46,7 +35,7 @@ const DirectDebitForm = ({
         <div>
           <p className="text-white text-[18px] font-[500] font-[kanit] capitalize">
             Set Your Monthly Payment Of&nbsp;
-            {plan == "monthly"
+            {plan === "monthly"
               ? clubPlanMonthly?.downPaymentTotalAmount
               : clubPlanYearly?.downPaymentTotalAmount}
           </p>
@@ -57,60 +46,89 @@ const DirectDebitForm = ({
         </div>
 
         <div className="flex flex-col w-full gap-4">
+          {/* First and Last Name */}
           <div className="flex flex-row gap-3">
-            <input
-              type="text"
-              placeholder="First Name"
-              value={fname}
-              onChange={(e) => {
-                setFname(e.target.value);
-                updateErrs("fname");
-              }}
-              className={`w-full p-2 pt-3 border border-[#999] font-[vazirmatn] bg-black text-white text-[16px] font-[400] placeholder-[#999999] text-left ${
-                errors?.includes("fname") && "!border-red-500"
-              }`}
-            />
-            <input
-              type="text"
-              placeholder="Last Name"
-              value={lname}
-              onChange={(e) => {
-                setLname(e.target.value);
-                updateErrs("lname");
-              }}
-              className={`w-full p-2 pt-3 border border-[#999] font-[vazirmatn] bg-black text-white text-[16px] font-[400] placeholder-[#999999] text-left ${
-                errors?.includes("lname") && "!border-red-500"
-              }`}
-            />
+            <div className="w-full">
+              <input
+                type="text"
+                placeholder="First Name"
+                value={fname}
+                onChange={(e) => {
+                  setFname(e.target.value);
+                  updateErrs("fname");
+                }}
+                className={`w-full p-2 pt-3 border border-[#999] font-[vazirmatn] bg-black text-white text-[16px] font-[400] placeholder-[#999999] text-left ${
+                  errors?.fname && "!border-red-500"
+                }`}
+              />
+              {errors?.fname && (
+                <p className="text-red-500 text-[12px] mt-1">{errors.fname}</p>
+              )}
+            </div>
+
+            <div className="w-full">
+              <input
+                type="text"
+                placeholder="Last Name"
+                value={lname}
+                onChange={(e) => {
+                  setLname(e.target.value);
+                  updateErrs("lname");
+                }}
+                className={`w-full p-2 pt-3 border border-[#999] font-[vazirmatn] bg-black text-white text-[16px] font-[400] placeholder-[#999999] text-left ${
+                  errors?.lname && "!border-red-500"
+                }`}
+              />
+              {errors?.lname && (
+                <p className="text-red-500 text-[12px] mt-1">{errors.lname}</p>
+              )}
+            </div>
           </div>
 
+          {/* Transit and Institution Number */}
           <div className="flex flex-row gap-4">
-            <input
-              type="text"
-              placeholder="Transit Number"
-              value={transitNumber}
-              onChange={(e) => {
-                setTransitNumber(e.target.value);
-                updateErrs("transitNumber");
-              }}
-              className={`w-full p-2 pt-3 border border-[#999] font-[vazirmatn] bg-black text-white text-[16px] font-[400] placeholder-[#999999] text-left ${
-                errors?.includes("transitNumber") && "!border-red-500"
-              }`}
-            />
-            <input
-              type="text"
-              placeholder="Bank Number"
-              value={institutionNumber}
-              onChange={(e) => {
-                setInstitutionNumber(e.target.value);
-                updateErrs("institutionNumber");
-              }}
-              className={`w-full p-2 pt-3 border border-[#999] font-[vazirmatn] bg-black text-white text-[16px] font-[400] placeholder-[#999999] text-left ${
-                errors?.includes("institutionNumber") && "!border-red-500"
-              }`}
-            />
+            <div className="w-full">
+              <input
+                type="text"
+                placeholder="Transit Number"
+                value={transitNumber}
+                onChange={(e) => {
+                  setTransitNumber(e.target.value);
+                  updateErrs("transitNumber");
+                }}
+                className={`w-full p-2 pt-3 border border-[#999] font-[vazirmatn] bg-black text-white text-[16px] font-[400] placeholder-[#999999] text-left ${
+                  errors?.transitNumber && "!border-red-500"
+                }`}
+              />
+              {errors?.transitNumber && (
+                <p className="text-red-500 text-[12px] mt-1">
+                  {errors.transitNumber}
+                </p>
+              )}
+            </div>
+
+            <div className="w-full">
+              <input
+                type="text"
+                placeholder="Bank Number"
+                value={institutionNumber}
+                onChange={(e) => {
+                  setInstitutionNumber(e.target.value);
+                  updateErrs("institutionNumber");
+                }}
+                className={`w-full p-2 pt-3 border border-[#999] font-[vazirmatn] bg-black text-white text-[16px] font-[400] placeholder-[#999999] text-left ${
+                  errors?.institutionNumber && "!border-red-500"
+                }`}
+              />
+              {errors?.institutionNumber && (
+                <p className="text-red-500 text-[12px] mt-1">
+                  {errors.institutionNumber}
+                </p>
+              )}
+            </div>
           </div>
 
+          {/* Info Line */}
           <div className="flex flex-row gap-3 text-xs text-white">
             <div className="flex items-center w-full gap-2">
               <span className="text-[10px] font-[400] text-[#D8D8D8] font-[vazirmatn]">
@@ -130,34 +148,51 @@ const DirectDebitForm = ({
             </div>
           </div>
 
+          {/* Account and Verify Account */}
           <div className="flex flex-row gap-3">
-            <input
-              type="text"
-              placeholder="Account Number"
-              value={accountNumber}
-              onChange={(e) => {
-                setAccountNumber(e.target.value);
-                updateErrs("accountNumber");
-              }}
-              className={`w-full p-2 pt-3 border font-[vazirmatn] border-[#999] bg-black text-white text-[16px] font-[400] placeholder-[#999999] text-left ${
-                errors?.includes("accountNumber") && "!border-red-500"
-              }`}
-            />
-            <input
-              type="text"
-              placeholder="Verify Account"
-              value={verifyAccountNumber}
-              onChange={(e) => {
-                setVerifyAccountNumber(e.target.value);
-                updateErrs("verifyAccountNumber");
-              }}
-              className={`w-full p-2 pt-3 border font-[vazirmatn] border-[#999] bg-black text-white text-[16px] font-[400] placeholder-[#999999] text-left ${
-                errors?.includes("verifyAccountNumber") && "!border-red-500"
-              }`}
-            />
+            <div className="w-full">
+              <input
+                type="text"
+                placeholder="Account Number"
+                value={accountNumber}
+                onChange={(e) => {
+                  setAccountNumber(e.target.value);
+                  updateErrs("accountNumber");
+                }}
+                className={`w-full p-2 pt-3 border font-[vazirmatn] border-[#999] bg-black text-white text-[16px] font-[400] placeholder-[#999999] text-left ${
+                  errors?.accountNumber && "!border-red-500"
+                }`}
+              />
+              {errors?.accountNumber && (
+                <p className="text-red-500 text-[12px] mt-1">
+                  {errors.accountNumber}
+                </p>
+              )}
+            </div>
+
+            <div className="w-full">
+              <input
+                type="text"
+                placeholder="Verify Account"
+                value={verifyAccountNumber}
+                onChange={(e) => {
+                  setVerifyAccountNumber(e.target.value);
+                  updateErrs("verifyAccountNumber");
+                }}
+                className={`w-full p-2 pt-3 border font-[vazirmatn] border-[#999] bg-black text-white text-[16px] font-[400] placeholder-[#999999] text-left ${
+                  errors?.verifyAccountNumber && "!border-red-500"
+                }`}
+              />
+              {errors?.verifyAccountNumber && (
+                <p className="text-red-500 text-[12px] mt-1">
+                  {errors.verifyAccountNumber}
+                </p>
+              )}
+            </div>
           </div>
         </div>
 
+        {/* Payment Icons */}
         <div className="flex flex-col pt-1">
           <p className="text-[#CACACA] text-[16px] font-[400] font-[vazirmatn]">
             Guaranteed Safe checkout
@@ -173,7 +208,7 @@ const DirectDebitForm = ({
         <label className="flex items-start gap-3 text-[16px] text-[#D8D8D8] font-[vazirmatn] cursor-pointer">
           <input
             type="checkbox"
-            className="mt-1 accent-[#2DDE28] "
+            className="mt-1 accent-[#2DDE28]"
             checked={holder}
             onChange={(e) => setHolder(e.target.checked)}
           />

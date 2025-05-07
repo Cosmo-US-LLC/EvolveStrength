@@ -3,10 +3,10 @@ import guarantee_icons from "../../../../../assets/images/desktop/guarantee_icon
 import { useSelector } from "react-redux";
 
 function CardForm({
-  firstName,
-  setFirstName,
-  lastName,
-  setLastName,
+  firstCardName,
+  setFirstCardName,
+  lastCardName,
+  setLastCardName,
   cardNumber,
   setCardNumber,
   cvv,
@@ -24,7 +24,10 @@ function CardForm({
   );
 
   return (
-    <div className="max-w-[600px] space-y-4 text-white">
+    <div
+      className="max-w-[600px] space-y-4 text-white"
+      style={{ height: "700px" }}
+    >
       <h1 className="text-[40px] leading-[42px] font-[kanit] font-[500] capitalize  mb-6 text-left mt-4">
         Set your Bi-Weekly Payment of <br />{" "}
         {plan === "monthly"
@@ -43,19 +46,22 @@ function CardForm({
             <input
               type="text"
               id="firstName"
-              value={firstName}
+              value={firstCardName}
               onChange={(e) => {
                 const value = e.target.value;
-                setFirstName(value);
-                if (errors.firstName && value.trim() !== "") {
-                  setErrors((prev) => ({ ...prev, firstName: false }));
+                setFirstCardName(value);
+                if (errors.firstCardName && value.trim() !== "") {
+                  setErrors((prev) => ({ ...prev, firstCardName: false }));
                 }
               }}
               className={`p-3 border text-white font-[vazirmatn] bg-[#000000]/60 backdrop-blur-[10px] placeholder-[#999999] ${
-                errors.firstName ? "border-red-500" : "border-[#999999]"
+                errors.firstCardName ? "border-red-500" : "border-[#999999]"
               }`}
               placeholder="First Name"
             />
+            {errors.firstCardName && (
+              <p className="text-[#c20000] mt-1 text-sm">{errors.firstCardName}</p>
+            )}
           </div>
 
           {/* Last Name */}
@@ -63,19 +69,22 @@ function CardForm({
             <input
               type="text"
               id="lastName"
-              value={lastName}
+              value={lastCardName}
               onChange={(e) => {
                 const value = e.target.value;
-                setLastName(value);
-                if (errors.lastName && value.trim() !== "") {
-                  setErrors((prev) => ({ ...prev, lastName: false }));
+                setLastCardName(value);
+                if (errors.lastCardName && value.trim() !== "") {
+                  setErrors((prev) => ({ ...prev, lastCardName: false }));
                 }
               }}
               className={`p-3 border text-white font-[vazirmatn] bg-[#000000]/60 backdrop-blur-[10px] placeholder-[#999999] ${
-                errors.lastName ? "border-red-500" : "border-[#999999]"
+                errors.lastCardName ? "border-red-500" : "border-[#999999]"
               }`}
               placeholder="Last Name"
             />
+            {errors.lastCardName && (
+              <p className="text-[#c20000] mt-1 text-sm">{errors.lastCardName}</p>
+            )}
           </div>
         </div>
 
@@ -100,6 +109,9 @@ function CardForm({
                 placeholder="Card Number"
               />
             </div>
+            {errors.cardNumber && (
+              <p className="text-[#c20000] mt-1 text-sm">{errors.cardNumber}</p>
+            )}
           </div>
         </div>
 
@@ -122,6 +134,9 @@ function CardForm({
                 }`}
                 placeholder="CVV"
               />
+              {errors.cvv && (
+              <p className="text-[#c20000] mt-1 text-sm">{errors.cvv}</p>
+            )}
             </div>
           </div>
           <div>
@@ -142,6 +157,9 @@ function CardForm({
                 }`}
                 placeholder="Expiration Date"
               />
+              {errors.expirationDate && (
+              <p className="text-[#c20000] mt-1 text-sm">{errors.expirationDate}</p>
+            )}
             </div>
           </div>
         </div>
@@ -157,13 +175,14 @@ function CardForm({
           />
         </div>
 
-        <div className="flex items-center mb-6 mt-4">
+        <div className="flex items-start mb-6 mt-4">
           <input
             type="checkbox"
             id="accountHolder"
             checked={termsAgreed}
             onChange={() => setTermsAgreed(!termsAgreed)}
             className="mr-2"
+            style={{ marginTop: "3.5px" }}
           />
           <label
             htmlFor="accountHolder"
@@ -174,13 +193,14 @@ function CardForm({
           </label>
         </div>
 
-        <div className="flex items-center mb-6">
+        <div className="flex items-start mb-6">
           <input
             type="checkbox"
             id="terms"
             checked={confirm}
             onChange={() => setConfirm(!confirm)}
             className="mr-2"
+            style={{ marginTop: "3.5px" }}
           />
           <label
             htmlFor="terms"
