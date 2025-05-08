@@ -19,10 +19,8 @@ const MobileHero = () => {
   const [selected, setSelected] = useState(locations[0]);
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(true);
-  // console.log({selected})
   const { clubLocation, clubLocationPostal, clubPlans, isLoading, error } =
     useSelector((state) => state.plan);
-  console.log(clubLocation, clubLocationPostal);
 
   Cookies.set("location", selected.clubName);
 

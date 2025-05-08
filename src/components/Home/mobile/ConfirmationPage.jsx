@@ -8,12 +8,8 @@ const ConfirmationPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const {
-    userInfo,
     startDate,
-    clubLocation,
     plan,
-    clubLocationPostal,
-    clubPlans,
     clubPlanMonthly,
     clubPlanYearly,
     isLoading,
@@ -28,7 +24,7 @@ const ConfirmationPage = () => {
         </h2>
 
         <p className="text-center text-white text-[13.834px] font-normal font-[vazirmatn] leading-[16.601px] capitalize">
-          You&apos;ve Successfully Activated Your Month To Month Membership.
+          You&apos;ve Successfully Activated Your {plan == "monthly" ? "Month To Month" : "1 year Contract"} Membership.
         </p>
 
         <div className="w-full flex flex-col justify-center items-start gap-3 pt-4 pb-2 px-4 border-[0.138px] border-[#808080] bg-white/5 self-stretch ">

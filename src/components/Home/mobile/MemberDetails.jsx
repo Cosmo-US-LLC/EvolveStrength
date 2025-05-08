@@ -8,6 +8,7 @@ import DOBPicker from "../../../utils/DOBPicker";
 import { formatDate } from "../../../libs/utils";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserInfo } from "../../../redux/slices/planSlice";
+import { parsePhoneNumberFromString } from "libphonenumber-js";
 
 const MemberDetails = () => {
   const dispatch = useDispatch();
@@ -19,7 +20,7 @@ const MemberDetails = () => {
     setIsOpen((prev) => !prev);
   };
 
-  const [errors, setErrors] = useState([]);
+  const [errors, setErrors] = useState({});
   const [fname, setFname] = useState(userInfo?.fname || "");
   const [lname, setLname] = useState(userInfo?.lname || "");
   const [email, setEmail] = useState(userInfo?.email || "");
@@ -78,8 +79,13 @@ const MemberDetails = () => {
 
     if (!phone.trim()) {
       errors.phone = "Phone number is required.";
-    } else if (phone.length < 10 || phone.length > 14) {
-      errors.phone = "Phone number must be between 10 and 14 digits.";
+    } else if (!/^\d{10}$/.test(phone)) {
+      errors.phone = "Phone number must be exactly 10 digits.";
+    } else {
+      const number = parsePhoneNumberFromString(`+1${phone}`, "CA"); 
+      if (!number || !number.isValid()) {
+        errors.phone = "Enter a valid Canadian phone number.";
+      }
     }
 
     if (!address.trim()) errors.address = "Address is required.";
@@ -163,7 +169,7 @@ const MemberDetails = () => {
               } placeholder-[#999999] text-[16px] font-[400]`}
             />
             {errors?.fname && (
-              <p className="text-red-500 text-sm mt-1">{errors.fname}</p>
+              <p className="text-red-500 text-[12px] mt-1">{errors.fname}</p>
             )}
           </div>
 
@@ -181,7 +187,7 @@ const MemberDetails = () => {
               } placeholder-[#999999] text-[16px] font-[400]`}
             />
             {errors?.lname && (
-              <p className="text-red-500 text-sm mt-1">{errors.lname}</p>
+              <p className="text-red-500 text-[12px] mt-1">{errors.lname}</p>
             )}
           </div>
         </div>
@@ -200,7 +206,7 @@ const MemberDetails = () => {
             } placeholder-[#999999] text-[16px] font-[400]`}
           />
           {errors?.email && (
-            <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+            <p className="text-red-500 text-[12px] mt-1">{errors.email}</p>
           )}
         </div>
 
@@ -213,12 +219,18 @@ const MemberDetails = () => {
               setPhone(e.target.value);
               updateErrs("phone", e.target.value);
             }}
+            onBeforeInput={(e) => {
+              if (!/^\d+$/.test(e.data)) {
+                e.preventDefault(); // blocks anything that's not a digit
+              }
+            }}
             className={`w-full px-4 py-3 bg-transparent border ${
               errors?.phone ? "!border-red-500" : "border-white/40"
             } placeholder-[#999999] text-[16px] font-[400]`}
           />
+
           {errors?.phone && (
-            <p className="text-red-500 text-sm mt-1">{errors.phone}</p>
+            <p className="text-red-500 text-[12px] mt-1">{errors.phone}</p>
           )}
         </div>
 
@@ -236,7 +248,7 @@ const MemberDetails = () => {
             } placeholder-[#999999] text-[16px] font-[400]`}
           />
           {errors?.address && (
-            <p className="text-red-500 text-sm mt-1">{errors.address}</p>
+            <p className="text-red-500 text-[12px] mt-1">{errors.address}</p>
           )}
         </div>
 
@@ -254,7 +266,7 @@ const MemberDetails = () => {
             } placeholder-[#999999] text-[16px] font-[400]`}
           />
           {errors?.province && (
-            <p className="text-red-500 text-sm mt-1">{errors.province}</p>
+            <p className="text-red-500 text-[12px] mt-1">{errors.province}</p>
           )}
         </div>
 
@@ -273,7 +285,7 @@ const MemberDetails = () => {
               } placeholder-[#999999] text-[16px] font-[400]`}
             />
             {errors?.city && (
-              <p className="text-red-500 text-sm mt-1">{errors.city}</p>
+              <p className="text-red-500 text-[12px] mt-1">{errors.city}</p>
             )}
           </div>
 
@@ -291,7 +303,7 @@ const MemberDetails = () => {
               } placeholder-[#999999] text-[16px] font-[400]`}
             />
             {errors?.postal && (
-              <p className="text-red-500 text-sm mt-1">{errors.postal}</p>
+              <p className="text-red-500 text-[12px] mt-1">{errors.postal}</p>
             )}
           </div>
         </div>
@@ -304,14 +316,11 @@ const MemberDetails = () => {
               errors={errors}
               updateErrs={updateErrs}
             />
-            {errors?.dob && (
-              <p className="text-red-500 text-sm mt-1">{errors.dob}</p>
-            )}
           </div>
 
           <div className="relative w-full">
             <select
-              value={gender}
+              value={gender || ""}
               onChange={(e) => {
                 setGender(e.target.value);
                 updateErrs("gender", e.target.value);
@@ -319,12 +328,11 @@ const MemberDetails = () => {
               onClick={toggleDropdown}
               className={`w-full appearance-none px-4 py-2.5 bg-transparent border ${
                 errors?.gender ? "!border-red-500" : "border-white/40"
-              } placeholder-[#999999] text-[#999999] text-[16px] font-[400] outline-none`}
+              } placeholder-[#999999] text-[16px] ${
+                gender ? "text-white" : "text-[#999]"
+              } font-[400] outline-none`}
             >
-              <option
-                className="bg-[#1C1C1C] cursor-pointer text-[#999999]"
-                value=""
-              >
+              <option className="bg-[#1C1C1C] cursor-pointer" value="">
                 Gender
               </option>
               <option
@@ -348,7 +356,7 @@ const MemberDetails = () => {
             </select>
 
             {errors?.gender && (
-              <p className="text-red-500 text-sm mt-1">{errors.gender}</p>
+              <p className="text-red-500 text-[12px] mt-1">{errors.gender}</p>
             )}
 
             <img

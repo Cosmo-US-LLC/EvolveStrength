@@ -60,6 +60,7 @@ const DOBPicker = (props) => {
   const handleSelectDate = (day) => {
     const date = new Date(year, month, day);
     setDob(date);
+    updateErrs("dob", date);
     setShowCalendar(false);
   };
 
@@ -134,6 +135,9 @@ const DOBPicker = (props) => {
         <img src={calendarIcon} alt="Calendar Icon" className="w-5 h-5 ml-2" />
       </div>
 
+      {errors?.dob && (
+        <p className="text-red-500 text-[12px] mt-1">{errors.dob}</p>
+      )}
 
       {showCalendar && (
         <>

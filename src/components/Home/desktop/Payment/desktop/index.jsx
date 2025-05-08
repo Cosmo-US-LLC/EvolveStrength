@@ -23,10 +23,10 @@ function ReviewAndPay() {
   const [isHuman, setIsHuman] = useState(false);
   const navigate = useNavigate();
   const scrollDirection = useScrollDirection();
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [firstCardName, setFirstCardName] = useState("");
-  const [lastCardName, setLastCardName] = useState("");
+  const [firstName, setFirstName] = useState(userInfo?.fname || "");
+  const [lastName, setLastName] = useState(userInfo?.lname || "");
+  const [firstCardName, setFirstCardName] = useState(userInfo?.fname || "");
+  const [lastCardName, setLastCardName] = useState(userInfo?.lname || "");
   const [transitNumber, setTransitNumber] = useState("");
   const [institutionNumber, setInstitutionNumber] = useState("");
   const [accountNumber, setAccountNumber] = useState("");

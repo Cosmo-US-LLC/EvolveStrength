@@ -128,7 +128,7 @@ const LocationDetails = () => {
         <div className="w-full">
           <img src={locationImg} alt="Location" className="w-full rounded-md" />
         </div>
-        <div className="text-white font-[kanit] text-[18px] font-[600] uppercase tracking-[-0.791px]">
+        <div className="text-white font-[kanit] text-[18px] font-[500] uppercase tracking-[-0.791px]">
           Facilities
         </div>
 

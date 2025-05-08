@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import useScrollDirection from "../../../../hooks/useScrollDirection";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserInfo } from "../../../../redux/slices/planSlice";
+import { parsePhoneNumberFromString } from "libphonenumber-js";
 
 function AboutYourself() {
   const navigate = useNavigate();
@@ -25,9 +26,22 @@ function AboutYourself() {
     province: userInfo?.province || "",
     city: userInfo?.city || "",
     postalCode: userInfo?.postal || "",
-    selectedDate: userInfo?.dob || "",
+    selectedDate: userInfo?.dob || null,
     gender: userInfo?.gender || "",
   });
+
+  const handleChangeDob = (field) => (value) => {
+    if (field === "selectedDate") {
+      setFormData((prevData) => {
+        return { ...prevData, [field]: value };
+      });
+    }
+
+    setValidationErrors((prev) => ({
+      ...prev,
+      [field]: null,
+    }));
+  };
 
   const handleChange = (field) => (e) => {
     setFormData((prev) => ({
@@ -48,12 +62,19 @@ function AboutYourself() {
     if (!formData.lastName.trim()) errors.lastName = "Last name is required";
     if (!/^\S+@\S+\.\S+$/.test(formData.email))
       errors.email = "Enter a valid email address";
-    if (
-      !formData.number ||
-      formData.number.length < 10 ||
-      formData.number.length > 14
-    )
-      errors.number = "Enter a valid phone number";
+
+
+    if (!formData.number.trim()) {
+      errors.number = "Phone number is required.";
+    } else if (!/^\d{10}$/.test(formData.number)) {
+      errors.number = "Phone number must be exactly 10 digits.";
+    } else {
+      const phoneNumber = parsePhoneNumberFromString(`+1${formData.number}`, "CA");
+      if (!phoneNumber || !phoneNumber.isValid()) {
+        errors.number = "Enter a valid Canadian phone number.";
+      }
+    }
+
     if (!formData.address.trim())
       errors.address = "Mailing address is required";
     if (!formData.province.trim()) errors.province = "Province is required";
@@ -105,6 +126,7 @@ function AboutYourself() {
           <AboutYourselfForm
             formData={formData}
             handleChange={handleChange}
+            handleChangeDob={handleChangeDob}
             validationErrors={validationErrors}
           />
 
