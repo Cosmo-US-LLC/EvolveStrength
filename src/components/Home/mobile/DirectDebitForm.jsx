@@ -57,7 +57,7 @@ const DirectDebitForm = ({
                   setFname(e.target.value);
                   updateErrs("fname");
                 }}
-                className={`w-full p-2 pt-3 border border-[#999] font-[vazirmatn] bg-black text-white text-[16px] font-[400] placeholder-[#999999] text-left ${
+                className={`w-full p-2 pt-3 border border-[#999] bg-black text-white text-[16px] font-[400] placeholder-[#999999] text-left ${
                   errors?.fname && "!border-red-500"
                 }`}
               />
@@ -75,7 +75,7 @@ const DirectDebitForm = ({
                   setLname(e.target.value);
                   updateErrs("lname");
                 }}
-                className={`w-full p-2 pt-3 border border-[#999] font-[vazirmatn] bg-black text-white text-[16px] font-[400] placeholder-[#999999] text-left ${
+                className={`w-full p-2 pt-3 border border-[#999] bg-black text-white text-[16px] font-[400] placeholder-[#999999] text-left ${
                   errors?.lname && "!border-red-500"
                 }`}
               />
@@ -96,7 +96,7 @@ const DirectDebitForm = ({
                   setTransitNumber(e.target.value);
                   updateErrs("transitNumber");
                 }}
-                className={`w-full p-2 pt-3 border border-[#999] font-[vazirmatn] bg-black text-white text-[16px] font-[400] placeholder-[#999999] text-left ${
+                className={`w-full p-2 pt-3 border border-[#999] bg-black text-white text-[16px] font-[400] placeholder-[#999999] text-left ${
                   errors?.transitNumber && "!border-red-500"
                 }`}
               />
@@ -116,7 +116,7 @@ const DirectDebitForm = ({
                   setInstitutionNumber(e.target.value);
                   updateErrs("institutionNumber");
                 }}
-                className={`w-full p-2 pt-3 border border-[#999] font-[vazirmatn] bg-black text-white text-[16px] font-[400] placeholder-[#999999] text-left ${
+                className={`w-full p-2 pt-3 border border-[#999] bg-black text-white text-[16px] font-[400] placeholder-[#999999] text-left ${
                   errors?.institutionNumber && "!border-red-500"
                 }`}
               />
@@ -159,7 +159,7 @@ const DirectDebitForm = ({
                   setAccountNumber(e.target.value);
                   updateErrs("accountNumber");
                 }}
-                className={`w-full p-2 pt-3 border font-[vazirmatn] border-[#999] bg-black text-white text-[16px] font-[400] placeholder-[#999999] text-left ${
+                className={`w-full p-2 pt-3 border border-[#999] bg-black text-white text-[16px] font-[400] placeholder-[#999999] text-left ${
                   errors?.accountNumber && "!border-red-500"
                 }`}
               />
@@ -179,7 +179,7 @@ const DirectDebitForm = ({
                   setVerifyAccountNumber(e.target.value);
                   updateErrs("verifyAccountNumber");
                 }}
-                className={`w-full p-2 pt-3 border font-[vazirmatn] border-[#999] bg-black text-white text-[16px] font-[400] placeholder-[#999999] text-left ${
+                className={`w-full p-2 pt-3 border border-[#999] bg-black text-white text-[16px] font-[400] placeholder-[#999999] text-left ${
                   errors?.verifyAccountNumber && "!border-red-500"
                 }`}
               />

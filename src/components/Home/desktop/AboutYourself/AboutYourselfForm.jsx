@@ -1,7 +1,7 @@
 import React from "react";
 import DOBPickerDesktop from "../../../../utils/DOBPickerDesktop";
 
-const AboutYourselfForm = ({ formData, handleChange, validationErrors }) => {
+const AboutYourselfForm = ({ formData, handleChange, validationErrors, handleChangeDob }) => {
   return (
     <div className="max-w-[600px] w-full space-y-4">
       <p className="text-white font-[kanit] font-[400] text-[24px] leading-[10.734px] tracking-[-0.76px] capitalize">
@@ -70,6 +70,11 @@ const AboutYourselfForm = ({ formData, handleChange, validationErrors }) => {
           placeholder="Phone Number"
           value={formData.number}
           onChange={handleChange("number")}
+          onBeforeInput={(e) => {
+            if (!/^\d+$/.test(e.data)) {
+              e.preventDefault();
+            }
+          }}
           className={`w-full border px-4 py-3 placeholder-[#999999] text-white font-[vazirmatn] text-[16px] bg-[#000000]/60 backdrop-blur-[10px] ${
             validationErrors.number ? "border-[#c20000]" : "border-white/40"
           }`}
@@ -155,34 +160,11 @@ const AboutYourselfForm = ({ formData, handleChange, validationErrors }) => {
 
       <div className="flex gap-4">
         <div className="flex-1">
-          <div
-            className={`flex items-center gap-2 border px-4 py-3 text-white font-[vazirmatn] text-[16px] bg-[#000000]/60 backdrop-blur-[10px] ${
-              validationErrors.selectedDate
-                ? "border-[#c20000]"
-                : "border-white/40"
-            }`}
-          >
-            <input
-              type="date"
-              className="bg-transparent text-[#999] w-full outline-none font-[vazirmatn]"
-              value={formData.selectedDate}
-              onChange={handleChange("selectedDate")}
-            />
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={2}
-              stroke="#2DDE28"
-              className="w-5 h-5"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-              />
-            </svg>
-          </div>
+          <DOBPickerDesktop
+            dob={formData.selectedDate}
+            setDob={(date) => handleChangeDob("selectedDate")(date)}
+            errors={validationErrors.selectedDate ? ["dob"] : []}
+          />
           {validationErrors.selectedDate && (
             <p className="text-[#c20000] text-sm mt-1">
               {validationErrors.selectedDate}
@@ -192,9 +174,9 @@ const AboutYourselfForm = ({ formData, handleChange, validationErrors }) => {
 
         <div className="flex-1">
           <select
-            className={`w-full border px-4 py-3 text-[#999999] placeholder-[#999999] font-[vazirmatn] text-[16px] appearance-none bg-[#000000]/60 backdrop-blur-[10px] ${
+            className={`w-full border px-4 py-3 placeholder-[#999999] font-[vazirmatn] text-[16px] appearance-none bg-[#000000]/60 backdrop-blur-[10px] ${
               validationErrors.gender ? "border-[#c20000]" : "border-white/40"
-            }`}
+            } ${formData.gender ? "text-white" : "text-[#999]"}`}
             value={formData.gender}
             onChange={handleChange("gender")}
           >

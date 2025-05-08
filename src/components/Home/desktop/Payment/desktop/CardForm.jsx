@@ -54,7 +54,7 @@ function CardForm({
                   setErrors((prev) => ({ ...prev, firstCardName: false }));
                 }
               }}
-              className={`p-3 border text-white font-[vazirmatn] bg-[#000000]/60 backdrop-blur-[10px] placeholder-[#999999] ${
+              className={`p-3 border text-white font-[vazirmatn] text-[16px] bg-[#000000]/60 backdrop-blur-[10px] placeholder-[#999999] ${
                 errors.firstCardName ? "border-red-500" : "border-[#999999]"
               }`}
               placeholder="First Name"
@@ -77,7 +77,7 @@ function CardForm({
                   setErrors((prev) => ({ ...prev, lastCardName: false }));
                 }
               }}
-              className={`p-3 border text-white font-[vazirmatn] bg-[#000000]/60 backdrop-blur-[10px] placeholder-[#999999] ${
+              className={`p-3 border text-white font-[vazirmatn] text-[16px] bg-[#000000]/60 backdrop-blur-[10px] placeholder-[#999999] ${
                 errors.lastCardName ? "border-red-500" : "border-[#999999]"
               }`}
               placeholder="Last Name"
@@ -103,7 +103,7 @@ function CardForm({
                     setErrors((prev) => ({ ...prev, cardNumber: false }));
                   }
                 }}
-                className={`p-3 bg-[#000000]/60 backdrop-blur-[10px] font-[vazirmatn] border text-white w-full placeholder-[#999999] ${
+                className={`p-3 bg-[#000000]/60 backdrop-blur-[10px] font-[vazirmatn] text-[16px] border text-white w-full placeholder-[#999999] ${
                   errors.cardNumber ? "border-red-500" : "border-[#999999]"
                 }`}
                 placeholder="Card Number"
@@ -129,7 +129,7 @@ function CardForm({
                     setErrors((prev) => ({ ...prev, cvv: false }));
                   }
                 }}
-                className={`p-3 bg-[#000000]/60 backdrop-blur-[10px] font-[vazirmatn] border text-white placeholder-[#999999] ${
+                className={`p-3 bg-[#000000]/60 backdrop-blur-[10px] font-[vazirmatn] text-[16px] border text-white placeholder-[#999999] ${
                   errors.cvv ? "border-red-500" : "border-[#999999]"
                 }`}
                 placeholder="CVV"
@@ -152,7 +152,7 @@ function CardForm({
                     setErrors((prev) => ({ ...prev, expirationDate: false }));
                   }
                 }}
-                className={`p-3 bg-[#000000]/60 backdrop-blur-[10px] border font-[vazirmatn] text-white placeholder-[#999999] ${
+                className={`p-3 bg-[#000000]/60 backdrop-blur-[10px] border font-[vazirmatn] text-[16px] text-white placeholder-[#999999] ${
                   errors.expirationDate ? "border-red-500" : "border-[#999999]"
                 }`}
                 placeholder="Expiration Date"

@@ -57,7 +57,7 @@ function DebitForm({
                   setErrors((prev) => ({ ...prev, firstName: false }));
                 }
               }}
-              className={`p-3 text-white font-[vazirmatn] bg-[#000000]/60 backdrop-blur-[10px] placeholder-[#999999] ${
+              className={`p-3 text-white font-[vazirmatn] text-[16px] bg-[#000000]/60 backdrop-blur-[10px] placeholder-[#999999] ${
                 errors.firstName ? "border-[#c20000]" : "border-[#999999]"
               } border`}
               placeholder="First Name"
@@ -79,7 +79,7 @@ function DebitForm({
                   setErrors((prev) => ({ ...prev, lastName: false }));
                 }
               }}
-              className={`p-3 border text-white font-[vazirmatn] bg-[#000000]/60 backdrop-blur-[10px] placeholder-[#999999] ${
+              className={`p-3 border text-white font-[vazirmatn] text-[16px] bg-[#000000]/60 backdrop-blur-[10px] placeholder-[#999999] ${
                 errors.lastName ? "border-[#c20000]" : "border-[#999999]"
               }`}
               placeholder="Last Name"
@@ -104,7 +104,7 @@ function DebitForm({
                     setErrors((prev) => ({ ...prev, transitNumber: false }));
                   }
                 }}
-                className={`p-3 bg-[#000000]/60 backdrop-blur-[10px] font-[vazirmatn] border text-white w-full placeholder-[#999999] ${
+                className={`p-3 bg-[#000000]/60 backdrop-blur-[10px] font-[vazirmatn] text-[16px] border text-white w-full placeholder-[#999999] ${
                   errors.transitNumber ? "border-[#c20000]" : "border-[#999999]"
                 }`}
                 placeholder="Transit Number"
@@ -133,7 +133,7 @@ function DebitForm({
                     }));
                   }
                 }}
-                className={`p-3 bg-[#000000]/60 backdrop-blur-[10px] font-[vazirmatn] border text-white w-full placeholder-[#999999] ${
+                className={`p-3 bg-[#000000]/60 backdrop-blur-[10px] font-[vazirmatn] text-[16px] border text-white w-full placeholder-[#999999] ${
                   errors.institutionNumber
                     ? "border-[#c20000]"
                     : "border-[#999999]"
@@ -179,7 +179,7 @@ function DebitForm({
                     setErrors((prev) => ({ ...prev, accountNumber: false }));
                   }
                 }}
-                className={`p-3 bg-[#000000]/60 backdrop-blur-[10px] font-[vazirmatn] border text-white placeholder-[#999999] ${
+                className={`p-3 bg-[#000000]/60 backdrop-blur-[10px] font-[vazirmatn] text-[16px] border text-white placeholder-[#999999] ${
                   errors.accountNumber ? "border-[#c20000]" : "border-[#999999]"
                 }`}
                 placeholder="Account Number"
@@ -237,7 +237,7 @@ function DebitForm({
                   }));
                 }
               }}
-              className={`p-3 bg-[#000000]/60 backdrop-blur-[10px] font-[vazirmatn] border text-white placeholder-[#999999] ${
+              className={`p-3 bg-[#000000]/60 backdrop-blur-[10px] font-[vazirmatn] text-[16px] border text-white placeholder-[#999999] ${
                 errors.verifyAccountNumber
                   ? "border-[#c20000]"
                   : "border-[#999999]"

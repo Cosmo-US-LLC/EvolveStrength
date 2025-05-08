@@ -5,6 +5,7 @@ import logo from "../../../assets/images/desktop/logo_navbar.svg";
 const NavBarDesktop = ({ scrollDirection }) => {
   const navigate = useNavigate();
   const location = useLocation();
+  console.log("Current pathname:", location.pathname);
   const [buttonText, setButtonText] = useState("Next");
 
   useEffect(() => {
@@ -20,7 +21,9 @@ const NavBarDesktop = ({ scrollDirection }) => {
   }, [location.pathname]);
 
   const handleButtonClick = () => {
-    if (location.pathname === "/membership") {
+    if (location.pathname === "/") {
+      navigate("/membership");
+    } else if (location.pathname === "/membership") {
       navigate("/about-yourself");
     } else if (location.pathname === "/about-yourself") {
       navigate("/review-and-pay");
@@ -33,9 +36,9 @@ const NavBarDesktop = ({ scrollDirection }) => {
 
   return (
     <nav
-    className={`fixed top-0 py-4 bg-[#000000] shadow-md z-50 w-full flex items-center transition-transform duration-300 ${
-      scrollDirection === "down" ? "-translate-y-full" : "translate-y-0"
-    }`}
+      className={`fixed top-0 py-4 bg-[#000000] shadow-md z-50 w-full flex items-center transition-transform duration-300 ${
+        scrollDirection === "down" ? "-translate-y-full" : "translate-y-0"
+      }`}
     >
       <div className="flex items-center justify-between w-full max-w-[1280px] mx-auto">
         <img src={logo} alt="Logo" className="w-[175px] h-auto" />

@@ -104,7 +104,7 @@ const EventDatePicker = (props) => {
   return (
     <div className="relative w-full mb-4">
       {title && (
-        <label className="text-[#FFFFFF] text-[16px] font-[vazirmatn] font-normal leading-[25.2px] mb-1 block">
+        <label className="text-white font-[kanit] text-[18px] font-[500] tracking-[-0.791px] leading-[25.2px] mb-1 block">
           Your plan starts from:
         </label>
       )}
@@ -119,7 +119,7 @@ const EventDatePicker = (props) => {
           readOnly
           value={formatDate(new Date())}
           placeholder="Pick a date"
-          className="bg-transparent text-white text-[16px] font-[vazirmatn] w-full outline-none placeholder-[#999999] pt-1.5"
+          className="bg-transparent font-[vazirmatn] w-full outline-none placeholder-[#999999] pt-1.5 text-[12px] uppercase font-[500] leading-[21.512px]"
         />
       </div>
 
