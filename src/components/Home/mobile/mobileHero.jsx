@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import heroImage from "../../../assets/images/mobile/evolve-strength.webp";
+import heroImage from "../../../assets/images/mobile/evolve-strength6.webp";
 import UpDownArrow from "../../../assets/images/mobile/up-down-arrow.svg";
 import { useNavigate } from "react-router-dom";
 import { locations } from "../../../constant/locationsData";
@@ -42,7 +42,7 @@ const MobileHero = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  if (loading) return <Loader />;
+  // if (loading) return <Loader />;
   return (
     <div
       className="min-h-screen bg-black bg-cover bg-no-repeat flex flex-col justify-center sm:bg-center bg-[center_top_10%]"
