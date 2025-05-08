@@ -9,7 +9,9 @@ const NavBarDesktop = ({ scrollDirection }) => {
   const [buttonText, setButtonText] = useState("Next");
 
   useEffect(() => {
-    if (location.pathname === "/membership") {
+    if (location.pathname === "/") {
+      setButtonText("");
+    } else if (location.pathname === "/membership") {
       setButtonText("JOIN NOW");
     } else if (location.pathname === "/about-yourself") {
       setButtonText("NEXT");
@@ -21,9 +23,7 @@ const NavBarDesktop = ({ scrollDirection }) => {
   }, [location.pathname]);
 
   const handleButtonClick = () => {
-    if (location.pathname === "/") {
-      navigate("/membership");
-    } else if (location.pathname === "/membership") {
+    if (location.pathname === "/membership") {
       navigate("/about-yourself");
     } else if (location.pathname === "/about-yourself") {
       navigate("/review-and-pay");
@@ -42,12 +42,14 @@ const NavBarDesktop = ({ scrollDirection }) => {
     >
       <div className="flex items-center justify-between w-full max-w-[1280px] mx-auto">
         <img src={logo} alt="Logo" className="w-[175px] h-auto" />
-        <button
-          onClick={handleButtonClick}
-          className="w-[141px] bg-[#2DDE28] text-black text-[16px] font-medium h-[50px] button"
-        >
-          {buttonText}
-        </button>
+        {buttonText && (
+          <button
+            onClick={handleButtonClick}
+            className="w-[141px] bg-[#2DDE28] text-black text-[16px] font-medium h-[50px] button"
+          >
+            {buttonText}
+          </button>
+        )}
       </div>
     </nav>
   );

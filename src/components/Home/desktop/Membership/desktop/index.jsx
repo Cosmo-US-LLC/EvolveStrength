@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import useScrollDirection from "../../../../../hooks/useScrollDirection";
 import Loader from "../../../../Loader";
 import { useDispatch, useSelector } from "react-redux";
+import logo from "../../../../../assets/images/desktop/logo_navbar.svg";
 import {
   plansApi,
   useGetClubPlansQuery,
@@ -23,11 +24,9 @@ function MembershipDesktop() {
   const navigate = useNavigate();
   const scrollDirection = useScrollDirection();
   const dispatch = useDispatch();
-  const {
-    clubLocation,
-    clubLocationPostal,
-    clubPlans,
-  } = useSelector((state) => state.plan);
+  const { clubLocation, clubLocationPostal, clubPlans } = useSelector(
+    (state) => state.plan
+  );
   const {
     data,
     error: queryError,
@@ -83,6 +82,22 @@ function MembershipDesktop() {
   if (loading) return <Loader />;
   return (
     <div className="relative w-full membership_bg">
+      <nav
+        className={`fixed top-0 py-4 bg-[#000000] shadow-md z-50 w-full flex items-center transition-transform duration-300 ${
+          scrollDirection === "down" ? "-translate-y-full" : "translate-y-0"
+        }`}
+      >
+        <div className="flex items-center justify-between w-full max-w-[1280px] mx-auto">
+          <img src={logo} alt="Logo" className="w-[175px] h-auto" />
+
+          <button
+            onClick={handleJoinNow}
+            className="w-[141px] bg-[#2DDE28] text-black text-[16px] font-medium h-[50px] button"
+          >
+            Join Now
+          </button>
+        </div>
+      </nav>
       <StepperDesktop stepNumber={1} scrollDirection={scrollDirection} />
 
       <div className="pt-[300px] pb-[100px] max-w-[1280px] mx-auto">

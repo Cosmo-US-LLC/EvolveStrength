@@ -9,6 +9,7 @@ import CardForm from "./CardForm";
 import Turnstile from "react-turnstile";
 import useScrollDirection from "../../../../../hooks/useScrollDirection";
 import { useSelector } from "react-redux";
+import logo from "../../../../../assets/images/desktop/logo_navbar.svg";
 
 function ReviewAndPay() {
   const [selectPlan, setSelectPlan] = useState("card");
@@ -302,6 +303,25 @@ function ReviewAndPay() {
 
   return (
     <div className="relative w-full review_and_pay_bg">
+      <nav
+        className={`fixed top-0 py-4 bg-[#000000] shadow-md z-50 w-full flex items-center transition-transform duration-300 ${
+          scrollDirection === "down" ? "-translate-y-full" : "translate-y-0"
+        }`}
+      >
+        <div className="flex items-center justify-between w-full max-w-[1280px] mx-auto">
+          <img src={logo} alt="Logo" className="w-[175px] h-auto" />
+
+          <button
+            onClick={handleJoinNow}
+            disabled={!isHuman}
+            className={`w-[141px] ${
+              isHuman ? "bg-[#2DDE28]" : "bg-gray-400 cursor-not-allowed"
+            } text-black text-[16px] font-medium h-[50px] button`}
+          >
+            PAY NOW
+          </button>
+        </div>
+      </nav>
       <StepperDesktop stepNumber={3} scrollDirection={scrollDirection} />
       <div className="pt-[300px] pb-[100px] max-w-[1280px] mx-auto">
         <p className="text-white font-[kanit] text-[79px] font-[700] leading-[66px] tracking-[-1.329px] uppercase">
@@ -312,7 +332,7 @@ function ReviewAndPay() {
         </p>
         <div className="flex flex-row justify-between mt-16">
           <div>
-            <p className=" text-white text-[16px] font-[400] leading-[10.2px]">
+            <p className=" text-white text-[16px] font-[vazirmatn] font-[400] leading-[10.2px]">
               Choose your pricing plan
             </p>
             <PaymentMethodSelector

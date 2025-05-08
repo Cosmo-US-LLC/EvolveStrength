@@ -42,11 +42,8 @@ const MembershipVancouver = (props) => {
         <div className="flex items-center gap-[2px]">
           <button
             onClick={() => navigate("/")}
-            className="flex items-center justify-center  
-             h-[29.317px] px-[22.853px] py-[6.463px]
-             border-[0.646px] border-white
-             text-white text-center font-[vazirmatn] text-[10.341px] font-[500] leading-[13.573px] uppercase
-             hover:bg-white/10 active:scale-95 transition-all"
+            className="flex items-center justify-center px-[22.853px] border-[0.646px] border-white text-white text-center font-[vazirmatn] text-[10.341px] font-[500] leading-[13.573px] uppercase hover:bg-white/10 active:scale-95 transition-all"
+            style={{ paddingBottom: "4px", paddingTop: "8px" }}
           >
             Edit
           </button>

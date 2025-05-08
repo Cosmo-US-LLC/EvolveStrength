@@ -7,9 +7,9 @@ const Layout = () => {
   const scrollDirection = useScrollDirection();
   return (
     <>
-      <div className="max-lg:hidden">
+      {/* <div className="max-lg:hidden">
         <NavBarDesktop scrollDirection={scrollDirection} />
-      </div>
+      </div> */}
       <div className="lg:hidden">
         <NavbarMobile />
       </div>

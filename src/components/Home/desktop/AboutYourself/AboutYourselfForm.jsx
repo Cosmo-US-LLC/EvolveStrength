@@ -1,5 +1,7 @@
 import React from "react";
+import { useState, useRef } from "react";
 import DOBPickerDesktop from "../../../../utils/DOBPickerDesktop";
+import { loadGoogleMaps } from "../../../../utils/loadGoogleMap";
 
 const AboutYourselfForm = ({
   formData,
@@ -7,6 +9,52 @@ const AboutYourselfForm = ({
   validationErrors,
   handleChangeDob,
 }) => {
+  console.log("formData.postalCode", formData.postalCode);
+  const GOOGLE_MAPS_API_KEY = "AIzaSyC6URLPah7QiL_BHSzJVJTNy_qX6bIK8uU";
+  const postalCodeRef = useRef(null);
+  const [autocompleteInitialized, setAutocompleteInitialized] = useState(false);
+
+  const handlePostalCodeFocus = async () => {
+    if (!autocompleteInitialized && postalCodeRef.current) {
+      try {
+        const google = await loadGoogleMaps(GOOGLE_MAPS_API_KEY);
+
+        const autocomplete = new google.maps.places.Autocomplete(
+          postalCodeRef.current,
+          {
+            types: ["(regions)"],
+            componentRestrictions: { country: "ca" },
+          }
+        );
+
+        autocomplete.setFields(["address_components"]);
+
+        autocomplete.addListener("place_changed", () => {
+          const place = autocomplete.getPlace();
+          let postalCode = "";
+
+          if (place.address_components) {
+            for (const component of place.address_components) {
+              if (component.types.includes("postal_code")) {
+                postalCode = component.long_name;
+                break;
+              }
+            }
+
+            if (postalCode) {
+              postalCodeRef.current.value = postalCode;
+              handleChange("postalCode")({ target: { value: postalCode } });
+            }
+          }
+        });
+
+        setAutocompleteInitialized(true);
+      } catch (err) {
+        console.error("Failed to load Google Maps script:", err);
+      }
+    }
+  };
+
   return (
     <div className="max-w-[600px] w-full space-y-4" style={{ height: "520px" }}>
       <p className="text-white font-[kanit] font-[400] text-[24px] leading-[10.734px] tracking-[-0.76px] capitalize">
@@ -145,11 +193,13 @@ const AboutYourselfForm = ({
 
         <div className="flex-1">
           <input
+            ref={postalCodeRef}
             type="text"
             placeholder="Postal Code"
             value={formData.postalCode}
+            onFocus={handlePostalCodeFocus}
             onChange={handleChange("postalCode")}
-            className={`w-full border px-4 py-3 placeholder-[#999999] text-white font-[vazirmatn] text-[16px]  bg-[#000000]/60 backdrop-blur-[10px] ${
+            className={`w-full border px-4 py-3 placeholder-[#999999] text-white font-[vazirmatn] text-[16px] bg-[#000000]/60 backdrop-blur-[10px] ${
               validationErrors.postalCode
                 ? "border-[#c20000]"
                 : "border-white/40"
