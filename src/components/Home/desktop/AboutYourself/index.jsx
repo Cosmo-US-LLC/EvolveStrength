@@ -9,6 +9,7 @@ import useScrollDirection from "../../../../hooks/useScrollDirection";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserInfo } from "../../../../redux/slices/planSlice";
 import { parsePhoneNumberFromString } from "libphonenumber-js";
+import logo from "../../../../assets/images/desktop/logo_navbar.svg";
 
 function AboutYourself() {
   const navigate = useNavigate();
@@ -63,24 +64,30 @@ function AboutYourself() {
     if (!/^\S+@\S+\.\S+$/.test(formData.email))
       errors.email = "Enter a valid email address";
 
-
     if (!formData.number.trim()) {
       errors.number = "Phone number is required.";
     } else if (!/^\d{10}$/.test(formData.number)) {
       errors.number = "Phone number must be exactly 10 digits.";
     } else {
-      const phoneNumber = parsePhoneNumberFromString(`+1${formData.number}`, "CA");
+      const phoneNumber = parsePhoneNumberFromString(
+        `+1${formData.number}`,
+        "CA"
+      );
       if (!phoneNumber || !phoneNumber.isValid()) {
         errors.number = "Enter a valid Canadian phone number.";
       }
     }
-
     if (!formData.address.trim())
       errors.address = "Mailing address is required";
     if (!formData.province.trim()) errors.province = "Province is required";
     if (!formData.city.trim()) errors.city = "City is required";
-    if (!formData.postalCode.trim())
+    if (!formData.postalCode.trim()) {
       errors.postalCode = "Postal code is required";
+    } else if (
+      !/^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$/.test(formData.postalCode.trim())
+    ) {
+      errors.postalCode = "Invalid Canadian postal code format (e.g., M1B 2K3)";
+    }
     if (!formData.selectedDate)
       errors.selectedDate = "Date of birth is required";
     if (!formData.gender) errors.gender = "Gender is required";
@@ -112,6 +119,22 @@ function AboutYourself() {
 
   return (
     <div className="relative w-full about_yourself_bg">
+      <nav
+        className={`fixed top-0 py-4 bg-[#000000] shadow-md z-50 w-full flex items-center transition-transform duration-300 ${
+          scrollDirection === "down" ? "-translate-y-full" : "translate-y-0"
+        }`}
+      >
+        <div className="flex items-center justify-between w-full max-w-[1280px] mx-auto">
+          <img src={logo} alt="Logo" className="w-[175px] h-auto" />
+
+          <button
+            onClick={handleJoinNow}
+            className="w-[141px] bg-[#2DDE28] text-black text-[16px] font-medium h-[50px] button"
+          >
+            NEXT
+          </button>
+        </div>
+      </nav>
       <StepperDesktop stepNumber={2} scrollDirection={scrollDirection} />
 
       <div className="pt-[300px] pb-[100px] max-w-[1280px] mx-auto">

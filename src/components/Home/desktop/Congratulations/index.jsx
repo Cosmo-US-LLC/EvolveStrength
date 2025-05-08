@@ -2,8 +2,11 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { resetState } from "../../../../redux/slices/planSlice";
+import useScrollDirection from "../../../../hooks/useScrollDirection";
+import logo from "../../../../assets/images/desktop/logo_navbar.svg";
 
 function Congratulations() {
+  const scrollDirection = useScrollDirection;
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { plan, clubPlanMonthly, clubPlanYearly } = useSelector(
@@ -17,6 +20,22 @@ function Congratulations() {
 
   return (
     <div className="congratulations_bg min-h-screen flex justify-center items-center">
+      <nav
+        className={`fixed top-0 py-4 bg-[#000000] shadow-md z-50 w-full flex items-center transition-transform duration-300 ${
+          scrollDirection === "down" ? "-translate-y-full" : "translate-y-0"
+        }`}
+      >
+        <div className="flex items-center justify-between w-full max-w-[1280px] mx-auto">
+          <img src={logo} alt="Logo" className="w-[175px] h-auto" />
+
+          <button
+            onClick={handleBackHome}
+            className="w-[141px] bg-[#2DDE28] text-black text-[16px] font-medium h-[50px] button"
+          >
+            BACK HOME
+          </button>
+        </div>
+      </nav>
       <div className="w-[580px] h-[420px] border border-[#FFFFFF42] bg-[#000000]/20 backdrop-blur-[20px] p-6 flex flex-col justify-center items-center text-center">
         <h1 className="text-[#2DDE28] font-kanit text-[40px] font-bold mb-2">
           CONGRATULATIONS

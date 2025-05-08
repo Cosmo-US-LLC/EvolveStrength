@@ -4,6 +4,8 @@ import { locations } from "../../../constant/locationsData";
 import ChevronDownFilled from "../../../assets/images/desktop/chevron-down-filled.svg";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import locationBg from "../../../assets/images/desktop/locationbg5.webp";
+import logo from "../../../assets/images/desktop/logo_navbar.svg";
 import {
   resetClubLocation,
   resetClubLocationId,
@@ -13,37 +15,63 @@ import {
   setClubLocationPostal,
 } from "../../../redux/slices/planSlice";
 import Loader from "../../Loader";
+import useScrollDirection from "../../../hooks/useScrollDirection";
 
 function LocationDesktop() {
   const dispatch = useDispatch();
+  const scrollDirection = useScrollDirection()
   const [selectedLocation, setSelectedLocation] = useState(locations[0]);
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true);
 
   const navigate = useNavigate();
 
   const handleTakeTour = () => {
     dispatch(setClubLocation(selectedLocation.clubName));
     dispatch(setClubLocationPostal(parseInt(selectedLocation.postalCode)));
-    dispatch(setClubLocationId(parseInt(selectedLocation.accountId)))
+    dispatch(setClubLocationId(parseInt(selectedLocation.accountId)));
     navigate(`/membership?location=${selectedLocation.postalCode}`);
   };
 
   useEffect(() => {
     dispatch(resetClubLocation());
     dispatch(resetClubLocationPostal());
-    dispatch(resetClubLocationId())
-
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 1000); // 2 seconds delay
-
-    // Clean up the timeout on component unmount
-    return () => clearTimeout(timer);
+    dispatch(resetClubLocationId());
   }, []);
 
-  // if (loading) return <Loader />;
+  useEffect(() => {
+    const img = new Image();
+    img.src = locationBg;
+    img.onload = () => setLoading(false);
+  }, []);
+
+  if (loading) return <Loader />;
   return (
-    <div className="relative z-10 flex flex-col items-center bg-black justify-center min-h-screen gap-6 overflow-hidden location-bg">
+    <div
+      className="relative z-10 flex flex-col items-center bg-black justify-center min-h-screen gap-6 overflow-hidden"
+      style={{
+        backgroundImage: `url(${locationBg})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center -20px",
+        backgroundRepeat: "no-repeat",
+        backgroundColor: "#000",
+      }}
+    >
+      <nav
+        className={`fixed top-0 py-4 bg-[#000000] shadow-md z-50 w-full flex items-center transition-transform duration-300 ${
+          scrollDirection === "down" ? "-translate-y-full" : "translate-y-0"
+        }`}
+      >
+        <div className="flex items-center justify-between w-full max-w-[1280px] mx-auto">
+          <img src={logo} alt="Logo" className="w-[175px] h-auto" />
+
+            <button
+              onClick={handleTakeTour}
+              className="w-[141px] bg-[#2DDE28] text-black text-[16px] font-medium h-[50px] button"
+            >
+              Next
+            </button>
+        </div>
+      </nav>
       <p className="text-white text-center font-[kanit] text-[79px] font-bold leading-[66px] tracking-[-1.329px] uppercase">
         SELECT LOCATION
       </p>

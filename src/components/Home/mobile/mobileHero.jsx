@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import heroImage from "../../../assets/images/mobile/evolve-strength6.webp";
+import heroImage from "../../../assets/images/mobile/evolve-strength5.webp";
 import UpDownArrow from "../../../assets/images/mobile/up-down-arrow.svg";
 import { useNavigate } from "react-router-dom";
 import { locations } from "../../../constant/locationsData";
@@ -33,16 +33,15 @@ const MobileHero = () => {
   useEffect(() => {
     dispatch(resetClubLocation());
     dispatch(resetClubLocationPostal());
-
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 1000); // 2 seconds delay
-
-    // Clean up the timeout on component unmount
-    return () => clearTimeout(timer);
   }, []);
 
-  // if (loading) return <Loader />;
+  useEffect(() => {
+    const img = new Image();
+    img.src = heroImage;
+    img.onload = () => setLoading(false);
+  }, []);
+
+  if (loading) return <Loader />;
   return (
     <div
       className="min-h-screen bg-black bg-cover bg-no-repeat flex flex-col justify-center sm:bg-center bg-[center_top_10%]"
