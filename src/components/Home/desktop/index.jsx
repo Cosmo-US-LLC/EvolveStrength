@@ -41,7 +41,7 @@ function LocationDesktop() {
     return () => clearTimeout(timer);
   }, []);
 
-  if (loading) return <Loader />;
+  // if (loading) return <Loader />;
   return (
     <div className="relative z-10 flex flex-col items-center bg-black justify-center min-h-screen gap-6 overflow-hidden location-bg">
       <p className="text-white text-center font-[kanit] text-[79px] font-bold leading-[66px] tracking-[-1.329px] uppercase">
