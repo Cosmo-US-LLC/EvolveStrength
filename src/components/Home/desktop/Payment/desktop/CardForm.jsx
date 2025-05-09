@@ -17,8 +17,11 @@ function CardForm({
   setConfirm,
   errors,
   setErrors,
+  termsAgreed,
+  setTermsAgreed,
 }) {
-  const [termsAgreed, setTermsAgreed] = useState(false);
+  const [termPage, setTermPage] = useState(false);
+  const [privacy, setPrivacy] = useState(false);
   const { plan, clubPlanMonthly, clubPlanYearly } = useSelector(
     (state) => state.plan
   );
@@ -209,6 +212,7 @@ function CardForm({
             type="checkbox"
             id="terms"
             checked={confirm}
+            disabled={!(termPage && privacy)}
             onChange={() => setConfirm(!confirm)}
             className="mr-2"
             style={{ marginTop: "3.5px" }}
@@ -218,8 +222,30 @@ function CardForm({
             className="text-[16px] font-[400] font-[vazirmatn] ml-2"
           >
             Please confirm you have read our{" "}
-            <a href="#" className="text-blue-400">
+            <a
+              onClick={() => setTermPage(true)}
+              href="https://join.evolvestrength.ca/terms-and-conditions/"
+              target="_blank"
+              className={` ${
+                !termPage
+                  ? "font-[600] text-blue-600"
+                  : "font-[400] text-blue-400"
+              }`}
+            >
               Terms And Conditions
+            </a>{" "}
+            &{" "}
+            <a
+              onClick={() => setPrivacy(true)}
+              href="https://join.evolvestrength.ca/privacy-policy/"
+              target="_blank"
+              className={` ${
+                !privacy
+                  ? "font-[600] text-blue-600"
+                  : "font-[400] text-blue-400"
+              }`}
+            >
+              Privacy Policy
             </a>
           </label>
         </div>

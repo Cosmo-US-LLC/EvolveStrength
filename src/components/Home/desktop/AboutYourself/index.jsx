@@ -32,7 +32,7 @@ function AboutYourself() {
   });
 
   const handleChangeDob = (field) => (value) => {
-    if (field === "selectedDate") {
+    if (field === "selectedDate" || field === "number") {
       setFormData((prevData) => {
         return { ...prevData, [field]: value };
       });

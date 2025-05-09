@@ -33,10 +33,14 @@ function ReviewAndPay() {
   const [accountNumber, setAccountNumber] = useState("");
   const [verifyAccountNumber, setVerifyAccountNumber] = useState("");
   const [confirm, setConfirm] = useState(false);
+  const [confirmed, setConfirmed] = useState(false);
   const [cardNumber, setCardNumber] = useState("");
   const [cvv, setCvv] = useState("");
   const [expirationDate, setExpirationDate] = useState("");
-  console.log("first", expirationDate)
+  const [termsAgreed, setTermsAgreed] = useState(false);
+  const [termsAgreeded, setTermsAgreeded] = useState(false);
+  const [renewAgreed, setRenewAgreed] = useState(false);
+  console.log("first", expirationDate);
   const [errors, setErrors] = useState({});
   const [apiError, setApiError] = useState(null);
 
@@ -203,6 +207,7 @@ function ReviewAndPay() {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
+            club_id: clubLocationPostal,
             first_name: fName || "John",
             last_name: lName || "Doe",
             email: email || "",
@@ -342,9 +347,19 @@ function ReviewAndPay() {
 
           <button
             onClick={handleJoinNow}
-            disabled={!isHuman}
+            disabled={
+              selectPlan !== "direct_debit"
+                ? !(isHuman && termsAgreeded && confirmed)
+                : !(isHuman && termsAgreed && renewAgreed && confirm)
+            }
             className={`w-[141px] ${
-              isHuman ? "bg-[#2DDE28]" : "bg-gray-400 cursor-not-allowed"
+              selectPlan !== "direct_debit"
+                ? isHuman && termsAgreeded && confirmed
+                  ? "bg-[#2DDE28]"
+                  : "bg-gray-400 cursor-not-allowed"
+                : isHuman && termsAgreed && renewAgreed && confirm
+                ? "bg-[#2DDE28]"
+                : "bg-gray-400 cursor-not-allowed"
             } text-black text-[16px] font-medium h-[50px] button`}
           >
             PAY NOW
@@ -386,6 +401,10 @@ function ReviewAndPay() {
                 setConfirm={setConfirm}
                 errors={errors}
                 setErrors={setErrors}
+                termsAgreed={termsAgreed}
+                setTermsAgreed={setTermsAgreed}
+                renewAgreed={renewAgreed}
+                setRenewAgreed={setRenewAgreed}
               />
             ) : (
               <CardForm
@@ -399,10 +418,12 @@ function ReviewAndPay() {
                 setCvv={setCvv}
                 expirationDate={expirationDate}
                 setExpirationDate={setExpirationDate}
-                confirm={confirm}
-                setConfirm={setConfirm}
+                confirm={confirmed}
+                setConfirm={setConfirmed}
                 errors={errors}
                 setErrors={setErrors}
+                termsAgreed={termsAgreeded}
+                setTermsAgreed={setTermsAgreeded}
               />
             )}
           </div>
@@ -419,9 +440,19 @@ function ReviewAndPay() {
               <button
                 onClick={handleJoinNow}
                 className={`button mt-6 ${
-                  isHuman ? "bg-[#2DDE28]" : "bg-gray-400 cursor-not-allowed"
+                  selectPlan !== "direct_debit"
+                    ? isHuman && termsAgreeded && confirmed
+                      ? "bg-[#2DDE28]"
+                      : "bg-gray-400 cursor-not-allowed"
+                    : isHuman && termsAgreed && renewAgreed && confirm
+                    ? "bg-[#2DDE28]"
+                    : "bg-gray-400 cursor-not-allowed"
                 } text-black text-[16px] font-medium w-[139px] h-[42px]`}
-                disabled={!isHuman}
+                disabled={
+                  selectPlan !== "direct_debit"
+                    ? !(isHuman && termsAgreeded && confirmed)
+                    : !(isHuman && termsAgreed && renewAgreed && confirm)
+                }
               >
                 PAY NOW
               </button>

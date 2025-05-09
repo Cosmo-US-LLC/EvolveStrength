@@ -2,6 +2,7 @@ import React from "react";
 import { useState, useRef } from "react";
 import DOBPickerDesktop from "../../../../utils/DOBPickerDesktop";
 import { loadGoogleMaps } from "../../../../utils/loadGoogleMap";
+// import { PhoneInput } from "react-international-phone";
 
 const AboutYourselfForm = ({
   formData,
@@ -116,7 +117,6 @@ const AboutYourselfForm = ({
           </p>
         )}
       </div>
-
       <div>
         <input
           type="tel"
@@ -138,6 +138,26 @@ const AboutYourselfForm = ({
           </p>
         )}
       </div>
+
+      {/* <div>
+        <PhoneInput
+          placeholder="Phone Number"
+          value={formData.number}
+          onChange={handleChangeDob("number")}
+          // className={`w-full border px-4 py-3 placeholder-[#999999] text-white font-[vazirmatn] text-[16px] bg-[#000000]/60 backdrop-blur-[10px] ${
+          //   validationErrors.number ? "border-[#c20000]" : "border-white/40"
+          // }`}
+          className={`w-full border px-4 py-3 placeholder-[#999999] text-white font-[vazirmatn] text-[16px] backdrop-blur-[10px] !focus:outline-none !focus:ring-0 !focus-visible:border-none flex`}
+          international={false} // Disables international country selection dropdown
+          defaultCountry="US" // Set a default country code if required (e.g., US)
+          country="US"
+        />
+        {validationErrors.number && (
+          <p className="text-[#c20000] text-sm mt-1">
+            {validationErrors.number}
+          </p>
+        )}
+      </div> */}
 
       <div>
         <input
