@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import StepIndicator from "./common/StepIndicator";
 import MembershipVancouver from "./common/MembershipVancouver";
 import dropdownIcon from "../../../assets/images/mobile/member-ship/up-down-arrow.svg";
@@ -9,12 +9,58 @@ import { formatDate } from "../../../libs/utils";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserInfo } from "../../../redux/slices/planSlice";
 import { parsePhoneNumberFromString } from "libphonenumber-js";
+import { loadGoogleMaps } from "../../../utils/loadGoogleMap";
 
 const MemberDetails = () => {
   const dispatch = useDispatch();
-  const { userInfo, isLoading, error } = useSelector((state) => state.plan);
+  const { userInfo } = useSelector((state) => state.plan);
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
+  const GOOGLE_MAPS_API_KEY = "AIzaSyC6URLPah7QiL_BHSzJVJTNy_qX6bIK8uU";
+  const postalCodeRef = useRef(null);
+  const [autocompleteInitialized, setAutocompleteInitialized] = useState(false);
+
+  const handlePostalCodeFocus = async () => {
+    if (!autocompleteInitialized && postalCodeRef.current) {
+      try {
+        const google = await loadGoogleMaps(GOOGLE_MAPS_API_KEY);
+
+        const autocomplete = new google.maps.places.Autocomplete(
+          postalCodeRef.current,
+          {
+            types: ["(regions)"],
+            componentRestrictions: { country: "ca" },
+          }
+        );
+
+        autocomplete.setFields(["address_components"]);
+
+        autocomplete.addListener("place_changed", () => {
+          const place = autocomplete.getPlace();
+          let postalCode = "";
+
+          if (place.address_components) {
+            for (const component of place.address_components) {
+              if (component.types.includes("postal_code")) {
+                postalCode = component.long_name;
+                break;
+              }
+            }
+
+            if (postalCode) {
+              postalCodeRef.current.value = postalCode;
+              setPostal(postalCode);
+              updateErrs("postal", postalCode);
+            }
+          }
+        });
+
+        setAutocompleteInitialized(true);
+      } catch (err) {
+        console.error("Failed to load Google Maps script:", err);
+      }
+    }
+  };
 
   const toggleDropdown = () => {
     setIsOpen((prev) => !prev);
@@ -82,7 +128,7 @@ const MemberDetails = () => {
     } else if (!/^\d{10}$/.test(phone)) {
       errors.phone = "Phone number must be exactly 10 digits.";
     } else {
-      const number = parsePhoneNumberFromString(`+1${phone}`, "CA"); 
+      const number = parsePhoneNumberFromString(`+1${phone}`, "CA");
       if (!number || !number.isValid()) {
         errors.phone = "Enter a valid Canadian phone number.";
       }
@@ -92,6 +138,11 @@ const MemberDetails = () => {
     if (!province.trim()) errors.province = "Province is required.";
     if (!city.trim()) errors.city = "City is required.";
     if (!postal.trim()) errors.postal = "Postal code is required.";
+    if (!postal.trim()) {
+      errors.postal = "Postal code is required";
+    } else if (!/^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$/.test(postal.trim())) {
+      errors.postal = "Invalid Canadian postal code format (e.g., M1B 2K3)";
+    }
     if (!dob) errors.dob = "Date of birth is required.";
     if (!gender) errors.gender = "Gender is required.";
 
@@ -298,6 +349,8 @@ const MemberDetails = () => {
                 setPostal(e.target.value);
                 updateErrs("postal", e.target.value);
               }}
+              onFocus={handlePostalCodeFocus}
+              ref={postalCodeRef}
               className={`w-full px-4 py-3 bg-transparent border ${
                 errors?.postal ? "!border-red-500" : "border-white/40"
               } placeholder-[#999999] text-[16px] font-[400]`}

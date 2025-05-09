@@ -14,13 +14,21 @@ const MembershipVancouver = (props) => {
     startDate,
     clubLocation,
     plan,
-    clubLocationPostal,
-    clubPlans,
+    addOnDetails,
     clubPlanMonthly,
     clubPlanYearly,
-    isLoading,
-    error,
   } = useSelector((state) => state.plan);
+
+  const downPayment = (plan === "monthly" ? clubPlanMonthly : clubPlanYearly)
+    ?.downPayments?.[0]?.total;
+  const scheduleAmount = (plan === "monthly" ? clubPlanMonthly : clubPlanYearly)
+    ?.schedules?.[1]?.scheduleAmount;
+  const downPaymentValue =
+    parseFloat(downPayment?.replace(/[^0-9.-]+/g, "")) || 0;
+  const scheduleAmountValue =
+    parseFloat(scheduleAmount?.replace(/[^0-9.-]+/g, "")) || 0;
+  const totalAmount = downPaymentValue + scheduleAmountValue;
+  const formattedTotalAmount = `$${totalAmount.toFixed(2)}`;
 
   return (
     <div
@@ -103,6 +111,21 @@ const MembershipVancouver = (props) => {
                 ?.downPayments?.[0]?.subTotal || "$--.--"}
             </span>
           </div>
+          {addOnDetails && (
+            <div className="flex justify-between">
+              <span className="text-white font-[vazirmatn] text-[16px] font-normal leading-[20.382px] capitalize">
+                {/* Bi-Weekly */}
+                add-ons
+                {(plan == "monthly" ? clubPlanMonthly : clubPlanYearly)
+                  ?.schedules?.[1]?.profitCenter || "Bi-Weekly"}
+              </span>
+              <span className="text-white font-[vazirmatn] text-[16px] font-normal leading-[20.382px] capitalize">
+                {/* $96.66 */}
+                {(plan == "monthly" ? clubPlanMonthly : clubPlanYearly)
+                  ?.schedules?.[1]?.scheduleAmount || "$--.--"}
+              </span>
+            </div>
+          )}
           <div className="flex justify-between">
             <span className="text-white font-[vazirmatn] text-[16px] font-normal leading-[20.382px] capitalize">
               Initiation Fee
@@ -118,8 +141,10 @@ const MembershipVancouver = (props) => {
               Total
             </span>
             <span className="text-white font-[vazirmatn] text-[16px] font-normal leading-[20.382px] capitalize">
-              {(plan == "monthly" ? clubPlanMonthly : clubPlanYearly)
-                ?.downPayments?.[0]?.total || "$--.--"}
+              {addOnDetails
+                ? formattedTotalAmount
+                : (plan === "monthly" ? clubPlanMonthly : clubPlanYearly)
+                    ?.downPayments?.[0]?.total || "$--.--"}
             </span>
           </div>
         </div>

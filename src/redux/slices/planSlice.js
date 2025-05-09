@@ -7,6 +7,7 @@ const initialState = {
   clubLocation: "",
   clubLocationPostal: null,
   clubLocationId: null,
+  addOnDetails: false,
   clubPlans: [],
   clubPlanMonthly: null,
   clubPlanYearly: null,
@@ -32,6 +33,9 @@ const planSlice = createSlice({
     },
     setClubLocationId(state, action) {
       state.clubLocationId = action.payload;
+    },
+    setAddOnDetails(state, action) {
+      state.addOnDetails = action.payload;
     },
     setClubPlans(state, action) {
       state.clubPlans = action.payload;
@@ -104,11 +108,12 @@ const planSlice = createSlice({
       state.clubLocation = "";
       state.clubLocationPostal = null;
       state.clubLocationId = null;
+      state.addOnDetails = false;
       state.clubPlans = [];
       state.clubPlanMonthly = null;
       state.clubPlanYearly = null;
       state.startDate = "";
-      state.userInfo = null
+      state.userInfo = null;
       state.isLoading = false;
       state.error = null;
     },
@@ -121,6 +126,7 @@ const planSlice = createSlice({
         (state, action) => {
           state.clubPlans = action.payload.plans;
           state.clubPlanMonthly = null;
+          state.addOnDetails = false,
           state.clubPlanYearly = null;
           state.isLoading = false;
         }
@@ -137,7 +143,7 @@ const planSlice = createSlice({
       .addMatcher(
         plansApi.endpoints.getClubPlanDetails.matchFulfilled,
         (state, action) => {
-        //   state.clubPlanDetails = action.payload;
+          //   state.clubPlanDetails = action.payload;
           state.isLoading = false;
         }
       )
@@ -157,6 +163,7 @@ export const {
   setClubLocation,
   setClubLocationPostal,
   setClubLocationId,
+  setAddOnDetails,
   setClubPlans,
   setClubPlanMonthly,
   setClubPlanYearly,

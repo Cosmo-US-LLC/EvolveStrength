@@ -18,6 +18,7 @@ import {
   setClubPlanYearly,
   setClubPlans,
 } from "../../../../../redux/slices/planSlice";
+import MembershipPlanDetails from "./MembershipPlanDetails";
 
 function MembershipDesktop() {
   const [loading, setLoading] = useState(true);
@@ -109,7 +110,10 @@ function MembershipDesktop() {
         </p>
 
         <div className="flex flex-row justify-between mt-16">
-          <MembershipPlanSelector />
+          <div>
+            <MembershipPlanSelector />
+            <MembershipPlanDetails />
+          </div>
 
           <div>
             <MembershipSummaryBoxDesktop />

@@ -17,6 +17,7 @@ const MembershipPlanSelector = () => {
     clubPlanMonthly,
     clubPlanYearly
   } = useSelector((state) => state.plan);
+    console.log("first", clubPlanMonthly, clubPlanYearly)
   return (
     <div className="max-w-[1280px]">
       <div>
