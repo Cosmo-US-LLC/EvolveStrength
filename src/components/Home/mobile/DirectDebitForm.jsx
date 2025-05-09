@@ -250,7 +250,7 @@ const DirectDebitForm = ({
             type="checkbox"
             className="mt-1 accent-[#2DDE28]"
             checked={confirm}
-            disabled={!(termPage && privacy)}
+            // disabled={!(termPage && privacy)}
             onChange={(e) => setConfirm(e.target.checked)}
           />
           <span>

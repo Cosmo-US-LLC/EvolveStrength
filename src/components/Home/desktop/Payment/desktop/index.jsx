@@ -10,6 +10,7 @@ import Turnstile from "react-turnstile";
 import useScrollDirection from "../../../../../hooks/useScrollDirection";
 import { useSelector } from "react-redux";
 import logo from "../../../../../assets/images/desktop/logo_navbar.svg";
+import Loader from "../../../../Loader";
 
 function ReviewAndPay() {
   const [selectPlan, setSelectPlan] = useState("card");
@@ -43,6 +44,7 @@ function ReviewAndPay() {
   console.log("first", expirationDate);
   const [errors, setErrors] = useState({});
   const [apiError, setApiError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const location = clubLocationPostal;
   const planId =
@@ -236,6 +238,7 @@ function ReviewAndPay() {
   };
 
   const getAgreementInfo = async () => {
+    setIsLoading(true);
     try {
       const response = await fetch(
         `http://138.197.175.219:8081/api/submitAgreement?location=${location}`,
@@ -258,6 +261,8 @@ function ReviewAndPay() {
       setApiError(
         "Failed to submit. Please check your connection and try again."
       );
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -334,6 +339,8 @@ function ReviewAndPay() {
     if (!validateFields()) return;
     getAgreementInfo();
   };
+
+  if (isLoading) return <Loader show={false} />;
 
   return (
     <div className="relative w-full review_and_pay_bg">

@@ -212,7 +212,7 @@ function CardForm({
             type="checkbox"
             id="terms"
             checked={confirm}
-            disabled={!(termPage && privacy)}
+            // disabled={!(termPage && privacy)}
             onChange={() => setConfirm(!confirm)}
             className="mr-2"
             style={{ marginTop: "3.5px" }}
