@@ -155,7 +155,7 @@ const MembershipPlanDetails = () => {
                 add-ons
               </p>
 
-              <div className="bg-[#353535] flex justify-between items-center mt-8 w-[90%] px-6 py-6">
+              <div className={`bg-[#353535] flex justify-between items-center mt-8 w-[90%] px-6 py-6 ${isSelected ? "border border-1 border-[#2DDE28]" : ""}`}>
                 <div className="flex justify-center flex-col">
                   <p
                     className="text-[#fff] items-center font-[vazirmatn] text-[20px] font-[400] capitalize"
@@ -283,7 +283,7 @@ const MembershipPlanDetails = () => {
                 <button
                   onClick={() => {
                     setIsOpen(false);
-                    // if (!isSelected) return;
+                    if (!isSelected) return;
                     dispatch(setAddOnDetails(true));
                     setIsSelected(true);
                   }}

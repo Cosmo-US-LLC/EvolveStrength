@@ -95,11 +95,18 @@ const LocationDetails = () => {
           })
         ).unwrap();
 
-        if (index === 0) {
-          dispatch(setClubPlanMonthly(result));
-        } else {
-          dispatch(setClubPlanYearly(result));
+        {
+          clubLocationPostal === 40248 || clubLocationPostal === 40327
+            ? // If the postal code matches, check the index
+              index === 0
+              ? dispatch(setClubPlanYearly(result))
+              : dispatch(setClubPlanMonthly(result))
+            : // If the postal code doesn't match, check the index
+            index === 0
+            ? dispatch(setClubPlanMonthly(result))
+            : dispatch(setClubPlanYearly(result));
         }
+
         // navigate(`/membership-plan${searchParams}&startDate=${formattedDate}`);
       } catch (err) {
         console.error(

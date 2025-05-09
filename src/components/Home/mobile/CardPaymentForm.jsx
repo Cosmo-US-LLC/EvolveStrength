@@ -89,9 +89,11 @@ const CardPaymentForm = ({
             placeholder="Card Number"
             value={cardNumber}
             onChange={(e) => {
-              setCardNumber(e.target.value);
+              const value = e.target.value.replace(/[^0-9]/g, "");
+              setCardNumber(value);
               updateErrs("cardNumber");
             }}
+            maxLength={16}
             className={`w-full px-4 py-3 bg-black border border-[#999] text-white text-[16px] font-[400] placeholder-[#999999] text-left rounded-none ${
               errors?.cardNumber && "!border-red-500"
             }`}
@@ -108,9 +110,12 @@ const CardPaymentForm = ({
               placeholder="CVV"
               value={cvv}
               onChange={(e) => {
-                setCvv(e.target.value);
-                updateErrs("cvv");
+                // Only allow numbers
+                const value = e.target.value.replace(/[^0-9]/g, ""); // Remove non-numeric characters
+                setCvv(value); // Set the cleaned numeric value
+                updateErrs("cvv"); // Update error state if necessary
               }}
+              maxLength={3}
               className={`w-full px-4 py-3 bg-black border border-[#999] text-white text-[16px] font-[400] placeholder-[#999999] text-left rounded-none ${
                 errors?.cvv && "!border-red-500"
               }`}
@@ -126,9 +131,27 @@ const CardPaymentForm = ({
               placeholder="Expiration Date"
               value={expirationDate}
               onChange={(e) => {
-                setExpirationDate(e.target.value);
+                let value = e.target.value;
+
+                // Allow only numeric characters and '/'
+                value = value.replace(/[^0-9/]/g, "");
+
+                // Format to MM/YY: Add '/' after two digits for month
+                if (value.length === 2) {
+                  value = value + "/"; // Add '/' after the month
+                }
+
+                // Limit to MM/YY format (if the user tries to input more than 5 characters, cut it off)
+                if (value.length > 5) {
+                  value = value.substring(0, 5);
+                }
+
+                setExpirationDate(value); // Set the formatted expiration date
+
+                // Call the error handler if there are any validation issues
                 updateErrs("expirationDate");
               }}
+              maxLength={5}
               className={`w-full px-4 py-3 bg-black border border-[#999] text-white text-[16px] font-[400] placeholder-[#999999] text-left rounded-none ${
                 errors?.expirationDate && "!border-red-500"
               }`}

@@ -84,10 +84,31 @@ const MemberPayment = () => {
       else if (cvv.length !== 3)
         newErrors.cvv = "CVV must be exactly 3 digits.";
 
-      if (!expirationDate.trim())
+      if (!expirationDate.trim()) {
         newErrors.expirationDate = "Expiration date is required.";
-      else if (expirationDate.length < 4)
-        newErrors.expirationDate = "Expiration date must be in MMYY format.";
+      } else if (expirationDate.length < 5) {
+        newErrors.expirationDate = "Expiration date must be in MM/YY format.";
+      } else {
+        // Extract month and year from MM/YY format
+        const [month, year] = expirationDate.split("/");
+
+        // Get the current month and year
+        const currentDate = new Date();
+        const currentMonth = currentDate.getMonth() + 1; // months are 0-indexed, so add 1
+        const currentYear = currentDate.getFullYear() % 100; // get last two digits of the current year
+
+        // Convert the extracted expiration month and year to integers
+        const expirationMonth = parseInt(month, 10);
+        const expirationYear = parseInt(year, 10);
+
+        // Check if the expiration date is before the current date
+        if (
+          expirationYear < currentYear ||
+          (expirationYear === currentYear && expirationMonth < currentMonth)
+        ) {
+          newErrors.expirationDate = "This card has expired.";
+        }
+      }
     }
 
     if (Object.keys(newErrors).length > 0) {
