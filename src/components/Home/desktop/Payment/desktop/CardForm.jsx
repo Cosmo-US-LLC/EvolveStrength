@@ -154,25 +154,8 @@ function CardForm({
                 value={expirationDate}
                 onChange={(e) => {
                   let value = e.target.value;
-
-                  // Allow only numeric and '/' characters
                   value = value.replace(/[^0-9/]/g, "");
-
-                  // Format to MM/YY
-                  if (value.length === 2) {
-                    value = value + "/"; // Add '/' after two digits for the month
-                  }
-
-                  // Adjust the year to be in two digits (if the year has more than 2 digits)
-                  if (value.length === 5) {
-                    value = value.substring(0, 5); // Limit to "MM/YY"
-                    const year = value.substring(3, 5);
-                    value = value.substring(0, 3) + year; // Take only last two digits of the year
-                  }
-
                   setExpirationDate(value);
-
-                  // Reset the error if the input is valid
                   if (errors.expirationDate && value.trim() !== "") {
                     setErrors((prev) => ({ ...prev, expirationDate: false }));
                   }

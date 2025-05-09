@@ -95,7 +95,9 @@ const DirectDebitForm = ({
                 placeholder="Transit Number"
                 value={transitNumber}
                 onChange={(e) => {
-                  setTransitNumber(e.target.value);
+                  let value = e.target.value
+                  value = value.replace(/[^0-9/]/g, "");
+                  setTransitNumber(value);
                   updateErrs("transitNumber");
                 }}
                 className={`w-full p-2 pt-3 border border-[#999] bg-black text-white text-[16px] font-[400] placeholder-[#999999] text-left ${
@@ -115,7 +117,9 @@ const DirectDebitForm = ({
                 placeholder="Bank Number"
                 value={institutionNumber}
                 onChange={(e) => {
-                  setInstitutionNumber(e.target.value);
+                  let value = e.target.value
+                  value = value.replace(/[^0-9/]/g, "");
+                  setInstitutionNumber(value);
                   updateErrs("institutionNumber");
                 }}
                 className={`w-full p-2 pt-3 border border-[#999] bg-black text-white text-[16px] font-[400] placeholder-[#999999] text-left ${
@@ -158,7 +162,9 @@ const DirectDebitForm = ({
                 placeholder="Account Number"
                 value={accountNumber}
                 onChange={(e) => {
-                  setAccountNumber(e.target.value);
+                  let value = e.target.value
+                  value = value.replace(/[^0-9/]/g, "");
+                  setAccountNumber(value);
                   updateErrs("accountNumber");
                 }}
                 className={`w-full p-2 pt-3 border border-[#999] bg-black text-white text-[16px] font-[400] placeholder-[#999999] text-left ${
@@ -178,7 +184,9 @@ const DirectDebitForm = ({
                 placeholder="Verify Account"
                 value={verifyAccountNumber}
                 onChange={(e) => {
-                  setVerifyAccountNumber(e.target.value);
+                  let value = e.target.value
+                  value = value.replace(/[^0-9/]/g, "");
+                  setVerifyAccountNumber(value);
                   updateErrs("verifyAccountNumber");
                 }}
                 className={`w-full p-2 pt-3 border border-[#999] bg-black text-white text-[16px] font-[400] placeholder-[#999999] text-left ${
