@@ -98,7 +98,8 @@ function DebitForm({
                 id="transitNumber"
                 value={transitNumber}
                 onChange={(e) => {
-                  const value = e.target.value;
+                  let value = e.target.value;
+                  value = value.replace(/[^0-9/]/g, "");
                   setTransitNumber(value);
                   if (errors.transitNumber && value.trim() !== "") {
                     setErrors((prev) => ({ ...prev, transitNumber: false }));
@@ -124,7 +125,8 @@ function DebitForm({
                 id="institutionNumber"
                 value={institutionNumber}
                 onChange={(e) => {
-                  const value = e.target.value;
+                  let value = e.target.value;
+                  value = value.replace(/[^0-9/]/g, "");
                   setInstitutionNumber(value);
                   if (errors.institutionNumber && value.trim() !== "") {
                     setErrors((prev) => ({
@@ -173,7 +175,8 @@ function DebitForm({
                 id="accountNumber"
                 value={accountNumber}
                 onChange={(e) => {
-                  const value = e.target.value;
+                  let value = e.target.value;
+                  value = value.replace(/[^0-9/]/g, "");
                   setAccountNumber(value);
                   if (errors.accountNumber && value.trim() !== "") {
                     setErrors((prev) => ({ ...prev, accountNumber: false }));
@@ -228,7 +231,8 @@ function DebitForm({
               id="verifyAccountNumber"
               value={verifyAccountNumber}
               onChange={(e) => {
-                const value = e.target.value;
+                let value = e.target.value;
+                value = value.replace(/[^0-9/]/g, "");
                 setVerifyAccountNumber(value);
                 if (errors.verifyAccountNumber && value.trim() !== "") {
                   setErrors((prev) => ({

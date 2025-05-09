@@ -132,23 +132,8 @@ const CardPaymentForm = ({
               value={expirationDate}
               onChange={(e) => {
                 let value = e.target.value;
-
-                // Allow only numeric characters and '/'
                 value = value.replace(/[^0-9/]/g, "");
-
-                // Format to MM/YY: Add '/' after two digits for month
-                if (value.length === 2) {
-                  value = value + "/"; // Add '/' after the month
-                }
-
-                // Limit to MM/YY format (if the user tries to input more than 5 characters, cut it off)
-                if (value.length > 5) {
-                  value = value.substring(0, 5);
-                }
-
-                setExpirationDate(value); // Set the formatted expiration date
-
-                // Call the error handler if there are any validation issues
+                setExpirationDate(value);
                 updateErrs("expirationDate");
               }}
               maxLength={5}
