@@ -60,7 +60,9 @@ function CardForm({
               placeholder="First Name"
             />
             {errors.firstCardName && (
-              <p className="text-[#c20000] mt-1 text-sm">{errors.firstCardName}</p>
+              <p className="text-[#c20000] mt-1 text-sm">
+                {errors.firstCardName}
+              </p>
             )}
           </div>
 
@@ -83,7 +85,9 @@ function CardForm({
               placeholder="Last Name"
             />
             {errors.lastCardName && (
-              <p className="text-[#c20000] mt-1 text-sm">{errors.lastCardName}</p>
+              <p className="text-[#c20000] mt-1 text-sm">
+                {errors.lastCardName}
+              </p>
             )}
           </div>
         </div>
@@ -97,7 +101,7 @@ function CardForm({
                 id="cardNumber"
                 value={cardNumber}
                 onChange={(e) => {
-                  const value = e.target.value;
+                  const value = e.target.value.replace(/[^0-9]/g, "");
                   setCardNumber(value);
                   if (errors.cardNumber && value.trim() !== "") {
                     setErrors((prev) => ({ ...prev, cardNumber: false }));
@@ -124,19 +128,22 @@ function CardForm({
                 value={cvv}
                 onChange={(e) => {
                   const value = e.target.value;
-                  setCvv(value);
-                  if (errors.cvv && value.trim() !== "") {
+                  // Ensure only numbers are entered
+                  const numericValue = value.replace(/[^0-9]/g, "");
+                  setCvv(numericValue); // Set the numeric value only
+                  if (errors.cvv && numericValue.trim() !== "") {
                     setErrors((prev) => ({ ...prev, cvv: false }));
                   }
                 }}
+                maxLength={3}
                 className={`p-3 bg-[#000000]/60 backdrop-blur-[10px] font-[vazirmatn] text-[16px] border text-white placeholder-[#999999] ${
                   errors.cvv ? "border-red-500" : "border-[#999999]"
                 }`}
                 placeholder="CVV"
               />
               {errors.cvv && (
-              <p className="text-[#c20000] mt-1 text-sm">{errors.cvv}</p>
-            )}
+                <p className="text-[#c20000] mt-1 text-sm">{errors.cvv}</p>
+              )}
             </div>
           </div>
           <div>
@@ -146,20 +153,41 @@ function CardForm({
                 id="accountNumber"
                 value={expirationDate}
                 onChange={(e) => {
-                  const value = e.target.value;
+                  let value = e.target.value;
+
+                  // Allow only numeric and '/' characters
+                  value = value.replace(/[^0-9/]/g, "");
+
+                  // Format to MM/YY
+                  if (value.length === 2) {
+                    value = value + "/"; // Add '/' after two digits for the month
+                  }
+
+                  // Adjust the year to be in two digits (if the year has more than 2 digits)
+                  if (value.length === 5) {
+                    value = value.substring(0, 5); // Limit to "MM/YY"
+                    const year = value.substring(3, 5);
+                    value = value.substring(0, 3) + year; // Take only last two digits of the year
+                  }
+
                   setExpirationDate(value);
+
+                  // Reset the error if the input is valid
                   if (errors.expirationDate && value.trim() !== "") {
                     setErrors((prev) => ({ ...prev, expirationDate: false }));
                   }
                 }}
+                maxLength={5}
                 className={`p-3 bg-[#000000]/60 backdrop-blur-[10px] border font-[vazirmatn] text-[16px] text-white placeholder-[#999999] ${
                   errors.expirationDate ? "border-red-500" : "border-[#999999]"
                 }`}
                 placeholder="Expiration Date"
               />
               {errors.expirationDate && (
-              <p className="text-[#c20000] mt-1 text-sm">{errors.expirationDate}</p>
-            )}
+                <p className="text-[#c20000] mt-1 text-sm">
+                  {errors.expirationDate}
+                </p>
+              )}
             </div>
           </div>
         </div>

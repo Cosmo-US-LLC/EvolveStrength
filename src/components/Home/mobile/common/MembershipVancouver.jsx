@@ -9,7 +9,6 @@ const MembershipVancouver = (props) => {
   // console.log(props);
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(props.step === 1 ? true : false);
-  // const {startDate, planData} = props;
   const {
     startDate,
     clubLocation,
@@ -19,6 +18,7 @@ const MembershipVancouver = (props) => {
     clubPlanMonthly,
     clubPlanYearly,
   } = useSelector((state) => state.plan);
+  console.log("first", clubPlanMonthly, clubPlanYearly)
 
   const downPayment = (plan === "monthly" ? clubPlanMonthly : clubPlanYearly)
     ?.downPayments?.[0]?.total;

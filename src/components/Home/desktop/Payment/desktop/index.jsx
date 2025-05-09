@@ -36,6 +36,7 @@ function ReviewAndPay() {
   const [cardNumber, setCardNumber] = useState("");
   const [cvv, setCvv] = useState("");
   const [expirationDate, setExpirationDate] = useState("");
+  console.log("first", expirationDate)
   const [errors, setErrors] = useState({});
   const [apiError, setApiError] = useState(null);
 
@@ -293,10 +294,31 @@ function ReviewAndPay() {
       if (!cvv.trim()) newErrors.cvv = "CVV is required.";
       else if (cvv.length !== 3) newErrors.cvv = "CVV must be 3 digits.";
 
-      if (!expirationDate.trim())
+      if (!expirationDate.trim()) {
         newErrors.expirationDate = "Expiration date is required.";
-      else if (expirationDate.length < 4)
+      } else if (expirationDate.length < 5) {
         newErrors.expirationDate = "Expiration date is invalid.";
+      } else {
+        // Extract the month and year from the expirationDate (MM/YY format)
+        const [month, year] = expirationDate.split("/");
+
+        // Get the current month and year
+        const currentDate = new Date();
+        const currentMonth = currentDate.getMonth() + 1; // months are 0-indexed, so add 1
+        const currentYear = currentDate.getFullYear() % 100; // get last two digits of the current year
+
+        // Convert the extracted expiration month and year to integers
+        const expirationMonth = parseInt(month, 10);
+        const expirationYear = parseInt(year, 10);
+
+        // Check if the expiration date is before the current date
+        if (
+          expirationYear < currentYear ||
+          (expirationYear === currentYear && expirationMonth < currentMonth)
+        ) {
+          newErrors.expirationDate = "This card has expired.";
+        }
+      }
     }
 
     setErrors(newErrors);
