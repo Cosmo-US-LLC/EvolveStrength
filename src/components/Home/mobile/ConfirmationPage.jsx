@@ -12,9 +12,20 @@ const ConfirmationPage = () => {
     plan,
     clubPlanMonthly,
     clubPlanYearly,
-    isLoading,
-    error,
+    clubLocationPostal,
+    addOnDetails,
   } = useSelector((state) => state.plan);
+
+  const downPayment = (plan === "monthly" ? clubPlanMonthly : clubPlanYearly)
+    ?.downPayments?.[0]?.total;
+  const scheduleAmount = (plan === "monthly" ? clubPlanMonthly : clubPlanYearly)
+    ?.schedules?.[1]?.scheduleAmount;
+  const downPaymentValue =
+    parseFloat(downPayment?.replace(/[^0-9.-]+/g, "")) || 0;
+  const scheduleAmountValue =
+    parseFloat(scheduleAmount?.replace(/[^0-9.-]+/g, "")) || 0;
+  const totalAmount = downPaymentValue + scheduleAmountValue;
+  const formattedTotalAmount = `$${totalAmount.toFixed(2)}`;
 
   return (
     <div className="min-h-screen bg-black text-white flex flex-col pt-[70px]">
@@ -24,7 +35,8 @@ const ConfirmationPage = () => {
         </h2>
 
         <p className="text-center text-white text-[13.834px] font-normal font-[vazirmatn] leading-[16.601px] capitalize">
-          You&apos;ve Successfully Activated Your {plan == "monthly" ? "Month To Month" : "1 year Contract"} Membership.
+          You&apos;ve Successfully Activated Your{" "}
+          {plan == "monthly" ? "Month To Month" : "1 year Contract"} Membership.
         </p>
 
         <div className="w-full flex flex-col justify-center items-start gap-3 pt-4 pb-2 px-4 border-[0.138px] border-[#808080] bg-white/5 self-stretch ">
@@ -44,7 +56,8 @@ const ConfirmationPage = () => {
             </span>
 
             <span className="text-white font-[vazirmatn] text-[13px] font-normal leading-[20.382px] capitalize text-right">
-              {(plan == "monthly" ? clubPlanMonthly : clubPlanYearly)?.scheduleFrequency || "Bi-Weekly"}
+              {(plan == "monthly" ? clubPlanMonthly : clubPlanYearly)
+                ?.scheduleFrequency || "Bi-Weekly"}
             </span>
           </div>
           <div className="flex w-[100%] justify-between border-b border-[#808080] pb-2 mb-2">
@@ -53,7 +66,11 @@ const ConfirmationPage = () => {
             </span>
 
             <span className="text-white font-[vazirmatn] font-[800] text-[13.834px] leading-[16.601px] capitalize text-right">
-            {(plan == "monthly" ? clubPlanMonthly : clubPlanYearly)?.scheduleTotalAmount || "$--.--"}
+              {addOnDetails &&
+              (clubLocationPostal === 40248 || clubLocationPostal === 40327)
+                ? formattedTotalAmount
+                : (plan === "monthly" ? clubPlanMonthly : clubPlanYearly)
+                    ?.downPayments?.[0]?.total || "$--.--"}
             </span>
           </div>
         </div>
@@ -68,7 +85,7 @@ const ConfirmationPage = () => {
         <button
           onClick={() => {
             navigate("/");
-            dispatch(resetState())
+            dispatch(resetState());
           }}
           className="cursor-pointer w-[329px] absolute bottom-[30px] left-0 right-0 mx-auto bg-[#2DDE28] text-black text-center font-[kanit] text-[16px] font-medium leading-[16px] uppercase py-[12.801px] px-0"
         >

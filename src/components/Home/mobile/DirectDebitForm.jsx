@@ -20,6 +20,8 @@ const DirectDebitForm = ({
   setVerifyAccountNumber,
   errors,
   updateErrs,
+  apiError,
+  paymentMethod,
 }) => {
   const { plan, clubPlanMonthly, clubPlanYearly } = useSelector(
     (state) => state.plan
@@ -249,15 +251,22 @@ const DirectDebitForm = ({
         </label>
 
         {/* Submit Button */}
-        <button
-          onClick={() => makeAgreement()}
-          className="cursor-pointer flex justify-center items-center w-full h-[48px] mt-4 
+        <div className="flex flex-col items-center">
+          {apiError && paymentMethod == "direct" && (
+            <span className="text-red-500 text-sm text-center w-full">
+              {apiError}
+            </span>
+          )}
+          <button
+            onClick={() => makeAgreement()}
+            className="cursor-pointer flex justify-center items-center w-full h-[48px] mt-4 
             bg-[#2DDE28] border border-[#2DDE28] font-[kanit] text-black text-[16px] font-medium 
             leading-[16px] uppercase font-kanit transition-all hover:opacity-90 active:scale-95 disabled:opacity-60"
-          disabled={!holder || !agree || !confirm}
-        >
-          Pay Now
-        </button>
+            disabled={!holder || !agree || !confirm}
+          >
+            Pay Now
+          </button>
+        </div>
       </div>
     </div>
   );

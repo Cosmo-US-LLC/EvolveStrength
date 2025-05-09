@@ -9,9 +9,20 @@ function Congratulations() {
   const scrollDirection = useScrollDirection;
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { plan, clubPlanMonthly, clubPlanYearly } = useSelector(
+  const { plan, clubPlanMonthly, clubPlanYearly, clubLocationPostal, addOnDetails } = useSelector(
     (state) => state.plan
   );
+
+  const downPayment = (plan === "monthly" ? clubPlanMonthly : clubPlanYearly)
+    ?.downPayments?.[0]?.total;
+  const scheduleAmount = (plan === "monthly" ? clubPlanMonthly : clubPlanYearly)
+    ?.schedules?.[1]?.scheduleAmount;
+  const downPaymentValue =
+    parseFloat(downPayment?.replace(/[^0-9.-]+/g, "")) || 0;
+  const scheduleAmountValue =
+    parseFloat(scheduleAmount?.replace(/[^0-9.-]+/g, "")) || 0;
+  const totalAmount = downPaymentValue + scheduleAmountValue;
+  const formattedTotalAmount = `$${totalAmount.toFixed(2)}`;
 
   const handleBackHome = () => {
     navigate(`/`);
@@ -69,9 +80,11 @@ function Congratulations() {
           <div className="flex justify-between text-white/90 text-sm text-[20px] leading-[24px] capitalize font-semibold border-t border-white/20 pt-4">
             <span>Amount Paid</span>
             <span>
-              {plan === "monthly"
-                ? clubPlanMonthly?.scheduleTotalAmount
-                : clubPlanYearly?.scheduleTotalAmount}
+              {addOnDetails &&
+              (clubLocationPostal === 40248 || clubLocationPostal === 40327)
+                ? formattedTotalAmount
+                : (plan === "monthly" ? clubPlanMonthly : clubPlanYearly)
+                    ?.downPayments?.[0]?.total || "$--.--"}
             </span>
           </div>
         </div>

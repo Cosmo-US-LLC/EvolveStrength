@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import StepIndicator from "./common/StepIndicator";
 import DirectDebitForm from "./DirectDebitForm";
 import CardPaymentForm from "./CardPaymentForm";
@@ -15,8 +15,6 @@ const MemberPayment = () => {
   const [paymentMethod, setPaymentMethod] = useState("card");
   const {
     userInfo,
-    startDate,
-    clubLocation,
     plan,
     clubLocationPostal,
     clubPlans,
@@ -33,10 +31,10 @@ const MemberPayment = () => {
   const [institutionNumber, setInstitutionNumber] = useState("");
   const [accountNumber, setAccountNumber] = useState("");
   const [verifyAccountNumber, setVerifyAccountNumber] = useState("");
-  const [confirm, setConfirm] = useState(false);
   const [cardNumber, setCardNumber] = useState("");
   const [cvv, setCvv] = useState("");
   const [expirationDate, setExpirationDate] = useState("");
+  const [apiError, setApiError] = useState(null);
 
   useEffect(() => {
     if (!userInfo) {
@@ -137,6 +135,12 @@ const MemberPayment = () => {
         console.warn("Invalid or missing selectedDate");
       }
 
+      let schedules = ["Dues"];
+
+      if (clubLocationPostal === 40248 || clubLocationPostal === 40327) {
+        schedules = ["Dues", "Towel"];
+      }
+
       const payload = {
         paymentPlanId:
           plan == "monthly" ? clubPlans[0]?.planId : clubPlans[1]?.planId || "",
@@ -176,6 +180,7 @@ const MemberPayment = () => {
         },
         todayBillingInfo: {},
         draftBillingInfo: {},
+        schedules: schedules,
         marketingPreferences: {
           email: "true",
           sms: "true",
@@ -225,7 +230,7 @@ const MemberPayment = () => {
       if (message && message.toLowerCase() === "success") {
         createPeople();
       } else {
-        console.warn("API response did not return success message.");
+        setApiError(message);
       }
       // navigate("/confirmation");
     } catch (error) {
@@ -371,6 +376,8 @@ const MemberPayment = () => {
           setVerifyAccountNumber={setVerifyAccountNumber}
           errors={errors}
           updateErrs={updateErrs}
+          apiError={apiError}
+          paymentMethod={paymentMethod}
         />
       ) : (
         <CardPaymentForm
@@ -387,6 +394,8 @@ const MemberPayment = () => {
           setExpirationDate={setExpirationDate}
           errors={errors}
           updateErrs={updateErrs}
+          apiError={apiError}
+          paymentMethod={paymentMethod}
         />
       )}
     </div>

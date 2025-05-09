@@ -114,6 +114,12 @@ function ReviewAndPay() {
   const [expMonth, expYearRaw] = expirationDate.split("/");
   const expYear = expYearRaw?.length === 2 ? `20${expYearRaw}` : expYearRaw;
 
+  let schedules = ["Dues"];
+
+  if (clubLocationPostal === 40248 || clubLocationPostal === 40327) {
+    schedules = ["Dues", "Towel"];
+  }
+
   const payload = {
     paymentPlanId: planId || "",
     planValidationHash: planValidate || "",
@@ -149,6 +155,7 @@ function ReviewAndPay() {
     },
     todayBillingInfo: {},
     draftBillingInfo: {},
+    schedules: schedules,
     marketingPreferences: {
       email: "true",
       sms: "true",
