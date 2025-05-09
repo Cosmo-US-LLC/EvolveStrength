@@ -5,15 +5,22 @@ import { useSelector } from "react-redux";
 
 const MembershipSummaryBoxDesktop = () => {
   const navigate = useNavigate();
-  const {
-    clubLocation,
-    plan,
-    clubPlanMonthly,
-    clubPlanYearly,
-  } = useSelector((state) => state.plan);
+  const { clubLocation, plan, clubPlanMonthly, clubPlanYearly, addOnDetails } =
+    useSelector((state) => state.plan);
   const handleEdit = () => {
     navigate(`/`);
   };
+  const downPayment = (plan === "monthly" ? clubPlanMonthly : clubPlanYearly)
+    ?.downPayments?.[0]?.total;
+  const scheduleAmount = (plan === "monthly" ? clubPlanMonthly : clubPlanYearly)
+    ?.schedules?.[1]?.scheduleAmount;
+  const downPaymentValue =
+    parseFloat(downPayment?.replace(/[^0-9.-]+/g, "")) || 0;
+  const scheduleAmountValue =
+    parseFloat(scheduleAmount?.replace(/[^0-9.-]+/g, "")) || 0;
+  const totalAmount = downPaymentValue + scheduleAmountValue;
+  const formattedTotalAmount = `$${totalAmount.toFixed(2)}`;
+
   return (
     <div className="w-[471px] bg-[#000000]/60 backdrop-blur-[10px] p-6 flex flex-col gap-8">
       <div className="flex items-center justify-between">
@@ -28,14 +35,15 @@ const MembershipSummaryBoxDesktop = () => {
         <div>
           <button
             onClick={handleEdit}
-            className="button w-[80px] leading-[15px] flex justify-center items-center border font-[vazirmatn] border-[white] text-[white] cursor-pointer font-[500] uppercase text-[14px]" style={{paddingBottom: "8px", paddingTop: "12px"}}
+            className="button w-[80px] leading-[15px] flex justify-center items-center border font-[vazirmatn] border-[white] text-[white] cursor-pointer font-[500] uppercase text-[14px]"
+            style={{ paddingBottom: "8px", paddingTop: "12px" }}
           >
             Edit
           </button>
         </div>
       </div>
       <div className="flex flex-col">
-        <div className="flex py-2 justify-between text-white/90 text-[18px] font-[400] leading-[24px] font-[vazirmatn] capitalize">
+        <div className="flex justify-between text-white/90 text-[18px] font-[400] leading-[24px] font-[vazirmatn] capitalize">
           <span className="">Start Date</span>
           <span>
             {new Date().toLocaleDateString("en-US", {
@@ -44,7 +52,13 @@ const MembershipSummaryBoxDesktop = () => {
               year: "numeric",
             })}
           </span>{" "}
-        </div>{" "}
+        </div>
+        <div className="flex py-2 justify-between text-white/90 text-[18px] font-[400] leading-[24px] font-[vazirmatn] capitalize">
+          <span className="">Subscription</span>
+          <span>
+            {plan == "monthly" ? "Month To Month" : "1 Year Contract"}
+          </span>{" "}
+        </div>
         <div className="flex pt-4 justify-between text-white/90 text-[18px] font-[400] leading-[24px] font-[vazirmatn] capitalize border-t border-white/20">
           <span>Bi-Weekly</span>
           <span>
@@ -53,7 +67,7 @@ const MembershipSummaryBoxDesktop = () => {
               : clubPlanYearly?.downPayments?.[0]?.subTotal}
           </span>
         </div>
-        <div className="flex pb-4 pt-1 justify-between text-white/90 text-[18px] font-[400] font-[vazirmatn] leading-[24px] capitalize">
+        <div className="flex pt-1 justify-between text-white/90 text-[18px] font-[400] font-[vazirmatn] leading-[24px] capitalize">
           <span>Initiation Fee</span>
           <span>
             {plan == "monthly"
@@ -61,12 +75,26 @@ const MembershipSummaryBoxDesktop = () => {
               : clubPlanYearly?.downPayments?.[0]?.tax}
           </span>
         </div>
+        {addOnDetails && (
+          <div className="flex pt-1 pb-4 justify-between text-white/90 text-[18px] font-[400] leading-[24px] font-[vazirmatn] capitalize">
+            <span>
+              add-ons{" "}
+              {(plan == "monthly" ? clubPlanMonthly : clubPlanYearly)
+                ?.schedules?.[1]?.profitCenter || "Bi-Weekly"}
+            </span>
+            <span>
+              {(plan == "monthly" ? clubPlanMonthly : clubPlanYearly)
+                ?.schedules?.[1]?.scheduleAmount || "$--.--"}
+            </span>
+          </div>
+        )}
         <div className="flex pt-4 justify-between text-white/90 text-[20px] font-[500] font-[vazirmatn] leading-[24px] capitalize  border-t border-white/20">
           <span>Total</span>
           <span>
-          {plan == "monthly"
-              ? clubPlanMonthly?.downPayments?.[0]?.total
-              : clubPlanYearly?.downPayments?.[0]?.total}
+            {addOnDetails
+              ? formattedTotalAmount
+              : (plan === "monthly" ? clubPlanMonthly : clubPlanYearly)
+                  ?.downPayments?.[0]?.total || "$--.--"}
           </span>
         </div>
         <p className="text-[#CACACA] pt-6 pb-2 text-[16px] font-regular font-[vazirmatn]">

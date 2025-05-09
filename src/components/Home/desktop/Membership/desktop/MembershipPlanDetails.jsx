@@ -1,15 +1,15 @@
 import React, { useEffect, useRef, useState } from "react";
-import StepIndicator from "./common/StepIndicator";
-import MembershipVancouver from "./common/MembershipVancouver";
-import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { setPlan, setAddOnDetails } from "../../../redux/slices/planSlice";
+import { setAddOnDetails } from "../../../../../redux/slices/planSlice";
 
-const MembershipPlan = () => {
+const MembershipPlanDetails = () => {
   const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
-  const ref = useRef();
   const [isSelected, setIsSelected] = useState(false);
+  const ref = useRef();
+  const { plan, clubPlanMonthly, clubPlanYearly, addOnDetails } = useSelector(
+    (state) => state.plan
+  );
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -21,234 +21,87 @@ const MembershipPlan = () => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
-  const navigate = useNavigate();
-  const {
-    startDate,
-    clubLocation,
-    plan,
-    clubPlanMonthly,
-    clubPlanYearly,
-    addOnDetails,
-  } = useSelector((state) => state.plan);
-  function continueToMember() {
-    navigate("/member-details");
-  }
-  console.log("clubPlanMonthly", clubPlanMonthly, clubPlanYearly);
-
   return (
-    <div className="min-h-screen bg-black text-white px-4 pt-[80px] pb-[30px] flex flex-col gap-8">
-      <StepIndicator
-        step={1}
-        totalSteps={3}
-        title="Choose Your Plan"
-        subtitle="Pick the membership that fits you best and choose your start date."
-      />
-
-      <MembershipVancouver
-        step={1}
-        startDate={startDate}
-        planData={plan === "monthly" ? clubPlanMonthly : clubPlanYearly}
-      />
-
-      <div className="flex flex-col">
-        <span className="text-white font-[kanit] text-[44px] font-[700] leading-[42px] uppercase">
-          Your membership at
-        </span>
-
-        <span className="text-[#2DDE28] font-[kanit] text-[50px] font-[700] leading-[42px] uppercase">
-          {clubLocation}
-        </span>
-      </div>
-
-      <div className="flex flex-col">
-        <p className="mb-2 text-white text-[16px] font-[vazirmatn] font-normal leading-[25.2px]">
-          Choose your pricing plan
-        </p>
-
-        <div className="flex p-1 pt-1 overflow-hidden border border-white">
-          <button
-            // onClick={() => setSelectedPlan("monthly")}
-            onClick={() => dispatch(setPlan("monthly"))}
-            className={`flex items-center justify-center gap-[10px]
-              h-[38px] px-[10px] py-[10px] flex-1
-              text-[14px] font-[vazirmatn] font-medium leading-[25.2px]
-              uppercase transition-all
-              ${
-                plan === "monthly"
-                  ? "bg-[#2DDE28] text-black"
-                  : "text-white bg-transparent"
-              }`}
-          >
-            MONTH TO MONTH
-          </button>
-
-          <button
-            // onClick={() => setSelectedPlan("yearly")}
-            onClick={() => dispatch(setPlan("yearly"))}
-            className={`flex items-center justify-center gap-[10px]
-              h-[38px] px-[10px] py-[10px] flex-1
-              text-[14px] font-[vazirmatn] font-normal leading-[25.2px]
-              uppercase transition-all
-              ${
-                plan === "yearly"
-                  ? "bg-[#2DDE28] text-black"
-                  : "text-white bg-transparent"
-              }`}
-          >
-            1 YEAR CONTRACT
-          </button>
-        </div>
-      </div>
-
-      <div className="">
-        {plan === "monthly" ? (
-          <>
-            <p className="text-white font-[kanit] text-[16px] font-[600] leading-[16px] uppercase mb-1">
-              BI-WEEKLY
-            </p>
-
-            <p className="text-[#2DDE28] font-[vazirmatn] text-[50px] font-[500] leading-[68px] mb-2">
-              {/* $34.99 */}
-              {clubPlanMonthly?.scheduleTotalAmount || "$--.--"}
-            </p>
-
-            <p className="text-[#999999] font-[vazirmatn] text-[16px] font-normal leading-[24px] mb-4">
-              Experience personalized training, group classes, and essential
-              resources.
-            </p>
-          </>
-        ) : (
-          <>
-            <p className="text-white font-[kanit] text-[16px] font-[600] leading-[16px] uppercase mb-1">
-              BI-WEEKLY
-            </p>
-
-            <p className="text-[#2DDE28] font-[vazirmatn] text-[50px] font-[500] leading-[68px] mb-2">
-              {/* $899.00 */}
-              {clubPlanYearly?.scheduleTotalAmount || "$--.--"}
-            </p>
-
-            <p className="text-[#999999] font-[vazirmatn] text-[16px] font-normal leading-[24px] mb-4">
-              Best value — save more with an annual commitment.
-            </p>
-          </>
-        )}
-        <hr className="mb-4 border-white/20" />
-        <ul className="space-y-4">
-          {[
-            "$0 Enrollment Fee",
-            "$0 Maintenance fee",
-            "Personalized assessment",
-            "Access to all locations",
-          ].map((item, idx) => (
-            <li key={idx} className="flex items-start gap-3">
-              <div className="flex items-center justify-center w-5 h-5">
-                <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <circle
-                    cx="12"
-                    cy="12"
-                    r="11"
-                    stroke="#999999"
-                    strokeWidth="1.5"
-                  />
-                  <path
-                    d="M8 12.5L11 15.5L16 9.5"
-                    stroke="#B5B4B4"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </div>
-              <span className="text-[#999999] font-[vazirmatn] text-[16px] font-normal leading-[24px]">
-                {item}
-              </span>
-            </li>
-          ))}
-        </ul>
-      </div>
-
+    <div className="max-w-[1280px]">
       {!addOnDetails ? (
-        <div style={{ paddingTop: "16px" }}>
-          <p
-            className="text-white font-[400] text-[16px] font-[vazirmatn]"
-            style={{ lineHeight: "25.2px" }}
-          >
+        <div className="pt-8">
+          <p className="text-white font-[400] text-[16px] leading-[25px] font-[vazirmatn]">
             Choose Any of our Additional Services
           </p>
           <div
             className="flex mt-3 gap-5 items-center"
             onClick={() => setIsOpen(true)}
           >
-            <button className="w-[106px] bg-[#2DDE28] rounded-full flex justify-center items-center text-black text-[16px] font-medium h-[54px] button gap-[10px]">
+            <button className="w-[114px] bg-[#2DDE28] rounded-full flex justify-center items-center text-black text-[16px] font-medium h-[60px] button">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                width="38"
-                height="38"
-                viewBox="0 0 38 38"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
                 fill="none"
               >
                 <path
-                  d="M18.9998 8.07178C20.0658 8.07178 20.9309 8.93688 20.9309 10.0028V17.3408H28.2688C28.7809 17.3408 29.2721 17.5442 29.6343 17.9063C29.9964 18.2685 30.1998 18.7597 30.1998 19.2718C30.1998 19.7839 29.9964 20.2751 29.6343 20.6372C29.2721 20.9994 28.7809 21.2028 28.2688 21.2028H20.9309V28.5408C20.9309 29.0529 20.7274 29.5441 20.3653 29.9062C20.0031 30.2684 19.512 30.4718 18.9998 30.4718C18.4877 30.4718 17.9965 30.2684 17.6344 29.9062C17.2722 29.5441 17.0688 29.0529 17.0688 28.5408V21.2028H9.73084C9.2187 21.2028 8.72753 20.9994 8.36539 20.6372C8.00325 20.2751 7.7998 19.7839 7.7998 19.2718C7.7998 18.7597 8.00325 18.2685 8.36539 17.9063C8.72753 17.5442 9.2187 17.3408 9.73084 17.3408H17.0688V10.0028C17.0688 8.93688 17.9339 8.07178 18.9998 8.07178Z"
+                  d="M11.9998 0.868164C13.0658 0.868164 13.9309 1.73327 13.9309 2.7992V10.1371H21.2688C21.7809 10.1371 22.2721 10.3406 22.6343 10.7027C22.9964 11.0649 23.1998 11.556 23.1998 12.0682C23.1998 12.5803 22.9964 13.0715 22.6343 13.4336C22.2721 13.7958 21.7809 13.9992 21.2688 13.9992H13.9309V21.3372C13.9309 21.8493 13.7274 22.3405 13.3653 22.7026C13.0031 23.0648 12.512 23.2682 11.9998 23.2682C11.4877 23.2682 10.9965 23.0648 10.6344 22.7026C10.2722 22.3405 10.0688 21.8493 10.0688 21.3372V13.9992H2.73084C2.2187 13.9992 1.72753 13.7958 1.36539 13.4336C1.00325 13.0715 0.799805 12.5803 0.799805 12.0682C0.799805 11.556 1.00325 11.0649 1.36539 10.7027C1.72753 10.3406 2.2187 10.1371 2.73084 10.1371H10.0688V2.7992C10.0688 1.73327 10.9339 0.868164 11.9998 0.868164Z"
                   fill="black"
                 />
               </svg>
             </button>
-            <p className="text-white font-[600] text-[16px] leading-[25px] font-[kanit] uppercase">
+            <p className="text-white font-[400] text-[20px] leading-[25px] font-[vazirmatn] uppercase">
               add-ons
             </p>
           </div>
         </div>
       ) : (
-        <div style={{ paddingTop: "16px" }}>
+        <div className="pt-8">
           <p
             className="text-white font-[400] text-[16px] font-[vazirmatn]"
             style={{ lineHeight: "25.2px" }}
           >
             Our Additional Services
           </p>
-          <div className="flex mt-3 gap-5 items-center justify-between bg-[#171717] border border-1 border-[#464646] px-2">
-            <p className="text-white font-[400] text-[20px] leading-[24px] font-[Vazirmatn] capitalize pt-2 pb-1">
-              add-ons:{" "}
-              {plan == "monthly"
-                ? clubPlanMonthly?.schedules?.[1]?.profitCenter || "$--.--"
-                : clubPlanYearly?.schedules?.[1]?.profitCenter || "$--.--"}
-            </p>
-            <div className="flex gap-3 items-center">
-              <p className="text-white font-[400] text-[20px] leading-[24px] font-[Vazirmatn] capitalize pt-2 pt-1">
+          <div className="relative w-[70%] mt-3">
+            <div
+              className="flex gap-5 items-center justify-between bg-[#171717] border border-1 border-[#464646]"
+              style={{ padding: "18px 23px 13px" }}
+            >
+              <p className="text-white font-[400] text-[20px] leading-[24px] font-[Vazirmatn] capitalize">
+                add-ons:{" "}
                 {plan == "monthly"
-                  ? clubPlanMonthly?.schedules?.[1]?.scheduleAmount || "$--.--"
-                  : clubPlanYearly?.schedules?.[1]?.scheduleAmount || "$--.--"}
+                  ? clubPlanMonthly?.schedules?.[1]?.profitCenter || "$--.--"
+                  : clubPlanYearly?.schedules?.[1]?.profitCenter || "$--.--"}
               </p>
-              <button
-                onClick={() => dispatch(setAddOnDetails(false))}
-                className="p-2"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="33"
-                  height="34"
-                  viewBox="0 0 33 34"
-                  fill="none"
-                >
-                  <path
-                    d="M24.3952 25.1317C28.8862 20.6407 28.8862 13.3593 24.3952 8.86827C19.9042 4.37724 12.6228 4.37724 8.13173 8.86827C3.6407 13.3593 3.6407 20.6407 8.13173 25.1317C12.6228 29.6228 19.9042 29.6228 24.3952 25.1317Z"
-                    fill="black"
-                    stroke="#7C7C7C"
-                  />
-                  <path
-                    d="M12.4323 13.1687C12.797 12.8041 13.3888 12.8041 13.7535 13.1687L16.2636 15.6789L18.7737 13.1687C18.9489 12.9936 19.1865 12.8951 19.4343 12.8951C19.682 12.8951 19.9196 12.9936 20.0948 13.1687C20.27 13.3439 20.3685 13.5815 20.3685 13.8293C20.3685 14.0771 20.27 14.3147 20.0948 14.4899L17.5847 17L20.0948 19.5101C20.27 19.6853 20.3685 19.9229 20.3685 20.1707C20.3685 20.4185 20.27 20.6561 20.0948 20.8313C19.9196 21.0064 19.682 21.1049 19.4343 21.1049C19.1865 21.1049 18.9489 21.0064 18.7737 20.8313L16.2636 18.3211L13.7535 20.8313C13.5783 21.0064 13.3406 21.1049 13.0929 21.1049C12.8451 21.1049 12.6075 21.0064 12.4323 20.8313C12.2571 20.6561 12.1587 20.4185 12.1587 20.1707C12.1587 19.9229 12.2571 19.6853 12.4323 19.5101L14.9425 17L12.4323 14.4899C12.0677 14.1252 12.0677 13.5334 12.4323 13.1687Z"
-                    fill="#FF0000"
-                  />
-                </svg>
-              </button>
+              <div className="flex gap-3 items-center">
+                <p className="text-white font-[400] text-[20px] leading-[24px] font-[Vazirmatn] capitalize">
+                  {plan == "monthly"
+                    ? clubPlanMonthly?.schedules?.[1]?.scheduleAmount ||
+                      "$--.--"
+                    : clubPlanYearly?.schedules?.[1]?.scheduleAmount ||
+                      "$--.--"}
+                </p>
+              </div>
             </div>
+            <button
+              onClick={() => dispatch(setAddOnDetails(false))}
+              className="absolute -top-3 -right-3 z-10"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="33"
+                height="34"
+                viewBox="0 0 33 34"
+                fill="none"
+              >
+                <path
+                  d="M24.6569 25.3759C29.1479 20.8848 29.1479 13.6034 24.6569 9.11241C20.1659 4.62138 12.8845 4.62138 8.39345 9.11241C3.90242 13.6034 3.90242 20.8848 8.39345 25.3759C12.8845 29.8669 20.1659 29.8669 24.6569 25.3759Z"
+                  fill="black"
+                  stroke="#7C7C7C"
+                />
+                <path
+                  d="M12.694 13.4129C13.0587 13.0483 13.6505 13.0483 14.0152 13.4129L16.5253 15.923L19.0354 13.4129C19.2106 13.2377 19.4482 13.1393 19.696 13.1393C19.9438 13.1393 20.1814 13.2377 20.3566 13.4129C20.5317 13.5881 20.6302 13.8257 20.6302 14.0734C20.6302 14.3212 20.5317 14.5588 20.3566 14.734L17.8464 17.2441L20.3566 19.7543C20.5318 19.9295 20.6302 20.1671 20.6302 20.4148C20.6302 20.6626 20.5317 20.9002 20.3566 21.0754C20.1814 21.2506 19.9438 21.349 19.696 21.349C19.4482 21.349 19.2106 21.2506 19.0354 21.0754L16.5253 18.5653L14.0152 21.0754C13.84 21.2506 13.6024 21.349 13.3546 21.349C13.1069 21.349 12.8692 21.2506 12.694 21.0754C12.5189 20.9002 12.4204 20.6626 12.4204 20.4148C12.4204 20.1671 12.5189 19.9295 12.694 19.7543L15.2042 17.2441L12.694 14.734C12.3294 14.3694 12.3294 13.7775 12.694 13.4129Z"
+                  fill="#FF0000"
+                />
+              </svg>
+            </button>
           </div>
           {/* <div
             className="flex mt-3 gap-5 items-center"
@@ -339,7 +192,8 @@ const MembershipPlan = () => {
                     isSelected ? (
                       <button
                         onClick={() => setIsSelected(false)}
-                        className={`w-[39.603px] bg-[#2DDE28] rounded-full flex justify-center items-center text-black text-[16px] font-medium h-[39.603px] button gap-[6.601px]`}
+                        className={`w-[39.603px] bg-[#2DDE28]
+                         rounded-full flex justify-center items-center text-black text-[16px] font-medium h-[39.603px] button gap-[6.601px]`}
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -416,7 +270,7 @@ const MembershipPlan = () => {
                 </div>
               </div>
 
-              <div className="flex justify-between items-center mt-8 w-[90%] gap-[30px]">
+              <div className="flex justify-center items-center mt-8 w-[90%] gap-[30px]">
                 <button
                   onClick={() => {
                     setIsSelected(false);
@@ -429,6 +283,7 @@ const MembershipPlan = () => {
                 <button
                   onClick={() => {
                     setIsOpen(false);
+                    // if (!isSelected) return;
                     dispatch(setAddOnDetails(true));
                     setIsSelected(true);
                   }}
@@ -441,17 +296,8 @@ const MembershipPlan = () => {
           </div>
         </>
       )}
-
-      <button
-        onClick={continueToMember}
-        className="flex items-center justify-center h-[42px] pt-[12.801px] pb-[13.199px] w-full 
-             bg-[#2DDE28] text-black text-center font-[kanit] text-[16px] font-medium leading-[16px] 
-             uppercase   transition-all hover:opacity-90 active:scale-[0.98]"
-      >
-        Continue
-      </button>
     </div>
   );
 };
 
-export default MembershipPlan;
+export default MembershipPlanDetails;
