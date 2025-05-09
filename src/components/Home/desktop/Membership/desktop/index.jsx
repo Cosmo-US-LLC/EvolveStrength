@@ -112,7 +112,9 @@ function MembershipDesktop() {
         <div className="flex flex-row justify-between mt-16">
           <div>
             <MembershipPlanSelector />
-            <MembershipPlanDetails />
+            {(clubLocationPostal === 40248 || clubLocationPostal === 40327) && (
+              <MembershipPlanDetails />
+            )}
           </div>
 
           <div>

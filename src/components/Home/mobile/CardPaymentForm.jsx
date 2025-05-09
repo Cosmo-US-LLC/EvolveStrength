@@ -20,6 +20,8 @@ const CardPaymentForm = ({
   setExpirationDate,
   errors,
   updateErrs,
+  apiError,
+  paymentMethod,
 }) => {
   const navigate = useNavigate();
   const { plan, clubPlanMonthly, clubPlanYearly, isLoading, error } =
@@ -166,16 +168,23 @@ const CardPaymentForm = ({
           </span>
         </span>
       </label>
+      <div className="flex flex-col items-center">
+        {apiError && paymentMethod == "card" && (
+          <span className="text-red-500 text-sm text-center w-full">
+            {apiError}
+          </span>
+        )}
 
-      <button
-        onClick={() => makeAgreement()}
-        className="cursor-pointer flex justify-center items-center w-full h-[42px] mt-4 px-0 pt-[12.801px] pb-[13.199px] 
+        <button
+          onClick={() => makeAgreement()}
+          className="cursor-pointer flex justify-center items-center w-full h-[42px] mt-4 px-0 pt-[12.801px] pb-[13.199px] 
           bg-[#2DDE28] border border-[#2DDE28] font-[kanit] text-black text-[16px] font-medium 
           leading-[16px] uppercase font-kanit transition-all hover:opacity-90 active:scale- disabled:opacity-60"
-        disabled={isLoading || !confirm}
-      >
-        Pay Now
-      </button>
+          disabled={isLoading || !confirm}
+        >
+          Pay Now
+        </button>
+      </div>
     </div>
   );
 };

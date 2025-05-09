@@ -13,6 +13,7 @@ const MembershipVancouver = (props) => {
   const {
     startDate,
     clubLocation,
+    clubLocationPostal,
     plan,
     addOnDetails,
     clubPlanMonthly,
@@ -111,21 +112,22 @@ const MembershipVancouver = (props) => {
                 ?.downPayments?.[0]?.subTotal || "$--.--"}
             </span>
           </div>
-          {addOnDetails && (
-            <div className="flex justify-between">
-              <span className="text-white font-[vazirmatn] text-[16px] font-normal leading-[20.382px] capitalize">
-                {/* Bi-Weekly */}
-                add-ons
-                {(plan == "monthly" ? clubPlanMonthly : clubPlanYearly)
-                  ?.schedules?.[1]?.profitCenter || "Bi-Weekly"}
-              </span>
-              <span className="text-white font-[vazirmatn] text-[16px] font-normal leading-[20.382px] capitalize">
-                {/* $96.66 */}
-                {(plan == "monthly" ? clubPlanMonthly : clubPlanYearly)
-                  ?.schedules?.[1]?.scheduleAmount || "$--.--"}
-              </span>
-            </div>
-          )}
+          {addOnDetails &&
+            (clubLocationPostal === 40248 || clubLocationPostal === 40327) && (
+              <div className="flex justify-between">
+                <span className="text-white font-[vazirmatn] text-[16px] font-normal leading-[20.382px] capitalize">
+                  {/* Bi-Weekly */}
+                  add-ons
+                  {(plan == "monthly" ? clubPlanMonthly : clubPlanYearly)
+                    ?.schedules?.[1]?.profitCenter || "Bi-Weekly"}
+                </span>
+                <span className="text-white font-[vazirmatn] text-[16px] font-normal leading-[20.382px] capitalize">
+                  {/* $96.66 */}
+                  {(plan == "monthly" ? clubPlanMonthly : clubPlanYearly)
+                    ?.schedules?.[1]?.scheduleAmount || "$--.--"}
+                </span>
+              </div>
+            )}
           <div className="flex justify-between">
             <span className="text-white font-[vazirmatn] text-[16px] font-normal leading-[20.382px] capitalize">
               Initiation Fee
@@ -141,7 +143,8 @@ const MembershipVancouver = (props) => {
               Total
             </span>
             <span className="text-white font-[vazirmatn] text-[16px] font-normal leading-[20.382px] capitalize">
-              {addOnDetails
+              {addOnDetails &&
+              (clubLocationPostal === 40248 || clubLocationPostal === 40327)
                 ? formattedTotalAmount
                 : (plan === "monthly" ? clubPlanMonthly : clubPlanYearly)
                     ?.downPayments?.[0]?.total || "$--.--"}

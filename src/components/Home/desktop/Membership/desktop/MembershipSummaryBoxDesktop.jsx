@@ -5,8 +5,14 @@ import { useSelector } from "react-redux";
 
 const MembershipSummaryBoxDesktop = () => {
   const navigate = useNavigate();
-  const { clubLocation, plan, clubPlanMonthly, clubPlanYearly, addOnDetails } =
-    useSelector((state) => state.plan);
+  const {
+    clubLocation,
+    plan,
+    clubPlanMonthly,
+    clubLocationPostal,
+    clubPlanYearly,
+    addOnDetails,
+  } = useSelector((state) => state.plan);
   const handleEdit = () => {
     navigate(`/`);
   };
@@ -75,23 +81,25 @@ const MembershipSummaryBoxDesktop = () => {
               : clubPlanYearly?.downPayments?.[0]?.tax}
           </span>
         </div>
-        {addOnDetails && (
-          <div className="flex pt-1 pb-4 justify-between text-white/90 text-[18px] font-[400] leading-[24px] font-[vazirmatn] capitalize">
-            <span>
-              add-ons{" "}
-              {(plan == "monthly" ? clubPlanMonthly : clubPlanYearly)
-                ?.schedules?.[1]?.profitCenter || "Bi-Weekly"}
-            </span>
-            <span>
-              {(plan == "monthly" ? clubPlanMonthly : clubPlanYearly)
-                ?.schedules?.[1]?.scheduleAmount || "$--.--"}
-            </span>
-          </div>
-        )}
+        {addOnDetails &&
+          (clubLocationPostal === 40248 || clubLocationPostal === 40327) && (
+            <div className="flex pt-1 pb-4 justify-between text-white/90 text-[18px] font-[400] leading-[24px] font-[vazirmatn] capitalize">
+              <span>
+                add-ons{" "}
+                {(plan == "monthly" ? clubPlanMonthly : clubPlanYearly)
+                  ?.schedules?.[1]?.profitCenter || "Bi-Weekly"}
+              </span>
+              <span>
+                {(plan == "monthly" ? clubPlanMonthly : clubPlanYearly)
+                  ?.schedules?.[1]?.scheduleAmount || "$--.--"}
+              </span>
+            </div>
+          )}
         <div className="flex pt-4 justify-between text-white/90 text-[20px] font-[500] font-[vazirmatn] leading-[24px] capitalize  border-t border-white/20">
           <span>Total</span>
           <span>
-            {addOnDetails
+            {addOnDetails &&
+            (clubLocationPostal === 40248 || clubLocationPostal === 40327)
               ? formattedTotalAmount
               : (plan === "monthly" ? clubPlanMonthly : clubPlanYearly)
                   ?.downPayments?.[0]?.total || "$--.--"}
