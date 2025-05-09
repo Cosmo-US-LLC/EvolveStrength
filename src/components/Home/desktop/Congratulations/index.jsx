@@ -26,7 +26,7 @@ function Congratulations() {
 
   const handleBackHome = () => {
     navigate(`/`);
-    dispatch(resetState());
+    dispatch(resetState()); 
   };
 
   return (

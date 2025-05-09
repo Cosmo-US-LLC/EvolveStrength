@@ -20,9 +20,13 @@ function DebitForm({
   setConfirm,
   errors,
   setErrors,
+  renewAgreed,
+  setRenewAgreed,
+  termsAgreed,
+  setTermsAgreed,
 }) {
-  const [termsAgreed, setTermsAgreed] = useState(false);
-  const [renewAgreed, setRenewAgreed] = useState(false);
+  const [termsPage, setTermsPage] = useState(false);
+  const [privacyPage, setPrivacyPage] = useState(false);
   const { plan, clubPlanMonthly, clubPlanYearly } = useSelector(
     (state) => state.plan
   );
@@ -310,6 +314,7 @@ function DebitForm({
             type="checkbox"
             id="terms"
             checked={confirm}
+            disabled={!(termsPage && privacyPage)}
             onChange={() => setConfirm(!confirm)}
             className="mr-2"
             style={{ marginTop: "3.5px" }}
@@ -319,8 +324,30 @@ function DebitForm({
             className="text-[16px] font-[400] font-[vazirmatn] ml-2"
           >
             Please confirm you have read our{" "}
-            <a href="#" className="text-blue-400">
+            <a
+              onClick={() => setTermsPage(true)}
+              href="https://join.evolvestrength.ca/terms-and-conditions/"
+              target="_blank"
+              className={` ${
+                !termsPage
+                  ? "font-[600] text-blue-600"
+                  : "font-[400] text-blue-400"
+              }`}
+            >
               Terms And Conditions
+            </a>{" "}
+            &{" "}
+            <a
+              onClick={() => setPrivacyPage(true)}
+              href="https://join.evolvestrength.ca/privacy-policy/"
+              target="_blank"
+              className={` ${
+                !privacyPage
+                  ? "font-[600] text-blue-600"
+                  : "font-[400] text-blue-400"
+              }`}
+            >
+              Privacy Policy
             </a>
           </label>
         </div>

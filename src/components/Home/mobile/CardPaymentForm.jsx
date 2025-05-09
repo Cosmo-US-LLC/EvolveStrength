@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import visaIcon from "../../../assets/images/mobile/payment/dabit1.svg";
 import mcIcon from "../../../assets/images/mobile/payment/credit2.svg";
 import lockIcon from "../../../assets/images/mobile/payment/credit3.svg";
@@ -23,11 +22,13 @@ const CardPaymentForm = ({
   apiError,
   paymentMethod,
 }) => {
-  const navigate = useNavigate();
-  const { plan, clubPlanMonthly, clubPlanYearly, isLoading, error } =
-    useSelector((state) => state.plan);
+  const [termsPage, setTermsPage] = useState(false);
+  const { plan, clubPlanMonthly, clubPlanYearly, isLoading } = useSelector(
+    (state) => state.plan
+  );
 
   const [confirm, setConfirm] = useState(false);
+  const [privacyPage, setPrivacyPage] = useState(false);
 
   return (
     <div className="flex flex-col gap-4">
@@ -167,13 +168,31 @@ const CardPaymentForm = ({
           type="checkbox"
           className="mt-1"
           checked={confirm}
+          disabled={!(termsPage && privacyPage)}
           onChange={(e) => setConfirm(e.target.checked)}
         />
         <span>
           Please confirm you have read our{" "}
-          <span className="text-[#2DDE28] text-[16px]">
-            terms and conditions
-          </span>
+          <a
+            href="https://join.evolvestrength.ca/terms-and-conditions/"
+            target="_blank"
+            className={`text-[#2DDE28] ${
+              !termsPage ? "font-[600]" : "font-[400]"
+            }`}
+            onClick={() => setTermsPage(true)}
+          >
+            Terms And Conditions
+          </a>{" "}
+          &{" "}
+          <a
+            href="https://join.evolvestrength.ca/privacy-policy/"
+            className={`text-[#2DDE28] ${
+              !privacyPage ? "font-[600]" : "font-[400]"
+            }`}
+            onClick={() => setPrivacyPage(true)}
+          >
+            Privacy Policy
+          </a>
         </span>
       </label>
       <div className="flex flex-col items-center">

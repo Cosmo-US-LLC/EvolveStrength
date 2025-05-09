@@ -30,6 +30,8 @@ const DirectDebitForm = ({
   const [holder, setHolder] = useState(false);
   const [agree, setAgree] = useState(false);
   const [confirm, setConfirm] = useState(false);
+  const [termPage, setTermPage] = useState(false);
+  const [privacy, setPrivacy] = useState(false);
 
   return (
     <div className="flex justify-center min-h-screen bg-black">
@@ -95,7 +97,7 @@ const DirectDebitForm = ({
                 placeholder="Transit Number"
                 value={transitNumber}
                 onChange={(e) => {
-                  let value = e.target.value
+                  let value = e.target.value;
                   value = value.replace(/[^0-9/]/g, "");
                   setTransitNumber(value);
                   updateErrs("transitNumber");
@@ -117,7 +119,7 @@ const DirectDebitForm = ({
                 placeholder="Bank Number"
                 value={institutionNumber}
                 onChange={(e) => {
-                  let value = e.target.value
+                  let value = e.target.value;
                   value = value.replace(/[^0-9/]/g, "");
                   setInstitutionNumber(value);
                   updateErrs("institutionNumber");
@@ -162,7 +164,7 @@ const DirectDebitForm = ({
                 placeholder="Account Number"
                 value={accountNumber}
                 onChange={(e) => {
-                  let value = e.target.value
+                  let value = e.target.value;
                   value = value.replace(/[^0-9/]/g, "");
                   setAccountNumber(value);
                   updateErrs("accountNumber");
@@ -184,7 +186,7 @@ const DirectDebitForm = ({
                 placeholder="Verify Account"
                 value={verifyAccountNumber}
                 onChange={(e) => {
-                  let value = e.target.value
+                  let value = e.target.value;
                   value = value.replace(/[^0-9/]/g, "");
                   setVerifyAccountNumber(value);
                   updateErrs("verifyAccountNumber");
@@ -248,13 +250,30 @@ const DirectDebitForm = ({
             type="checkbox"
             className="mt-1 accent-[#2DDE28]"
             checked={confirm}
+            disabled={!(termPage && privacy)}
             onChange={(e) => setConfirm(e.target.checked)}
           />
           <span>
             Please confirm you have read our{" "}
-            <span className="text-[#2DDE28] underline">
+            <a
+              href="https://join.evolvestrength.ca/terms-and-conditions/"
+              className={`text-[#2DDE28] ${
+                !termPage ? "font-[600]" : "font-[400]"
+              }`}
+              onClick={() => setTermPage(true)}
+            >
               Terms And Conditions
-            </span>
+            </a>{" "}
+            &{" "}
+            <a
+              href="https://join.evolvestrength.ca/privacy-policy/"
+              className={`text-[#2DDE28] ${
+                !privacy ? "font-[600]" : "font-[400]"
+              }`}
+              onClick={() => setPrivacy(true)}
+            >
+              Privacy Policy
+            </a>
           </span>
         </label>
 
