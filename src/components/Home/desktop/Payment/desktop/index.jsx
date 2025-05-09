@@ -381,7 +381,7 @@ function ReviewAndPay() {
           <div>
             <MembershipSummaryBoxDesktop />
             <Turnstile
-              sitekey="0x4AAAAAABWSTWCqAhOt104z"
+              sitekey="0x4AAAAAABbwGUJsSvo2brY2"
               onSuccess={() => setIsHuman(true)}
               onError={() => setIsHuman(false)}
               onExpire={() => setIsHuman(false)}
