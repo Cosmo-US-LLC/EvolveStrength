@@ -1,5 +1,3 @@
- 
-
 // import React from "react";
 
 // const Loader = () => {
@@ -20,10 +18,16 @@
 
 import React from "react";
 
-const Loader = () => {
+const Loader = ({ show = true, showMobile = true }) => {
   return (
-    <div className="flex items-center justify-center h-screen bg-black">
+    <div className="flex flex-col items-center justify-center h-screen bg-black">
       <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-[#2DDE28]"></div>
+      {!show && (
+        <h1 className="text-[40px] text-[#2DDE28]">Processing Payment</h1>
+      )}
+      {!showMobile && (
+        <h1 className="text-[28px] text-[#2DDE28]">Processing Payment</h1>
+      )}
     </div>
   );
 };

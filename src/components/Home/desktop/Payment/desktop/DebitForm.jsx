@@ -314,7 +314,7 @@ function DebitForm({
             type="checkbox"
             id="terms"
             checked={confirm}
-            disabled={!(termsPage && privacyPage)}
+            // disabled={!(termsPage && privacyPage)}
             onChange={() => setConfirm(!confirm)}
             className="mr-2"
             style={{ marginTop: "3.5px" }}

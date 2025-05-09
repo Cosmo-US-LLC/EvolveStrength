@@ -9,6 +9,7 @@ import credit_icon_active from "../../../assets/images/desktop/credit_icon_activ
 import credit_icon_inactive from "../../../assets/images/desktop/credit_icon_inactive.svg";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import Loader from "../../Loader";
 
 const MemberPayment = () => {
   const navigate = useNavigate();
@@ -20,8 +21,6 @@ const MemberPayment = () => {
     clubPlans,
     clubPlanMonthly,
     clubPlanYearly,
-    isLoading,
-    error,
   } = useSelector((state) => state.plan);
 
   const [errors, setErrors] = useState({});
@@ -35,6 +34,7 @@ const MemberPayment = () => {
   const [cvv, setCvv] = useState("");
   const [expirationDate, setExpirationDate] = useState("");
   const [apiError, setApiError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (!userInfo) {
@@ -127,6 +127,8 @@ const MemberPayment = () => {
     }
     setErrors([]);
 
+    setIsLoading(true);
+
     try {
       const routingNumber = `0${institutionNumber}${transitNumber}`;
       const [expMonth, expYearRaw] = expirationDate.split("/");
@@ -173,9 +175,9 @@ const MemberPayment = () => {
         activePresale: "true",
         sendAgreementEmail: "true",
         agreementContactInfo: {
-          firstName: fname || "John",
-          middleInitial: `${lname[0]}`.toUpperCase() || "",
-          lastName: lname || "Doe",
+          firstName: userInfo?.fname || "John",
+          middleInitial: `${userInfo?.lname[0]}`.toUpperCase() || "",
+          lastName: userInfo?.lname || "Doe",
           email: userInfo?.email || "example@gmail.com",
           gender: userInfo?.gender || "",
           homePhone: "",
@@ -209,6 +211,7 @@ const MemberPayment = () => {
           pushNotification: "true",
         },
       };
+      console.log("payload", payload)
 
       if (paymentMethod !== "direct") {
         payload.todayBillingInfo = {
@@ -218,8 +221,8 @@ const MemberPayment = () => {
         };
 
         payload.draftBillingInfo.draftCreditCard = {
-          creditCardFirstName: fname || "John",
-          creditCardLastName: lname || "Doe",
+          creditCardFirstName: userInfo?.fname || "John",
+          creditCardLastName: userInfo?.lname || "Doe",
           creditCardType: "visa",
           creditCardAccountNumber: cardNumber || "",
           creditCardExpMonth: expMonth || "00",
@@ -228,8 +231,8 @@ const MemberPayment = () => {
         // 👉 Debit (Bank Account) flow
       } else if (paymentMethod === "direct") {
         payload.draftBillingInfo.draftBankAccount = {
-          draftAccountFirstName: fname || "John",
-          draftAccountLastName: lname || "Doe",
+          draftAccountFirstName: userInfo?.fname || "John",
+          draftAccountLastName: userInfo?.lname || "Doe",
           draftAccountRoutingNumber: routingNumber || "",
           draftAccountNumber: accountNumber || "",
           draftAccountType: "Checking",
@@ -256,6 +259,8 @@ const MemberPayment = () => {
       // navigate("/confirmation");
     } catch (error) {
       console.error("Error fetching club information:", error.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -294,8 +299,8 @@ const MemberPayment = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          first_name: fname || "John",
-          last_name: lname || "Doe",
+          first_name: userInfo?.fname || "John",
+          last_name: userInfo?.lname || "Doe",
           email: userInfo?.email || "",
           birthday: selectedDate || "",
           phone_mobile: userInfo?.phone || "",
@@ -312,6 +317,8 @@ const MemberPayment = () => {
     console.log(data);
     navigate("/confirmation");
   };
+
+  if (isLoading) return <Loader showMobile={false} />;
 
   return (
     <div className="min-h-screen bg-black text-white px-4 pt-[80px] pb-[12px] flex flex-col gap-6">

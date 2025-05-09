@@ -168,7 +168,7 @@ const CardPaymentForm = ({
           type="checkbox"
           className="mt-1"
           checked={confirm}
-          disabled={!(termsPage && privacyPage)}
+          // disabled={!(termsPage && privacyPage)}
           onChange={(e) => setConfirm(e.target.checked)}
         />
         <span>
