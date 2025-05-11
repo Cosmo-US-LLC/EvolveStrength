@@ -202,7 +202,7 @@ function ReviewAndPay() {
   const createPeople = async () => {
     try {
       const response = await fetch(
-        `${VITE_APP_API_URL}/createPerson`,
+        `${process.env.VITE_APP_API_URL}/createPerson`,
         {
           method: "POST",
           headers: {
@@ -241,7 +241,7 @@ function ReviewAndPay() {
     setIsLoading(true);
     try {
       const response = await fetch(
-        `${VITE_APP_API_URL}submitAgreement?location=${location}`,
+        `${process.env.VITE_APP_API_URL}submitAgreement?location=${location}`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
