@@ -202,7 +202,7 @@ function ReviewAndPay() {
   const createPeople = async () => {
     try {
       const response = await fetch(
-        `http://138.197.175.219:8081/api/createPerson`,
+        `${VITE_APP_API_URL}/createPerson`,
         {
           method: "POST",
           headers: {
@@ -241,7 +241,7 @@ function ReviewAndPay() {
     setIsLoading(true);
     try {
       const response = await fetch(
-        `http://138.197.175.219:8081/api/submitAgreement?location=${location}`,
+        `${VITE_APP_API_URL}submitAgreement?location=${location}`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

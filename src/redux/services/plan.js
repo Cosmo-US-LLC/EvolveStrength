@@ -1,16 +1,17 @@
 // Need to use the React-specific entry point to import createApi
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 // Define a service using a base URL and expected endpoints
 export const plansApi = createApi({
-  reducerPath: 'plansApi',
-  baseQuery: fetchBaseQuery({ baseUrl: "http://138.197.175.219:8081/api" }),
+  reducerPath: "plansApi",
+  baseQuery: fetchBaseQuery({ baseUrl: `${VITE_APP_API_URL}` }),
   endpoints: (builder) => ({
     getClubPlans: builder.query({
       query: (location) => `/getClubInfo?location=${location}`,
     }),
     getClubPlanDetails: builder.query({
-      query: ({location, planId}) => `/getPlanDetails?location=${location}&planId=${planId}`,
+      query: ({ location, planId }) =>
+        `/getPlanDetails?location=${location}&planId=${planId}`,
     }),
   }),
 });
