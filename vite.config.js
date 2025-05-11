@@ -12,4 +12,11 @@ export default defineConfig({
     },
   },
   base: "/",
+  server: {
+    host: "0.0.0.0", // Allow external network access, use localhost for local access only
+    port: 4173, // Ensure it matches the port where the app is running
+  },
+  preview: {
+    allowedHosts: ["subscription.evolvestrength.ca"], // Add your custom domain here
+  },
 });
