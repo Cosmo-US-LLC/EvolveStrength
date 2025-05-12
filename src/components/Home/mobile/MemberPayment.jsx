@@ -21,6 +21,7 @@ const MemberPayment = () => {
     clubPlans,
     clubPlanMonthly,
     clubPlanYearly,
+    addOnDetails,
   } = useSelector((state) => state.plan);
 
   const [errors, setErrors] = useState({});
@@ -160,7 +161,10 @@ const MemberPayment = () => {
 
       let schedules = ["Dues"];
 
-      if (clubLocationPostal === 40248 || clubLocationPostal === 40327) {
+      if (
+        (clubLocationPostal === 40248 || clubLocationPostal === 40327) &&
+        addOnDetails === true
+      ) {
         schedules = ["Dues", "Towel"];
       }
 
@@ -211,7 +215,7 @@ const MemberPayment = () => {
           pushNotification: "true",
         },
       };
-      console.log("payload", payload)
+      console.log("payload", payload);
 
       if (paymentMethod !== "direct") {
         payload.todayBillingInfo = {
