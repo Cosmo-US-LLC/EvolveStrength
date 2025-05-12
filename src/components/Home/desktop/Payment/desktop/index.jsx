@@ -11,6 +11,7 @@ import useScrollDirection from "../../../../../hooks/useScrollDirection";
 import { useSelector } from "react-redux";
 import logo from "../../../../../assets/images/desktop/logo_navbar.svg";
 import Loader from "../../../../Loader";
+import { setAddOnDetails } from "../../../../../redux/slices/planSlice";
 
 function ReviewAndPay() {
   const [selectPlan, setSelectPlan] = useState("card");
@@ -123,7 +124,10 @@ function ReviewAndPay() {
 
   let schedules = ["Dues"];
 
-  if (clubLocationPostal === 40248 || clubLocationPostal === 40327) {
+  if (
+    (clubLocationPostal === 40248 || clubLocationPostal === 40327) &&
+    setAddOnDetails === true
+  ) {
     schedules = ["Dues", "Towel"];
   }
 
