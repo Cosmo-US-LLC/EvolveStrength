@@ -9,7 +9,7 @@ export const locations = [
       postalCode: "06973",
       clubName: "Calgary Sunridge",
       clubAddress: "# 2985 23 Ave NE Unit#125 Calgary, Alberta, T1Y 7L3",
-      accountId: "",
+      accountId: "11353",
     },
     {
       postalCode: "06964",
@@ -45,7 +45,7 @@ export const locations = [
       postalCode: "40327",
       clubName: "Vancouver, The Post",
       clubAddress: "# 658 Homer St Vancouver, British Columbia, V6B 2R4",
-      accountId: "",
+      accountId: "11044",
     },
   ];
 

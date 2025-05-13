@@ -17,7 +17,6 @@ const MembershipPlanSelector = () => {
     clubPlanMonthly,
     clubPlanYearly
   } = useSelector((state) => state.plan);
-    console.log("first", clubPlanMonthly, clubPlanYearly)
   return (
     <div className="max-w-[1280px]">
       <div>
@@ -63,8 +62,8 @@ const MembershipPlanSelector = () => {
         </p>
         <p className="text-[#2DDE28] text-[68px] font-medium font-[vazirmatn]">
           {plan == "monthly"
-            ? clubPlanMonthly?.scheduleTotalAmount || "$--.--"
-            : clubPlanYearly?.scheduleTotalAmount || "$--.--"}
+            ? clubPlanMonthly?.downPayments?.[0]?.subTotal || "$--.--"
+            : clubPlanYearly?.downPayments?.[0]?.subTotal || "$--.--"}
         </p>
         <div className="w-[537.2px] h-[1px] bg-white/20"></div>
 
