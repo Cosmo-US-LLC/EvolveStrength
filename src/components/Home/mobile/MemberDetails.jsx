@@ -175,30 +175,31 @@ const MemberDetails = () => {
       dob: formatDate(dob),
       gender,
     };
-    console.log(payload);
     dispatch(setUserInfo(payload));
     navigate("/member-Payment");
   }
 
   return (
     <div className="min-h-screen bg-black text-white px-4 pt-[80px] pb-10 flex flex-col gap-6 max-w-[600px] w-full mx-auto">
-      <StepIndicator
-        step={2}
-        totalSteps={3}
-        title="Your Details"
-        subtitle="Tell us about yourself"
-      />
+      <div>
+        <StepIndicator
+          step={2}
+          totalSteps={3}
+          title="Your Details"
+          subtitle="Tell us about yourself"
+        />
+
+        <div className="flex flex-col mt-4">
+          <p className="text-white font-[kanit] text-[46px] sm:text-[44px] font-[700] leading-[38px] uppercase">
+            TELL US ABOUT
+          </p>
+          <p className="text-[#2DDE28] font-[kanit] text-[50px] font-[700] leading-[38px] uppercase">
+            YOURSELF
+          </p>
+        </div>
+      </div>
 
       <MembershipVancouver />
-
-      <div className="flex flex-col">
-        <p className="text-white font-[kanit] text-[46px] sm:text-[44px] font-[700] leading-[38px] uppercase">
-          TELL US ABOUT
-        </p>
-        <p className="text-[#2DDE28] font-[kanit] text-[50px] font-[700] leading-[38px] uppercase">
-          YOURSELF
-        </p>
-      </div>
 
       <div className="flex flex-col gap-3">
         <p className="text-white font-[kanit] text-[22.274px] font-medium leading-[35.02px] tracking-[-0.705px] capitalize">

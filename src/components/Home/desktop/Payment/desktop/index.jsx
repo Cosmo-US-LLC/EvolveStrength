@@ -42,7 +42,6 @@ function ReviewAndPay() {
   const [termsAgreed, setTermsAgreed] = useState(false);
   const [termsAgreeded, setTermsAgreeded] = useState(false);
   const [renewAgreed, setRenewAgreed] = useState(false);
-  console.log("first", expirationDate);
   const [errors, setErrors] = useState({});
   const [apiError, setApiError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -116,7 +115,8 @@ function ReviewAndPay() {
   };
 
   const provinceName = userInfo?.province;
-  const stateCode = provinceMap[provinceName] || "";
+
+  const stateCode = provinceMap[provinceName?.trim()] || "";
 
   const routingNumber = `0${institutionNumber}${transitNumber}`;
   const [expMonth, expYearRaw] = expirationDate.split("/");
@@ -201,8 +201,6 @@ function ReviewAndPay() {
     };
   }
 
-  console.log("payload", payload);
-
   const createPeople = async () => {
     try {
       const response = await fetch(
@@ -245,7 +243,9 @@ function ReviewAndPay() {
     setIsLoading(true);
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_APP_API_URL}submitAgreement?location=${location}`,
+        `${
+          import.meta.env.VITE_APP_API_URL
+        }submitAgreement?location=${location}`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

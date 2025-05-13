@@ -37,7 +37,7 @@ function DebitForm({
       style={{ height: "700px" }}
     >
       <h1 className="text-[40px] font-[500] leading-[42px] font-[kanit] capitalize mb-6 text-left mt-4">
-        Set Your Monthly Payment Of <br />{" "}
+        Set Your Bi-Weekly Payment Of <br />{" "}
         {plan === "monthly"
           ? clubPlanMonthly?.scheduleTotalAmount
           : clubPlanYearly?.scheduleTotalAmount}

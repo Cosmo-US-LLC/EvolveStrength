@@ -6,7 +6,6 @@ import { useSelector } from "react-redux";
 import { formatDate } from "../../../../libs/utils";
 
 const MembershipVancouver = (props) => {
-  // console.log(props);
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(props.step === 1 ? true : false);
   const {
@@ -18,7 +17,6 @@ const MembershipVancouver = (props) => {
     clubPlanMonthly,
     clubPlanYearly,
   } = useSelector((state) => state.plan);
-  console.log("first", clubPlanMonthly, clubPlanYearly)
 
   const downPayment = (plan === "monthly" ? clubPlanMonthly : clubPlanYearly)
     ?.downPayments?.[0]?.total;
@@ -131,6 +129,14 @@ const MembershipVancouver = (props) => {
           <div className="flex justify-between">
             <span className="text-white font-[vazirmatn] text-[16px] font-normal leading-[20.382px] capitalize">
               Initiation Fee
+            </span>
+            <span className="text-white font-[vazirmatn] text-[16px] font-normal leading-[20.382px] capitalize">
+              $0.00
+            </span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-white font-[vazirmatn] text-[16px] font-normal leading-[20.382px] capitalize">
+              Tax
             </span>
             <span className="text-white font-[vazirmatn] text-[16px] font-normal leading-[20.382px] capitalize">
               {(plan == "monthly" ? clubPlanMonthly : clubPlanYearly)

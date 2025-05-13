@@ -119,6 +119,26 @@ const MemberPayment = () => {
     return false;
   };
 
+  const provinceMap = {
+    Alberta: "AB",
+    "British Columbia": "BC",
+    Manitoba: "MB",
+    "New Brunswick": "NB",
+    Newfoundland: "NL",
+    "Northwest Territories": "NT",
+    "Nova Scotia": "NS",
+    Nunavut: "NU",
+    Ontario: "ON",
+    "Prince Edward Island": "PE",
+    Quebec: "QC",
+    Saskatchewan: "SK",
+    Yukon: "YT",
+  };
+
+  const provinceName = userInfo?.province;
+
+  const stateCode = provinceMap[provinceName?.trim()] || "";
+
   const makeAgreement = async () => {
     const errorStatus = validateForm();
     if (errorStatus && Object.keys(errorStatus).length > 0) {
@@ -191,10 +211,10 @@ const MemberPayment = () => {
           wellnessProgramId: "",
           barcode: "",
           agreementAddressInfo: {
-            addressLine1: "123 Queen Street West",
+            addressLine1: userInfo?.address || "123 Queen Street West",
             addressLine2: "",
-            city: "Toronto",
-            state: "ON",
+            city: userInfo?.city || "Toronto",
+            state: stateCode || "ON",
             country: "CA",
             zipCode: formattedPostalCode || "",
           },
@@ -215,7 +235,6 @@ const MemberPayment = () => {
           pushNotification: "true",
         },
       };
-      console.log("payload", payload);
 
       if (paymentMethod !== "direct") {
         payload.todayBillingInfo = {
@@ -225,8 +244,8 @@ const MemberPayment = () => {
         };
 
         payload.draftBillingInfo.draftCreditCard = {
-          creditCardFirstName: userInfo?.fname || "John",
-          creditCardLastName: userInfo?.lname || "Doe",
+          creditCardFirstName: fname || "John",
+          creditCardLastName: lname || "Doe",
           creditCardType: "visa",
           creditCardAccountNumber: cardNumber || "",
           creditCardExpMonth: expMonth || "00",
@@ -235,8 +254,8 @@ const MemberPayment = () => {
         // 👉 Debit (Bank Account) flow
       } else if (paymentMethod === "direct") {
         payload.draftBillingInfo.draftBankAccount = {
-          draftAccountFirstName: userInfo?.fname || "John",
-          draftAccountLastName: userInfo?.lname || "Doe",
+          draftAccountFirstName: fname || "John",
+          draftAccountLastName: lname || "Doe",
           draftAccountRoutingNumber: routingNumber || "",
           draftAccountNumber: accountNumber || "",
           draftAccountType: "Checking",
@@ -244,7 +263,9 @@ const MemberPayment = () => {
       }
 
       const response = await fetch(
-        `${import.meta.env.VITE_APP_API_URL}/submitAgreement?location=${clubLocationPostal}`,
+        `${
+          import.meta.env.VITE_APP_API_URL
+        }/submitAgreement?location=${clubLocationPostal}`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -253,7 +274,6 @@ const MemberPayment = () => {
       );
       const data = await response.json();
       const message = data?.data?.restResponse?.status?.message;
-      console.log("data", message);
 
       if (message && message.toLowerCase() === "success") {
         createPeople();
@@ -310,7 +330,7 @@ const MemberPayment = () => {
           phone_mobile: userInfo?.phone || "",
           address: userInfo?.address || "",
           city: userInfo?.city || "",
-          province: userInfo?.province || "",
+          province: stateCode || "",
           postal_code: formattedPostalCode || "",
           company_id: clubLocationPostal,
         }),
@@ -318,31 +338,37 @@ const MemberPayment = () => {
     );
 
     const data = await response.json();
-    console.log(data);
-    navigate("/confirmation");
+    const person = data?.people_create_response;
+
+    if (person?.id) {
+      navigate("/confirmation");
+    } else {
+      console.warn("Person creation failed or missing ID.");
+    }
   };
 
   if (isLoading) return <Loader showMobile={false} />;
 
   return (
     <div className="min-h-screen bg-black text-white px-4 pt-[80px] pb-[12px] flex flex-col gap-6">
-      <StepIndicator
-        step={3}
-        totalSteps={3}
-        title="Payment info"
-        subtitle="Please provide your payment details"
-      />
+      <div>
+        <StepIndicator
+          step={3}
+          totalSteps={3}
+          title="Payment info"
+          subtitle="Please provide your payment details"
+        />
+        <div className="text-left flex flex-row gap-[10px] mt-4">
+          <span className="text-white font-[kanit] text-[46px] font-[700] leading-[42px] uppercase">
+            REVIEW &
+          </span>
+          <span className="text-[#2DDE28] font-[kanit] text-[48px] font-[700] leading-[42px] uppercase">
+            PAY
+          </span>
+        </div>
+      </div>
 
       <MembershipVancouver />
-
-      <div className="text-left flex flex-row gap-[10px]">
-        <span className="text-white font-[kanit] text-[46px] font-[700] leading-[42px] uppercase">
-          REVIEW &
-        </span>
-        <span className="text-[#2DDE28] font-[kanit] text-[48px] font-[700] leading-[42px] uppercase">
-          PAY
-        </span>
-      </div>
 
       <div className="flex flex-col">
         <p className="text-white font-[Vazirmatn] text-[16px] font-normal leading-[25.2px]">

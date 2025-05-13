@@ -5,7 +5,6 @@ import logo from "../../../assets/images/desktop/logo_navbar.svg";
 const NavBarDesktop = ({ scrollDirection }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  console.log("Current pathname:", location.pathname);
   const [buttonText, setButtonText] = useState("Next");
 
   useEffect(() => {

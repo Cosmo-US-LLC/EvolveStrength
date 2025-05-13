@@ -38,7 +38,7 @@ const DirectDebitForm = ({
       <div className="w-full max-w-[600px] flex flex-col gap-4">
         <div>
           <p className="text-white text-[18px] font-[500] font-[kanit] capitalize">
-            Set Your Monthly Payment Of&nbsp;
+            Set Your Bi-Weekly Payment Of&nbsp;
             {plan === "monthly"
               ? clubPlanMonthly?.downPaymentTotalAmount
               : clubPlanYearly?.downPaymentTotalAmount}

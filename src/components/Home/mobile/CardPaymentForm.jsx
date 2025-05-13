@@ -34,7 +34,7 @@ const CardPaymentForm = ({
     <div className="flex flex-col gap-4">
       <div className="text-white ">
         <p className="text-white text-[18px] font-medium leading-[42px] capitalize">
-          Set Your Monthly Payment Of&nbsp;
+          Set Your Bi-Weekly Payment Of&nbsp;
           {plan === "monthly"
             ? clubPlanMonthly?.downPaymentTotalAmount
             : clubPlanYearly?.downPaymentTotalAmount}
