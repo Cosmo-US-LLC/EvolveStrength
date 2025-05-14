@@ -78,7 +78,7 @@ const MembershipSummaryBoxDesktop = () => {
             <span>Initiation Fee</span>
             <span>$0.00</span>
           </div>
-          <div className="flex pt-1 pb-2 justify-between text-white/90 text-[18px] font-[400] font-[vazirmatn] leading-[24px] capitalize">
+          <div className="flex pt-1 justify-between text-white/90 text-[18px] font-[400] font-[vazirmatn] leading-[24px] capitalize">
             <span>Tax</span>
             <span>
               {plan == "monthly"
@@ -88,7 +88,7 @@ const MembershipSummaryBoxDesktop = () => {
           </div>
           {addOnDetails &&
             (clubLocationPostal === 40248 || clubLocationPostal === 40327) && (
-              <div className="flex pt-1 pb-4 justify-between text-white/90 text-[18px] font-[400] leading-[24px] font-[vazirmatn] capitalize">
+              <div className="flex pt-1 justify-between text-white/90 text-[18px] font-[400] leading-[24px] font-[vazirmatn] capitalize">
                 <span>
                   add-ons{" "}
                   {(plan == "monthly" ? clubPlanMonthly : clubPlanYearly)

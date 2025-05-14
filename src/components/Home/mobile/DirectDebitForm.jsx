@@ -23,9 +23,24 @@ const DirectDebitForm = ({
   apiError,
   paymentMethod,
 }) => {
-  const { plan, clubPlanMonthly, clubPlanYearly } = useSelector(
-    (state) => state.plan
-  );
+  const {
+    plan,
+    clubPlanMonthly,
+    clubPlanYearly,
+    addOnDetails,
+    clubLocationPostal,
+  } = useSelector((state) => state.plan);
+
+  const downPayment = (plan === "monthly" ? clubPlanMonthly : clubPlanYearly)
+    ?.downPayments?.[0]?.total;
+  const scheduleAmount = (plan === "monthly" ? clubPlanMonthly : clubPlanYearly)
+    ?.schedules?.[1]?.scheduleAmount;
+  const downPaymentValue =
+    parseFloat(downPayment?.replace(/[^0-9.-]+/g, "")) || 0;
+  const scheduleAmountValue =
+    parseFloat(scheduleAmount?.replace(/[^0-9.-]+/g, "")) || 0;
+  const totalAmount = downPaymentValue + scheduleAmountValue;
+  const formattedTotalAmount = `$${totalAmount.toFixed(2)}`;
 
   const [holder, setHolder] = useState(false);
   const [agree, setAgree] = useState(false);
@@ -39,9 +54,11 @@ const DirectDebitForm = ({
         <div>
           <p className="text-white text-[18px] font-[500] font-[kanit] capitalize">
             Set Your Bi-Weekly Payment Of&nbsp;
-            {plan === "monthly"
-              ? clubPlanMonthly?.downPaymentTotalAmount
-              : clubPlanYearly?.downPaymentTotalAmount}
+            {addOnDetails &&
+            (clubLocationPostal === 40248 || clubLocationPostal === 40327)
+              ? formattedTotalAmount
+              : (plan === "monthly" ? clubPlanMonthly : clubPlanYearly)
+                  ?.scheduleTotalAmount || "$--.--"}
           </p>
           <p className="text-[#D8D8D8] text-[14px] font-[400] mt-1 font-[vazirmatn]">
             This is your standard payment for your monthly direct debit before
