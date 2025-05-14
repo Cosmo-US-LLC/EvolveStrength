@@ -129,7 +129,7 @@ const DOBPicker = (props) => {
           readOnly
           value={formatDate(dob)}
           onChange={(e) => updateErrs("dob", e.target.value)}
-          placeholder="Pick a date"
+          placeholder="DOB"
           className="bg-transparent text-white text-[16px] font-[vazirmatn] w-full outline-none placeholder-[#999999]"
         />
         <img src={calendarIcon} alt="Calendar Icon" className="w-5 h-5 ml-2" />

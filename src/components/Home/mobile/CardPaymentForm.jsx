@@ -23,9 +23,25 @@ const CardPaymentForm = ({
   paymentMethod,
 }) => {
   const [termsPage, setTermsPage] = useState(false);
-  const { plan, clubPlanMonthly, clubPlanYearly, isLoading } = useSelector(
-    (state) => state.plan
-  );
+  const {
+    plan,
+    clubPlanMonthly,
+    clubPlanYearly,
+    isLoading,
+    addOnDetails,
+    clubLocationPostal,
+  } = useSelector((state) => state.plan);
+
+  const downPayment = (plan === "monthly" ? clubPlanMonthly : clubPlanYearly)
+    ?.downPayments?.[0]?.total;
+  const scheduleAmount = (plan === "monthly" ? clubPlanMonthly : clubPlanYearly)
+    ?.schedules?.[1]?.scheduleAmount;
+  const downPaymentValue =
+    parseFloat(downPayment?.replace(/[^0-9.-]+/g, "")) || 0;
+  const scheduleAmountValue =
+    parseFloat(scheduleAmount?.replace(/[^0-9.-]+/g, "")) || 0;
+  const totalAmount = downPaymentValue + scheduleAmountValue;
+  const formattedTotalAmount = `$${totalAmount.toFixed(2)}`;
 
   const [confirm, setConfirm] = useState(false);
   const [privacyPage, setPrivacyPage] = useState(false);
@@ -35,9 +51,11 @@ const CardPaymentForm = ({
       <div className="text-white ">
         <p className="text-white text-[18px] font-medium leading-[42px] capitalize">
           Set Your Bi-Weekly Payment Of&nbsp;
-          {plan === "monthly"
-            ? clubPlanMonthly?.downPaymentTotalAmount
-            : clubPlanYearly?.downPaymentTotalAmount}
+          {addOnDetails &&
+          (clubLocationPostal === 40248 || clubLocationPostal === 40327)
+            ? formattedTotalAmount
+            : (plan === "monthly" ? clubPlanMonthly : clubPlanYearly)
+                ?.scheduleTotalAmount || "$--.--"}
         </p>
 
         <p className="text-[#D8D8D8] leading-[21.2px] text-[14px] font-[400]">
