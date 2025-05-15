@@ -101,7 +101,17 @@ const MembershipSummaryBoxDesktop = () => {
               </div>
             )}
           <div className="flex pt-4 justify-between text-white/90 text-[20px] font-[500] font-[vazirmatn] leading-[24px] capitalize  border-t border-white/20">
-            <span>Total</span>
+            <span>Total Due Today</span>
+            <span>
+              {addOnDetails &&
+              (clubLocationPostal === 40248 || clubLocationPostal === 40327)
+                ? formattedTotalAmount
+                : (plan === "monthly" ? clubPlanMonthly : clubPlanYearly)
+                    ?.downPayments?.[0]?.total || "$--.--"}
+            </span>
+          </div>
+          <div className="flex pt-2 justify-between text-white/90 text-[20px] font-[500] font-[vazirmatn] leading-[24px] capitalize ">
+            <span>Due on May 29, 2025</span>
             <span>
               {addOnDetails &&
               (clubLocationPostal === 40248 || clubLocationPostal === 40327)
@@ -111,9 +121,9 @@ const MembershipSummaryBoxDesktop = () => {
             </span>
           </div>
         </div>
-        <p className="text-[#CACACA] pt-6 pb-2 text-[16px] font-regular font-[vazirmatn]">
-          Please note that any offers or discounts will be displayed on the
-          checkout summary page.&nbsp;our offer T&Cs.
+        <p className="text-[#CACACA] pt-6 pb-2 text-[14px] font-regular font-[vazirmatn]">
+          Please note that you’ll be billed every two weeks (bi-weekly) to keep
+          payments easy and manageable.
         </p>
       </div>
     </div>

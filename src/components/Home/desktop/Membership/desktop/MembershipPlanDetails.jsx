@@ -26,10 +26,10 @@ const MembershipPlanDetails = () => {
       {!addOnDetails ? (
         <div className="pt-8">
           <p className="text-white font-[400] text-[16px] leading-[25px] font-[vazirmatn]">
-            Choose Any of our Additional Services
+            Choose any of our additional services
           </p>
           <div
-            className="flex mt-3 gap-5 items-center"
+            className="flex items-center gap-5 mt-3"
             onClick={() => setIsOpen(true)}
           >
             <button className="w-[114px] bg-[#2DDE28] rounded-full flex justify-center items-center text-black text-[16px] font-medium h-[60px] button">
@@ -70,7 +70,7 @@ const MembershipPlanDetails = () => {
                   ? clubPlanMonthly?.schedules?.[1]?.profitCenter || "$--.--"
                   : clubPlanYearly?.schedules?.[1]?.profitCenter || "$--.--"}
               </p>
-              <div className="flex gap-3 items-center">
+              <div className="flex items-center gap-3">
                 <p className="text-white font-[400] text-[20px] leading-[24px] font-[Vazirmatn] capitalize">
                   {plan == "monthly"
                     ? clubPlanMonthly?.schedules?.[1]?.scheduleAmount ||
@@ -85,7 +85,7 @@ const MembershipPlanDetails = () => {
                 dispatch(setAddOnDetails(false));
                 setIsSelected(false);
               }}
-              className="absolute -top-3 -right-3 z-10"
+              className="absolute z-10 -top-3 -right-3"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -107,7 +107,7 @@ const MembershipPlanDetails = () => {
             </button>
           </div>
           {/* <div
-            className="flex mt-3 gap-5 items-center"
+            className="flex items-center gap-5 mt-3"
             onClick={() => setIsOpen(true)}
           >
             <button className="w-[39.603px] bg-[#2DDE28] rounded-full flex justify-center items-center text-black text-[16px] font-medium h-[39.603px] button gap-[6.601px]">
@@ -147,7 +147,7 @@ const MembershipPlanDetails = () => {
             ref={ref}
             className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-[90%] max-w-md bg-[#1A1A1A] border border-[#FFFFFF] p-4 text-white shadow-lg"
           >
-            <div className="flex flex-col justify-center items-center mt-10">
+            <div className="flex flex-col items-center justify-center mt-10">
               <p className="text-[#F8F8F8] items-center font-[vazirmatn] text-[16px] font-[700]">
                 Choose any of our additional services
               </p>
@@ -163,7 +163,7 @@ const MembershipPlanDetails = () => {
                   isSelected ? "border border-1 border-[#2DDE28]" : ""
                 }`}
               >
-                <div className="flex justify-center flex-col">
+                <div className="flex flex-col justify-center">
                   <p
                     className="text-[#fff] items-center font-[vazirmatn] text-[20px] font-[400] capitalize"
                     style={{ lineHeight: "24px" }}

@@ -83,7 +83,7 @@ const MembershipVancouver = (props) => {
               {startDate}
             </span>
           </div>
-          {(plan == "monthly" ? clubPlanMonthly : clubPlanYearly)
+          {/* {(plan == "monthly" ? clubPlanMonthly : clubPlanYearly)
             ?.expirationDate?.length > 1 && (
             <div className="flex justify-between">
               <span className="text-white text-[16px] font-[vazirmatn] font-normal leading-[20.382px] capitalize">
@@ -96,7 +96,7 @@ const MembershipVancouver = (props) => {
                 )}
               </span>
             </div>
-          )}
+          )} */}
           <div className="w-full h-[1px] bg-white/20 my-2" />
           <div className="flex justify-between">
             <span className="text-white font-[vazirmatn] text-[16px] font-normal leading-[20.382px] capitalize">
@@ -146,7 +146,19 @@ const MembershipVancouver = (props) => {
           <div className="w-full h-[1px] bg-white/20 my-2" />
           <div className="flex justify-between">
             <span className="text-white font-[vazirmatn] text-[16px] font-normal leading-[20.382px] capitalize">
-              Total
+              Total Due Today
+            </span>
+            <span className="text-white font-[vazirmatn] text-[16px] font-normal leading-[20.382px] capitalize">
+              {addOnDetails &&
+              (clubLocationPostal === 40248 || clubLocationPostal === 40327)
+                ? formattedTotalAmount
+                : (plan === "monthly" ? clubPlanMonthly : clubPlanYearly)
+                    ?.downPayments?.[0]?.total || "$--.--"}
+            </span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-white font-[vazirmatn] text-[16px] font-normal leading-[20.382px] capitalize">
+              Due on May 29, 2025
             </span>
             <span className="text-white font-[vazirmatn] text-[16px] font-normal leading-[20.382px] capitalize">
               {addOnDetails &&
@@ -158,9 +170,9 @@ const MembershipVancouver = (props) => {
           </div>
         </div>
 
-        <p className="text-[#CACACA] font-[vazirmatn] text-[12px] font-normal  pt-3 pb-1">
-          Please note that any offers or discounts will be displayed on the
-          checkout summary page. our offer T&amp;Cs
+        <p className="text-[#CACACA] font-[vazirmatn] text-[11px] font-normal pt-3 pb-1">
+          Please note that you’ll be billed every two weeks (bi-weekly) to keep
+          payments easy and manageable.
         </p>
       </div>
     </div>

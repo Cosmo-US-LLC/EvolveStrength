@@ -356,7 +356,7 @@ const MemberPayment = () => {
           step={3}
           totalSteps={3}
           title="Payment info"
-          subtitle="Please provide your payment details"
+          subtitle="Securely enter your payment details"
         />
         <div className="text-left flex flex-row gap-[10px] mt-4">
           <span className="text-white font-[kanit] text-[46px] font-[700] leading-[42px] uppercase">
@@ -371,11 +371,11 @@ const MemberPayment = () => {
       <MembershipVancouver />
 
       <div className="flex flex-col">
-        <p className="text-white font-[Vazirmatn] text-[16px] font-normal leading-[25.2px]">
-          Choose payment Option
+        <p className="text-white font-[kanit] pb-1 text-[16px] font-normal uppercase leading-[16px]">
+          Choose your payment option
         </p>
 
-        <div className="border border-white/40 flex overflow-hidden p-1">
+        <div className="flex p-1 overflow-hidden border border-white/40">
           <button
             onClick={() => setPaymentMethod("card")}
             className={`cursor-pointer w-1/2 py-2 text-[14px] font-[500] font-[vazirmatn] uppercase flex items-center justify-center space-x-2 ${
