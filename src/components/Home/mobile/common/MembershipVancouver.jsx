@@ -29,6 +29,17 @@ const MembershipVancouver = (props) => {
   const totalAmount = downPaymentValue + scheduleAmountValue;
   const formattedTotalAmount = `$${totalAmount.toFixed(2)}`;
 
+
+  const today = new Date();
+const futureDate = new Date(today);
+futureDate.setDate(today.getDate() + 15);
+
+const options = { year: "numeric", month: "long", day: "numeric" };
+const formattedDate = futureDate.toLocaleDateString("en-US", options);
+
+ 
+
+
   return (
     <div
       className="flex flex-col p-[14px] w-full
@@ -158,7 +169,7 @@ const MembershipVancouver = (props) => {
           </div>
           <div className="flex justify-between">
             <span className="text-white font-[vazirmatn] text-[16px] font-normal leading-[20.382px] capitalize">
-              Due on May 29, 2025
+             {`Due on ${formattedDate}`}
             </span>
             <span className="text-white font-[vazirmatn] text-[16px] font-normal leading-[20.382px] capitalize">
               {addOnDetails &&
