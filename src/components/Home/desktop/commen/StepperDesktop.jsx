@@ -27,7 +27,7 @@ function StepperDesktop({ stepNumber = 1, scrollDirection }) {
           </p>
           <p
             className={`${
-              stepNumber >= 2 ? "text-[#2DDE28]" : "text-[white]"
+              stepNumber >= 2 ? "text-[#2DDE28]" : "text-[#FFFFFF]"
             } text-[16px] font-[vazirmatn] font-[400] leading-[24px]`}
           >
             Pick the membership that fits you best
@@ -50,17 +50,17 @@ function StepperDesktop({ stepNumber = 1, scrollDirection }) {
           />
           <p
             className={`${
-              stepNumber >= 2 ? "text-[#2DDE28]" : "text-[white]"
+              stepNumber >= 2 ? "text-[#2DDE28]" : "text-[#FFFFFF]"
             } text-[16px] font-[600] leading-[24px] font-[vazirmatn]`}
           >
             Your Details
           </p>
           <p
             className={`${
-              stepNumber >= 3 ? "text-[#2DDE28]" : "text-[white]"
+              stepNumber >= 3 ? "text-[#2DDE28]" : "text-[#FFFFFF]"
             } text-[16px] font-[400] font-[vazirmatn] leading-[24px]`}
           >
-            Tell us a bit about yourself.
+            Tell us a bit about yourself
           </p>
         </div>
         <div className="flex flex-col items-start justify-center w-full">
@@ -80,17 +80,17 @@ function StepperDesktop({ stepNumber = 1, scrollDirection }) {
           />
           <p
             className={`${
-              stepNumber >= 3 ? "text-[#2DDE28]" : "text-[white]"
+              stepNumber >= 3 ? "text-[#2DDE28]" : "text-[#FFFFFF]"
             } text-[16px] font-[600] font-[vazirmatn] leading-[24px]`}
           >
             Payment Info
           </p>
           <p
             className={`${
-              stepNumber >= 3 ? "text-[white]" : "text-[white]"
+              stepNumber >= 3 ? "text-[white]" : "text-[#FFFFFF]"
             } text-[16px] font-[400] font-[vazirmatn] leading-[24px]`}
           >
-            Please provide your name and email
+            Securely enter your payment details
           </p>
         </div>
       </div>

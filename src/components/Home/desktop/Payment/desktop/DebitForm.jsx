@@ -51,21 +51,22 @@ function DebitForm({
       className="max-w-[600px] space-y-4 text-white"
       style={{ height: "700px" }}
     >
-      <h1 className="text-[40px] font-[500] leading-[42px] font-[kanit] capitalize mb-6 text-left mt-4">
+      {/* <h1 className="text-[40px] font-[500] leading-[42px] font-[kanit] capitalize mb-6 text-left mt-4">
         Set Your Bi-Weekly Payment Of <br />{" "}
         {addOnDetails &&
         (clubLocationPostal === 40248 || clubLocationPostal === 40327)
           ? formattedTotalAmount
           : (plan === "monthly" ? clubPlanMonthly : clubPlanYearly)
               ?.scheduleTotalAmount || "$--.--"}
-      </h1>
-      <p className="mb-6 text-left text-[#FFFFFF] font-[vazirmatn] text-[18px] font-regular">
-        This is your standard payment for your monthly direct debit before any
-        discounts are applied
+      </h1> */}
+      <p className="mb-6 mt-6 text-left text-[#FFFFFF] font-[vazirmatn] text-[16px] font-regular">
+        Please enter your payment details for your biweekly payment to help us
+        start your membership. This payment method will also be used for future
+        fees.
       </p>
 
       <form>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+        <div className="grid grid-cols-1 gap-4 mb-6 md:grid-cols-2">
           <div className="flex flex-col">
             <input
               type="text"
@@ -111,7 +112,7 @@ function DebitForm({
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+        <div className="grid grid-cols-1 gap-4 mb-6 md:grid-cols-2">
           <div className="flex flex-col">
             <div className="items-center">
               <input
@@ -172,7 +173,7 @@ function DebitForm({
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+        <div className="grid grid-cols-1 gap-4 mb-6 md:grid-cols-2">
           <div>
             <div className="flex flex-col">
               <label className="text-[14px] flex font-[vazirmatn] flex-row items-center mb-2 gap-2">
@@ -284,11 +285,11 @@ function DebitForm({
           <img
             src={guarantee_icons}
             alt="guarantee_icons"
-            className="cursor-pointer mt-1"
+            className="mt-1 cursor-pointer"
           />
         </div>
 
-        <div className="flex items-start mb-6 mt-4">
+        <div className="flex items-start mt-4 mb-6">
           <input
             type="checkbox"
             id="accountHolder"
@@ -317,7 +318,7 @@ function DebitForm({
           />
           <label
             htmlFor="renewAgreed"
-            className="text-[16px] font-[400] font-[vazirmatn] ml-2"
+            className="text-[15px] font-[400] font-[vazirmatn] ml-2"
           >
             I acknowledge and agree that my membership will automatically renew
             bi-weekly until I cancel in accordance with the membership contract

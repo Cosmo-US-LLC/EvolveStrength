@@ -186,7 +186,7 @@ const MemberDetails = () => {
           step={2}
           totalSteps={3}
           title="Your Details"
-          subtitle="Tell us about yourself"
+          subtitle="Tell us a bit about yourself"
         />
 
         <div className="flex flex-col mt-4">
@@ -202,7 +202,7 @@ const MemberDetails = () => {
       <MembershipVancouver />
 
       <div className="flex flex-col gap-3">
-        <p className="text-white font-[kanit] text-[22.274px] font-medium leading-[35.02px] tracking-[-0.705px] capitalize">
+        <p className="text-white font-[kanit] text-[16px] font-[600]   tracking-[0.705px] uppercase">
           Your Basic Info
         </p>
 

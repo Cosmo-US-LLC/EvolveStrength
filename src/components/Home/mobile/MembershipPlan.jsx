@@ -42,7 +42,7 @@ const MembershipPlan = () => {
           step={1}
           totalSteps={3}
           title="Choose Your Plan"
-          subtitle="Pick the membership that fits you best and choose your start date."
+          subtitle="Pick the membership that fits you best"
         />
 
         <div className="flex flex-col mt-4">
@@ -57,7 +57,7 @@ const MembershipPlan = () => {
       </div>
 
       <div className="flex flex-col">
-        <p className="mb-2 text-white text-[16px] font-[vazirmatn] font-normal leading-[25.2px]">
+        <p className="mb-2 text-white text-[16px] font-[kanit] font-normal leading-[16px] uppercase">
           Choose your pricing plan
         </p>
 
@@ -114,10 +114,10 @@ const MembershipPlan = () => {
               {clubPlanMonthly?.downPayments?.[0]?.subTotal || "$--.--"}
             </p>
 
-            <p className="text-[#999999] font-[vazirmatn] text-[16px] font-normal leading-[24px] mb-4">
+            {/* <p className="text-[#999999] font-[vazirmatn] text-[16px] font-normal leading-[24px] mb-4">
               Experience personalized training, group classes, and essential
               resources.
-            </p>
+            </p> */}
           </>
         ) : (
           <>
@@ -130,18 +130,18 @@ const MembershipPlan = () => {
               {clubPlanYearly?.downPayments?.[0]?.subTotal || "$--.--"}
             </p>
 
-            <p className="text-[#999999] font-[vazirmatn] text-[16px] font-normal leading-[24px] mb-4">
+            {/* <p className="text-[#999999] font-[vazirmatn] text-[16px] font-normal leading-[24px] mb-4">
               Best value — save more with an annual commitment.
-            </p>
+            </p> */}
           </>
         )}
         <hr className="mb-4 border-white/20" />
         <ul className="space-y-4">
           {[
-            "$0 Enrollment Fee",
-            "$0 Maintenance fee",
-            "Personalized assessment",
-            "Access to all locations",
+            "$0 Enrolment Fee",
+            "$0 Maintenance Fee",
+            "Personalized Assessment",
+            "Access to All Locations",
           ].map((item, idx) => (
             <li key={idx} className="flex items-start gap-3">
               <div className="flex items-center justify-center w-5 h-5">
@@ -184,10 +184,10 @@ const MembershipPlan = () => {
                 className="text-white font-[400] text-[16px] font-[vazirmatn]"
                 style={{ lineHeight: "25.2px" }}
               >
-                Choose Any of our Additional Services
+                Choose any of our additional services
               </p>
               <div
-                className="flex mt-3 gap-5 items-center"
+                className="flex items-center gap-5 mt-3"
                 onClick={() => setIsOpen(true)}
               >
                 <button className="w-[106px] bg-[#2DDE28] rounded-full flex justify-center items-center text-black text-[16px] font-medium h-[54px] button gap-[10px]">
@@ -224,7 +224,7 @@ const MembershipPlan = () => {
                     ? clubPlanMonthly?.schedules?.[1]?.profitCenter || "$--.--"
                     : clubPlanYearly?.schedules?.[1]?.profitCenter || "$--.--"}
                 </p>
-                <div className="flex gap-3 items-center">
+                <div className="flex items-center gap-3">
                   <p className="text-white font-[400] text-[20px] leading-[24px] font-[Vazirmatn] capitalize pt-2 pt-1">
                     {plan == "monthly"
                       ? clubPlanMonthly?.schedules?.[1]?.scheduleAmount ||
@@ -260,7 +260,7 @@ const MembershipPlan = () => {
                 </div>
               </div>
               {/* <div
-            className="flex mt-3 gap-5 items-center"
+            className="flex items-center gap-5 mt-3"
             onClick={() => setIsOpen(true)}
           >
             <button className="w-[39.603px] bg-[#2DDE28] rounded-full flex justify-center items-center text-black text-[16px] font-medium h-[39.603px] button gap-[6.601px]">
@@ -300,7 +300,7 @@ const MembershipPlan = () => {
                 ref={ref}
                 className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-[90%] max-w-md bg-[#1A1A1A] border border-[#FFFFFF] p-4 text-white shadow-lg"
               >
-                <div className="flex flex-col justify-center items-center mt-10">
+                <div className="flex flex-col items-center justify-center mt-10">
                   <p className="text-[#F8F8F8] items-center font-[vazirmatn] text-[16px] font-[700]">
                     Choose any of our additional services
                   </p>
@@ -316,7 +316,7 @@ const MembershipPlan = () => {
                       isSelected ? "border border-1 border-[#2DDE28]" : ""
                     }`}
                   >
-                    <div className="flex justify-center flex-col">
+                    <div className="flex flex-col justify-center">
                       <p
                         className="text-[#fff] items-center font-[vazirmatn] text-[20px] font-[400] capitalize"
                         style={{ lineHeight: "24px" }}

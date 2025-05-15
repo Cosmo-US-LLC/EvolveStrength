@@ -49,17 +49,19 @@ const CardPaymentForm = ({
   return (
     <div className="flex flex-col gap-4">
       <div className="text-white ">
-        <p className="text-white text-[18px] font-medium leading-[42px] capitalize">
+        {/* <p className="text-white text-[18px] font-medium leading-[42px] capitalize">
           Set Your Bi-Weekly Payment Of&nbsp;
           {addOnDetails &&
           (clubLocationPostal === 40248 || clubLocationPostal === 40327)
             ? formattedTotalAmount
             : (plan === "monthly" ? clubPlanMonthly : clubPlanYearly)
                 ?.scheduleTotalAmount || "$--.--"}
-        </p>
+        </p> */}
 
         <p className="text-[#D8D8D8] leading-[21.2px] text-[14px] font-[400]">
-          Visa and master cards are accepted here
+          Please enter your payment details for your biweekly payment to help us
+          start your membership. This payment method will also be used for
+          future fees.
         </p>
       </div>
 
@@ -180,8 +182,34 @@ const CardPaymentForm = ({
           <img src={lockIcon2} alt="Lock" className="h-10 w-14" />
         </div>
       </div>
+      <label className="flex items-start gap-3 text-[14px] text-[#D8D8D8] font-[vazirmatn] cursor-pointer">
+        <input
+          type="checkbox"
+          className="mt-1 accent-[#2DDE28]"
+          // checked={agree}
+          onChange={(e) => setAgree(e.target.checked)}
+        />
+        <span>
+          I authorize Evolve Strength to charge my credit or debit card for
+          membership fees
+        </span>
+      </label>
 
-      <label className="flex items-start gap-2 text-[16px] font-[vazirmatn] text-[#D8D8D8] font-[400] mt-4">
+      <label className="flex items-start gap-3 text-[14px] text-[#D8D8D8] font-[vazirmatn] cursor-pointer">
+        <input
+          type="checkbox"
+          className="mt-1 accent-[#2DDE28]"
+          // checked={agree}
+          onChange={(e) => setAgree(e.target.checked)}
+        />
+        <span>
+          I acknowledge and agree that my membership will automatically renew
+          biweekly unless I cancel as outlined in the membership contract or if
+          the contract specifies a shorter renewal period.
+        </span>
+      </label>
+
+      <label className="flex items-start gap-2 text-[14px] font-[vazirmatn] text-[#D8D8D8] font-[400] mt-4">
         <input
           type="checkbox"
           className="mt-1"
@@ -215,7 +243,7 @@ const CardPaymentForm = ({
       </label>
       <div className="flex flex-col items-center">
         {apiError && paymentMethod == "card" && (
-          <span className="text-red-500 text-sm text-center w-full">
+          <span className="w-full text-sm text-center text-red-500">
             {apiError}
           </span>
         )}

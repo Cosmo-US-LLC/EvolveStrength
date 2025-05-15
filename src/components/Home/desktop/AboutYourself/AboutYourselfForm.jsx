@@ -58,8 +58,8 @@ const AboutYourselfForm = ({
 
   return (
     <div className="max-w-[600px] w-full space-y-4" style={{ height: "520px" }}>
-      <p className="text-white font-[kanit] font-[400] text-[24px] leading-[10.734px] tracking-[-0.76px] capitalize">
-        Your Basic Info
+      <p className="text-white font-[kanit] font-[600] text-[16px] leading-[16px] tracking-[0.76px] uppercase">
+       Your Basic Info
       </p>
 
       <div className="flex gap-4">

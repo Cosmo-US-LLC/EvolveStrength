@@ -52,17 +52,18 @@ const DirectDebitForm = ({
     <div className="flex justify-center min-h-screen bg-black">
       <div className="w-full max-w-[600px] flex flex-col gap-4">
         <div>
-          <p className="text-white text-[18px] font-[500] font-[kanit] capitalize">
+          {/* <p className="text-white text-[18px] font-[500] font-[kanit] capitalize">
             Set Your Bi-Weekly Payment Of&nbsp;
             {addOnDetails &&
             (clubLocationPostal === 40248 || clubLocationPostal === 40327)
               ? formattedTotalAmount
               : (plan === "monthly" ? clubPlanMonthly : clubPlanYearly)
                   ?.scheduleTotalAmount || "$--.--"}
-          </p>
+          </p> */}
           <p className="text-[#D8D8D8] text-[14px] font-[400] mt-1 font-[vazirmatn]">
-            This is your standard payment for your monthly direct debit before
-            any discounts are applied
+            Please enter your payment details for your biweekly payment to help
+            us start your membership. This payment method will also be used for
+            future fees.
           </p>
         </div>
 
@@ -234,7 +235,7 @@ const DirectDebitForm = ({
         </div>
 
         {/* Checkboxes */}
-        <label className="flex items-start gap-3 text-[16px] text-[#D8D8D8] font-[vazirmatn] cursor-pointer">
+        <label className="flex items-start gap-3 text-[14px] text-[#D8D8D8] font-[vazirmatn] cursor-pointer">
           <input
             type="checkbox"
             className="mt-1 accent-[#2DDE28]"
@@ -247,7 +248,7 @@ const DirectDebitForm = ({
           </span>
         </label>
 
-        <label className="flex items-start gap-3 text-[16px] text-[#D8D8D8] font-[vazirmatn] cursor-pointer">
+        <label className="flex items-start gap-3 text-[14px] text-[#D8D8D8] font-[vazirmatn] cursor-pointer">
           <input
             type="checkbox"
             className="mt-1 accent-[#2DDE28]"
@@ -256,13 +257,12 @@ const DirectDebitForm = ({
           />
           <span>
             I acknowledge and agree that my membership will automatically renew
-            bi-weekly until I cancel in accordance with the membership contract
-            (unless the membership contract provides for a shorter renewal
-            period)
+            biweekly unless I cancel as outlined in the membership contract or
+            if the contract specifies a shorter renewal period.
           </span>
         </label>
 
-        <label className="flex items-start gap-3 text-[16px] text-[#D8D8D8] font-[vazirmatn] cursor-pointer">
+        <label className="flex items-start gap-3 text-[14px] text-[#D8D8D8] font-[vazirmatn] cursor-pointer">
           <input
             type="checkbox"
             className="mt-1 accent-[#2DDE28]"
@@ -297,7 +297,7 @@ const DirectDebitForm = ({
         {/* Submit Button */}
         <div className="flex flex-col items-center">
           {apiError && paymentMethod == "direct" && (
-            <span className="text-red-500 text-sm text-center w-full">
+            <span className="w-full text-sm text-center text-red-500">
               {apiError}
             </span>
           )}

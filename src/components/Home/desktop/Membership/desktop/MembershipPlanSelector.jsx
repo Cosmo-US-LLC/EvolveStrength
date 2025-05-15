@@ -5,10 +5,10 @@ import { setPlan } from "../../../../../redux/slices/planSlice";
 
 const MembershipPlanSelector = () => {
   const monthlyPlanBenefits = [
-    "$0 Enrollment Fee",
-    "$0 Maintenance fee",
-    "Personalized assessment",
-    "Access to all locations",
+    "$0 Enrolment Fee",
+    "$0 Maintenance Fee",
+    "Personalised Assessment",
+    "Access to All Locations",
   ];
 
   const dispatch = useDispatch();
@@ -20,7 +20,7 @@ const MembershipPlanSelector = () => {
   return (
     <div className="max-w-[1280px]">
       <div>
-        <p className="text-white font-normal text-[16px] leading-[25px] font-[vazirmatn]">
+        <p className="text-white font-[600] text-[16px] leading-[16px] font-[kanit] uppercase">
           Choose your pricing plan
         </p>
 

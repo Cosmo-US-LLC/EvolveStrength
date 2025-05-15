@@ -9,9 +9,13 @@ function Congratulations() {
   const scrollDirection = useScrollDirection;
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { plan, clubPlanMonthly, clubPlanYearly, clubLocationPostal, addOnDetails } = useSelector(
-    (state) => state.plan
-  );
+  const {
+    plan,
+    clubPlanMonthly,
+    clubPlanYearly,
+    clubLocationPostal,
+    addOnDetails,
+  } = useSelector((state) => state.plan);
 
   const downPayment = (plan === "monthly" ? clubPlanMonthly : clubPlanYearly)
     ?.downPayments?.[0]?.total;
@@ -26,11 +30,11 @@ function Congratulations() {
 
   const handleBackHome = () => {
     navigate(`/`);
-    dispatch(resetState()); 
+    dispatch(resetState());
   };
 
   return (
-    <div className="congratulations_bg min-h-screen flex justify-center items-center">
+    <div className="flex items-center justify-center min-h-screen congratulations_bg">
       <nav
         className={`fixed top-0 py-4 bg-[#000000] shadow-md z-50 w-full flex items-center transition-transform duration-300 ${
           scrollDirection === "down" ? "-translate-y-full" : "translate-y-0"
@@ -53,13 +57,13 @@ function Congratulations() {
         </h1>
         <p className="text-white text-[18px] mb-4 font-[400] font-[vazirmatn]">
           You’ve successfully activated your{" "}
-          <span className="text-[20px] font-[700]">Month to month</span>{" "}
+          <span className="text-[20px] font-[700]">Month to Month</span>{" "}
           membership.
         </p>
 
         <div
           style={{ fontFamily: "'Vazirmatn', sans-serif" }}
-          className="space-y-4 mt-3 w-full"
+          className="w-full mt-3 space-y-4"
         >
           <div className="flex justify-between text-white/90 font-[vazirmatn] text-[16px] font-regular">
             <span className="">Start Date</span>

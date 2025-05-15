@@ -387,8 +387,8 @@ function ReviewAndPay() {
         </p>
         <div className="flex flex-row justify-between mt-16">
           <div>
-            <p className=" text-white text-[16px] font-[vazirmatn] font-[400] leading-[10.2px]">
-              Choose your pricing plan
+            <p className=" text-white text-[16px] font-[kanit] font-[600] leading-[16px] uppercase">
+              Choose your payment option
             </p>
             <PaymentMethodSelector
               selectPlan={selectPlan}
@@ -447,7 +447,7 @@ function ReviewAndPay() {
               onError={() => setIsHuman(false)}
               onExpire={() => setIsHuman(false)}
             />
-            <div className="flex justify-end items-end mt-6 w-full flex-col">
+            <div className="flex flex-col items-end justify-end w-full mt-6">
               <button
                 onClick={handleJoinNow}
                 className={`button mt-6 ${
@@ -468,7 +468,7 @@ function ReviewAndPay() {
                 PAY NOW
               </button>
               {apiError && (
-                <p className="text-red-500 mt-2 text-sm text-right w-full">
+                <p className="w-full mt-2 text-sm text-right text-red-500">
                   {apiError}
                 </p>
               )}

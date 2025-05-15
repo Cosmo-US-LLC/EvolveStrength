@@ -19,9 +19,13 @@ import useScrollDirection from "../../../hooks/useScrollDirection";
 
 function LocationDesktop() {
   const dispatch = useDispatch();
-  const scrollDirection = useScrollDirection()
+  const scrollDirection = useScrollDirection();
   const [selectedLocation, setSelectedLocation] = useState(locations[0]);
   const [loading, setLoading] = useState(true);
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleOpen = () => setIsOpen((prev) => !prev);
 
   const navigate = useNavigate();
 
@@ -47,7 +51,7 @@ function LocationDesktop() {
   if (loading) return <Loader />;
   return (
     <div
-      className="relative z-10 flex flex-col items-center bg-black justify-center min-h-screen gap-6 overflow-hidden"
+      className="relative z-10 flex flex-col items-center justify-center min-h-screen gap-6 overflow-hidden bg-black"
       style={{
         backgroundImage: `url(${locationBg})`,
         backgroundSize: "cover",
@@ -64,12 +68,12 @@ function LocationDesktop() {
         <div className="flex items-center justify-between w-full max-w-[1280px] mx-auto">
           <img src={logo} alt="Logo" className="w-[175px] h-auto" />
 
-            <button
-              onClick={handleTakeTour}
-              className="w-[141px] bg-[#2DDE28] text-black text-[16px] font-medium h-[50px] button"
-            >
-              Next
-            </button>
+          <button
+            onClick={handleTakeTour}
+            className="w-[141px] bg-[#2DDE28] text-black text-[16px] font-medium h-[50px] button"
+          >
+            Next
+          </button>
         </div>
       </nav>
       <p className="text-white text-center font-[kanit] text-[79px] font-bold leading-[66px] tracking-[-1.329px] uppercase">
@@ -77,7 +81,7 @@ function LocationDesktop() {
       </p>
 
       <Listbox value={selectedLocation} onChange={setSelectedLocation}>
-        <div className="relative w-[627px]">
+        <div className="relative w-[627px]" onClick={toggleOpen}>
           <Listbox.Button className="w-full font-[vazirmatn] bg-black/40 backdrop-blur-xl border border-[#656c72] text-left p-4 text-white flex items-center justify-between">
             <div>
               <p className="text-[#2DDE28] text-[29px] font-[800] leading-[27px] uppercase">
@@ -92,7 +96,9 @@ function LocationDesktop() {
             <img
               src={ChevronDownFilled}
               alt="Dropdown Icon"
-              className="w-6 h-6 ml-4"
+              className={`w-6 h-6 ml-4 transition-transform duration-300 ${
+                isOpen ? "rotate-180" : "rotate-0"
+              }`}
             />
           </Listbox.Button>
 

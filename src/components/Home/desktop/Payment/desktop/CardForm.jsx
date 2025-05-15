@@ -46,21 +46,23 @@ function CardForm({
       className="max-w-[600px] space-y-4 text-white"
       style={{ height: "700px" }}
     >
-      <h1 className="text-[40px] leading-[42px] font-[kanit] font-[500] capitalize  mb-6 text-left mt-4">
+      {/* <h1 className="text-[40px] leading-[42px] font-[kanit] font-[500] capitalize  mb-6 text-left mt-4">
         Set your Bi-Weekly Payment of <br />{" "}
         {addOnDetails &&
         (clubLocationPostal === 40248 || clubLocationPostal === 40327)
           ? formattedTotalAmount
           : (plan === "monthly" ? clubPlanMonthly : clubPlanYearly)
               ?.scheduleTotalAmount || "$--.--"}
-      </h1>
-      <p className="mb-6 text-left text-[#FFFFFF] font-[400] text-[18px] font-[vazirmatn]">
-        Visa and master cards are accepted here
+      </h1> */}
+      <p className="mb-6 mt-6 text-left text-[#FFFFFF] font-[400] text-[16px] font-[vazirmatn]">
+        Please enter your payment details for your biweekly payment to help us
+        start your membership. This payment method will also be used for future
+        fees.
       </p>
 
       {/* Form */}
       <form>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+        <div className="grid grid-cols-1 gap-4 mb-6 md:grid-cols-2">
           {/* First Name */}
           <div className="flex flex-col">
             <input
@@ -139,7 +141,7 @@ function CardForm({
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+        <div className="grid grid-cols-1 gap-4 mb-6 md:grid-cols-2">
           <div>
             <div className="flex flex-col">
               <input
@@ -202,11 +204,11 @@ function CardForm({
           <img
             src={guarantee_icons}
             alt="guarantee_icons"
-            className="cursor-pointer mt-1"
+            className="mt-1 cursor-pointer"
           />
         </div>
 
-        <div className="flex items-start mb-6 mt-4">
+        <div className="flex items-start mt-4 mb-6">
           <input
             type="checkbox"
             id="accountHolder"
@@ -221,6 +223,25 @@ function CardForm({
           >
             I am the bank account holder and do not require another person to
             authorize the debits on this account
+          </label>
+        </div>
+
+        <div className="flex items-start mt-4 mb-6">
+          <input
+            type="checkbox"
+            id="accountHolder"
+            checked={termsAgreed}
+            onChange={() => setTermsAgreed(!termsAgreed)}
+            className="mr-2"
+            style={{ marginTop: "3.5px" }}
+          />
+          <label
+            htmlFor="accountHolder"
+            className="text-[16px] font-[400] font-[vazirmatn] ml-2"
+          >
+            I acknowledge and agree that my membership will automatically renew
+            biweekly unless I cancel as outlined in the membership contract or
+            if the contract specifies a shorter renewal period.
           </label>
         </div>
 

@@ -7,7 +7,7 @@ const StepIndicator = ({ step, totalSteps, title, subtitle }) => {
   const progress = (step / totalSteps) * circumference;
 
   return (
-    <div className="flex items-center gap-4 w-full">
+    <div className="flex items-center w-full gap-4">
       <div className="relative w-[56px] h-[56px] min-w-[56px] min-h-[56px]">
         <svg
           viewBox="0 0 44 44"
@@ -48,7 +48,7 @@ const StepIndicator = ({ step, totalSteps, title, subtitle }) => {
           {title}
         </h2>
 
-        <p className="text-[#B9B9B9] text-[12px] font-[400] leading-[15.1px] w-[231px] font-[vazirmatn]">
+        <p className="text-[#FFFFFF] text-[12px] font-[400] leading-[15.1px] w-[231px] font-[vazirmatn]">
           {subtitle}
         </p>
       </div>
