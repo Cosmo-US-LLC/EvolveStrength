@@ -27,6 +27,14 @@ const MembershipSummaryBoxDesktop = () => {
   const totalAmount = downPaymentValue + scheduleAmountValue;
   const formattedTotalAmount = `$${totalAmount.toFixed(2)}`;
 
+  
+  const today = new Date();
+const futureDate = new Date(today);
+futureDate.setDate(today.getDate() + 15);
+
+const options = { year: "numeric", month: "long", day: "numeric" };
+const formattedDate = futureDate.toLocaleDateString("en-US", options);
+
   return (
     <div className="w-[471px] bg-[#000000]/60 backdrop-blur-[10px] p-6 flex flex-col gap-8">
       <div className="flex items-center justify-between">
@@ -111,7 +119,7 @@ const MembershipSummaryBoxDesktop = () => {
             </span>
           </div>
           <div className="flex pt-2 justify-between text-white/90 text-[20px] font-[500] font-[vazirmatn] leading-[24px] capitalize ">
-            <span>Due on May 29, 2025</span>
+            {`Due on ${formattedDate}`}
             <span>
               {addOnDetails &&
               (clubLocationPostal === 40248 || clubLocationPostal === 40327)
