@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState, useRef } from "react";
 import { Listbox } from "@headlessui/react";
 import DOBPickerDesktop from "../../../../utils/DOBPickerDesktop";
@@ -16,6 +16,8 @@ const AboutYourselfForm = ({
   const GOOGLE_MAPS_API_KEY = "AIzaSyC6URLPah7QiL_BHSzJVJTNy_qX6bIK8uU";
   const postalCodeRef = useRef(null);
   const addressRef = useRef(null);
+  const modalRef = useRef(null);
+  const [hovered, setHovered] = useState(null);
 
   const [
     autocompleteInitializedForPostal,
@@ -25,6 +27,11 @@ const AboutYourselfForm = ({
     autocompleteInitializedForAddress,
     setAutocompleteInitializedForAddress,
   ] = useState(false);
+
+  const formatAddress = (address) => {
+    // Remove any special characters that are not allowed by the API
+    return address.replace(/[^\w\s/#-]/g, "").slice(0, 44); // Limit to 44 characters
+  };
 
   const handlePostalCodeFocus = async () => {
     if (!autocompleteInitializedForPostal && postalCodeRef.current) {
@@ -76,11 +83,13 @@ const AboutYourselfForm = ({
             handleChange("postalCode")({ target: { value: postalCode } });
           }
 
+          const cleanedAddress = formatAddress(formattedAddress);
+
           if (formattedAddress) {
             if (addressRef.current) {
-              addressRef.current.value = formattedAddress;
+              addressRef.current.value = cleanedAddress;
             }
-            handleChange("address")({ target: { value: formattedAddress } });
+            handleChange("address")({ target: { value: cleanedAddress } });
           }
         });
 
@@ -120,9 +129,11 @@ const AboutYourselfForm = ({
             }
           }
 
+          const cleanedAddress = formatAddress(formattedAddress);
+
           if (formattedAddress) {
-            addressRef.current.value = formattedAddress;
-            handleChange("address")({ target: { value: formattedAddress } });
+            addressRef.current.value = cleanedAddress;
+            handleChange("address")({ target: { value: cleanedAddress } });
           }
 
           if (postalCode) {
@@ -140,14 +151,45 @@ const AboutYourselfForm = ({
     }
   };
 
-  const genders = [
+  const [isOpen, setIsOpen] = useState(false);
+  const [gender, setGender] = useState(formData.gender || ""); // Add gender state
+  const dropdownRef = useRef(null);
+
+  const genderOptions = [
     { label: "Gender", value: "" },
     { label: "Male", value: "Male" },
     { label: "Female", value: "Female" },
     { label: "Other", value: "Other" },
   ];
-  const selectedGender =
-    genders.find((g) => g.value === formData.gender) || genders[0];
+
+  // Function to handle dropdown toggle
+  const toggleDropdown = () => {
+    setIsOpen((prev) => !prev);
+  };
+
+  // Function to handle selection of gender
+  const handleSelect = (value) => {
+    setGender(value);
+    handleChange("gender")({ target: { value } }); // Update the form data
+    setIsOpen(false); // Close the dropdown after selection
+  };
+
+  const selectedLabel =
+    genderOptions.find((opt) => opt.value === gender)?.label || "Gender";
+    
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (modalRef.current && !modalRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <div className="max-w-[600px] w-full space-y-4" style={{ height: "520px" }}>
@@ -349,51 +391,61 @@ const AboutYourselfForm = ({
         </div>
 
         <div className="flex-1">
-          <div className="relative w-full max-w-xs">
-            <Listbox
-              as="div"
-              value={selectedGender}
-              onChange={(val) => {
-                handleChange("gender")({ target: { value: val.value } });
-              }}
+          <div
+            className={`relative w-full max-w-xs ${isOpen ? "mb-40" : "mb-2"}`}
+            ref={dropdownRef}
+          >
+            <div
+              onClick={toggleDropdown}
+              className={`flex items-center justify-between w-full px-4 py-3 bg-[#000000]/60 border ${
+                validationErrors?.gender ? "border-red-500" : "border-white/40"
+              } text-white cursor-pointer`}
             >
-              {({ open }) => (
-                <>
-                  <Listbox.Button
-                    className={`w-full border px-4 py-3 placeholder-[#999999] font-[vazirmatn] text-[16px] bg-[#000000]/60 backdrop-blur-[10px] text-left flex justify-between items-center ${
-                      validationErrors.gender
-                        ? "border-[#c20000]"
-                        : "border-white/40"
-                    } ${formData.gender ? "text-white" : "text-[#999]"}`}
-                  >
-                    <span>{selectedGender.label}</span>
-                    <img
-                      src={ChevronDownFilled}
-                      alt="Dropdown Icon"
-                      className={`w-6 h-6 transition-transform duration-300 ${
-                        open ? "rotate-180" : "rotate-0"
-                      }`}
-                    />
-                  </Listbox.Button>
+              <span className={gender ? "text-white" : "text-[#999]"}>
+                {selectedLabel}
+              </span>
 
-                  <Listbox.Options className="absolute z-50 mt-1 max-h-40 w-full overflow-auto rounded border border-[#656c72] bg-black/80 backdrop-blur-xl text-white font-[vazirmatn]">
-                    {genders.map((gender) => (
-                      <Listbox.Option
-                        key={gender.value}
-                        value={gender}
-                        className={({ active }) =>
-                          `cursor-pointer select-none p-3 ${
-                            active ? "bg-[#2DDE28]/20" : "bg-transparent"
-                          }`
-                        }
-                      >
-                        {gender.label}
-                      </Listbox.Option>
-                    ))}
-                  </Listbox.Options>
-                </>
-              )}
-            </Listbox>
+              <svg
+                className={`h-4 w-4 ml-2 transition-transform duration-300 text-[#2DDE28] ${
+                  isOpen ? "rotate-180" : "rotate-0"
+                }`}
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </div>
+
+            {isOpen && (
+              <div
+                className="absolute z-10 w-full max-h-48 overflow-y-auto bg-[#000000]/60 bg-opacity-90 border border-white/40 rounded-md mt-1 text-white shadow-md"
+                ref={modalRef}
+              >
+                {genderOptions.map(({ label, value }) => (
+                  <div
+                    key={value}
+                    onClick={() => handleSelect(value)}
+                    onMouseEnter={() => setHovered(value)} // Track when an item is being hovered
+                    onMouseLeave={() => setHovered(null)} // Reset hover when the mouse leaves
+                    className={`px-4 py-2 cursor-pointer font-[300] hover:bg-[#2DDE28]/50 hover:text-black ${
+                      value === gender
+                        ? hovered !== null && hovered !== value
+                          ? "bg-none text-white font-[400]" // Selected item but another item is hovered
+                          : "bg-[#2DDE28] text-black font-[600]" // Selected item, no other hover or hovered itself
+                        : "bg-transparent"
+                    }`}
+                  >
+                    {label}
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
           {validationErrors.gender && (
