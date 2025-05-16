@@ -1,7 +1,6 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import StepIndicator from "./common/StepIndicator";
 import MembershipVancouver from "./common/MembershipVancouver";
-import dropdownIcon from "../../../assets/images/mobile/member-ship/up-down-arrow.svg";
 import { useNavigate } from "react-router-dom";
 import EventDatePicker from "../../../utils/EventDatePicker";
 import DOBPicker from "../../../utils/DOBPicker";
@@ -11,6 +10,13 @@ import { setUserInfo } from "../../../redux/slices/planSlice";
 import { parsePhoneNumberFromString } from "libphonenumber-js";
 import { loadGoogleMaps } from "../../../utils/loadGoogleMap";
 
+const genderOptions = [
+  { label: "Gender", value: "" },
+  { label: "Male", value: "Male" },
+  { label: "Female", value: "Female" },
+  { label: "Other", value: "Other" },
+];
+
 const MemberDetails = () => {
   const dispatch = useDispatch();
   const { userInfo } = useSelector((state) => state.plan);
@@ -18,7 +24,27 @@ const MemberDetails = () => {
   const [isOpen, setIsOpen] = useState(false);
   const GOOGLE_MAPS_API_KEY = "AIzaSyC6URLPah7QiL_BHSzJVJTNy_qX6bIK8uU";
   const postalCodeRef = useRef(null);
+  const addressRef = useRef(null);
+  const dropdownRef = useRef(null);
   const [autocompleteInitialized, setAutocompleteInitialized] = useState(false);
+  const [
+    autocompleteInitializedForAddress,
+    setAutocompleteInitializedForAddress,
+  ] = useState(false);
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const handlePostalCodeFocus = async () => {
     if (!autocompleteInitialized && postalCodeRef.current) {
@@ -33,10 +59,76 @@ const MemberDetails = () => {
           }
         );
 
-        autocomplete.setFields(["address_components"]);
+        autocomplete.setFields(["address_components", "formatted_address"]);
 
         autocomplete.addListener("place_changed", () => {
           const place = autocomplete.getPlace();
+          let postalCode = "";
+          let formattedAddress = "";
+
+          if (place.address_components) {
+            for (const component of place.address_components) {
+              if (component.types.includes("postal_code")) {
+                postalCode = component.long_name;
+                break;
+              }
+            }
+          }
+
+          if (place.formatted_address) {
+            formattedAddress = place.formatted_address;
+          } else {
+            const cityComp =
+              place.address_components?.find((c) =>
+                c.types.includes("locality")
+              )?.long_name || "";
+            const provinceComp =
+              place.address_components?.find((c) =>
+                c.types.includes("administrative_area_level_1")
+              )?.long_name || "";
+            formattedAddress = [cityComp, provinceComp]
+              .filter(Boolean)
+              .join(", ");
+          }
+
+          if (postalCode) {
+            postalCodeRef.current.value = postalCode;
+            setPostal(postalCode);
+            updateErrs("postal", postalCode);
+          }
+
+          if (formattedAddress) {
+            addressRef.current.value = formattedAddress;
+            setAddress(formattedAddress);
+            updateErrs("address", formattedAddress);
+          }
+        });
+
+        setAutocompleteInitialized(true);
+      } catch (err) {
+        console.error("Failed to load Google Maps script:", err);
+      }
+    }
+  };
+
+  const handleAddressFocus = async () => {
+    if (!autocompleteInitializedForAddress && addressRef.current) {
+      try {
+        const google = await loadGoogleMaps(GOOGLE_MAPS_API_KEY);
+
+        const autocomplete = new google.maps.places.Autocomplete(
+          addressRef.current,
+          {
+            types: ["address"],
+            componentRestrictions: { country: "ca" },
+          }
+        );
+
+        autocomplete.setFields(["formatted_address", "address_components"]);
+
+        autocomplete.addListener("place_changed", () => {
+          const place = autocomplete.getPlace();
+          const formattedAddress = place.formatted_address || "";
           let postalCode = "";
 
           if (place.address_components) {
@@ -46,16 +138,22 @@ const MemberDetails = () => {
                 break;
               }
             }
+          }
 
-            if (postalCode) {
-              postalCodeRef.current.value = postalCode;
-              setPostal(postalCode);
-              updateErrs("postal", postalCode);
-            }
+          if (formattedAddress) {
+            addressRef.current.value = formattedAddress;
+            setAddress(formattedAddress);
+            updateErrs("address", formattedAddress);
+          }
+
+          if (postalCode) {
+            postalCodeRef.current.value = postalCode;
+            setPostal(postalCode);
+            updateErrs("postal", postalCode);
           }
         });
 
-        setAutocompleteInitialized(true);
+        setAutocompleteInitializedForAddress(true);
       } catch (err) {
         console.error("Failed to load Google Maps script:", err);
       }
@@ -179,6 +277,15 @@ const MemberDetails = () => {
     navigate("/member-Payment");
   }
 
+  const handleSelect = (value) => {
+    setGender(value);
+    updateErrs("gender", value);
+    setIsOpen(false);
+  };
+
+  const selectedLabel =
+    genderOptions.find((opt) => opt.value === gender)?.label || "Gender";
+
   return (
     <div className="min-h-screen bg-black text-white px-4 pt-[80px] pb-10 flex flex-col gap-6 max-w-[600px] w-full mx-auto">
       <div>
@@ -202,7 +309,7 @@ const MemberDetails = () => {
       <MembershipVancouver />
 
       <div className="flex flex-col gap-3">
-        <p className="text-white font-[kanit] text-[16px] font-[600]   tracking-[0.705px] uppercase">
+        <p className="text-white font-[kanit] text-[16px] font-[600] tracking-[0.705px] uppercase">
           Your Basic Info
         </p>
 
@@ -288,8 +395,10 @@ const MemberDetails = () => {
 
         <div>
           <input
+            ref={addressRef}
             type="text"
             placeholder="Mailing Address"
+            onFocus={handleAddressFocus}
             value={address}
             onChange={(e) => {
               setAddress(e.target.value);
@@ -372,54 +481,56 @@ const MemberDetails = () => {
             />
           </div>
 
-          <div className="relative w-full">
-            <select
-              value={gender || ""}
-              onChange={(e) => {
-                setGender(e.target.value);
-                updateErrs("gender", e.target.value);
-              }}
+          <div
+            className={`relative w-full max-w-xs ${isOpen ? "mb-40" : "mb-2"}`}
+            ref={dropdownRef}
+          >
+            <div
               onClick={toggleDropdown}
-              className={`w-full appearance-none px-4 py-2.5 bg-transparent border ${
-                errors?.gender ? "!border-red-500" : "border-white/40"
-              } placeholder-[#999999] text-[16px] ${
-                gender ? "text-white" : "text-[#999]"
-              } font-[400] outline-none`}
+              className={`flex items-center justify-between w-full px-4 py-2.5 bg-transparent border
+                ${errors?.gender ? "border-red-500" : "border-white/40"}
+               text-white cursor-pointer`}
             >
-              <option className="bg-[#1C1C1C] cursor-pointer" value="">
-                Gender
-              </option>
-              <option
-                className="bg-[#1C1C1C] cursor-pointer text-white"
-                value="Male"
-              >
-                Male
-              </option>
-              <option
-                className="bg-[#1C1C1C] cursor-pointer text-white"
-                value="Female"
-              >
-                Female
-              </option>
-              <option
-                className="bg-[#1C1C1C] cursor-pointer text-white"
-                value="Other"
-              >
-                Other
-              </option>
-            </select>
+              <span className={gender ? "text-white" : "text-[#999]"}>
+                {selectedLabel}
+              </span>
 
-            {errors?.gender && (
-              <p className="text-red-500 text-[12px] mt-1">{errors.gender}</p>
+              <svg
+                className={`h-4 w-4 ml-2 transition-transform duration-300 text-[#2DDE28] ${
+                  isOpen ? "rotate-180" : "rotate-0"
+                }`}
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </div>
+
+            {isOpen && (
+              <div className="absolute z-10 w-full max-h-48 overflow-y-auto bg-black bg-opacity-90 border border-white/40 rounded-md mt-1 text-white shadow-md">
+                {genderOptions.map(({ label, value }) => (
+                  <div
+                    key={value}
+                    onClick={() => handleSelect(value)}
+                    className={`px-4 py-2 cursor-pointer hover:bg-[#2DDE28] font-[300] hover:text-black 
+                ${
+                  value === gender ? "bg-[#2DDE28] text-black font-[600]" : ""
+                }`}
+                  >
+                    {label}
+                  </div>
+                ))}
+              </div>
             )}
-
-            <img
-              src={dropdownIcon}
-              alt="Dropdown Icon"
-              className={`absolute right-4 top-[23px] -translate-y-1/2 w-[14px] h-[14px] transition-transform duration-300 pointer-events-none ${
-                isOpen ? "rotate-180" : "rotate-0"
-              }`}
-            />
+            {errors?.gender && (
+              <p className="text-red-500 text-sm mt-1">{errors.gender}</p>
+            )}
           </div>
         </div>
       </div>

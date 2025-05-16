@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import guarantee_icons from "../../../../../assets/images/desktop/guarantee_icons.svg";
-import { useSelector } from "react-redux";
 
 function CardForm({
   firstCardName,
@@ -19,27 +18,11 @@ function CardForm({
   setErrors,
   termsAgreed,
   setTermsAgreed,
+  renewAgreeded,
+  setRenewAgreeded,
 }) {
   const [termPage, setTermPage] = useState(false);
   const [privacy, setPrivacy] = useState(false);
-  const {
-    plan,
-    clubPlanMonthly,
-    clubPlanYearly,
-    addOnDetails,
-    clubLocationPostal,
-  } = useSelector((state) => state.plan);
-
-  const downPayment = (plan === "monthly" ? clubPlanMonthly : clubPlanYearly)
-    ?.downPayments?.[0]?.total;
-  const scheduleAmount = (plan === "monthly" ? clubPlanMonthly : clubPlanYearly)
-    ?.schedules?.[1]?.scheduleAmount;
-  const downPaymentValue =
-    parseFloat(downPayment?.replace(/[^0-9.-]+/g, "")) || 0;
-  const scheduleAmountValue =
-    parseFloat(scheduleAmount?.replace(/[^0-9.-]+/g, "")) || 0;
-  const totalAmount = downPaymentValue + scheduleAmountValue;
-  const formattedTotalAmount = `$${totalAmount.toFixed(2)}`;
 
   return (
     <div
@@ -55,7 +38,7 @@ function CardForm({
               ?.scheduleTotalAmount || "$--.--"}
       </h1> */}
       <p className="mb-6 mt-6 text-left text-[#FFFFFF] font-[400] text-[16px] font-[vazirmatn]">
-        Please enter your payment details for your biweekly payment to help us
+        Please enter your payment details for your bi-weekly payment to help us
         start your membership. This payment method will also be used for future
         fees.
       </p>
@@ -221,8 +204,8 @@ function CardForm({
             htmlFor="accountHolder"
             className="text-[16px] font-[400] font-[vazirmatn] ml-2"
           >
-            I am the bank account holder and do not require another person to
-            authorize the debits on this account
+            I authorize Evolve Strength to charge my credit or debit card for
+            membership fees.
           </label>
         </div>
 
@@ -230,8 +213,8 @@ function CardForm({
           <input
             type="checkbox"
             id="accountHolder"
-            checked={termsAgreed}
-            onChange={() => setTermsAgreed(!termsAgreed)}
+            checked={renewAgreeded}
+            onChange={() => setRenewAgreeded(!renewAgreeded)}
             className="mr-2"
             style={{ marginTop: "3.5px" }}
           />

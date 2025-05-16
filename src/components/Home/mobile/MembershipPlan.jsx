@@ -57,7 +57,7 @@ const MembershipPlan = () => {
       </div>
 
       <div className="flex flex-col">
-        <p className="mb-2 text-white text-[16px] font-[kanit] font-normal leading-[16px] uppercase">
+        <p className="mb-2 text-white text-[16px] font-[kanit] font-[600] leading-[16px] uppercase">
           Choose your pricing plan
         </p>
 
