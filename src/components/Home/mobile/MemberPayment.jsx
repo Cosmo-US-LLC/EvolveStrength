@@ -23,6 +23,7 @@ const MemberPayment = () => {
     clubPlanYearly,
     addOnDetails,
   } = useSelector((state) => state.plan);
+  console.log("userInfo", userInfo);
 
   const [errors, setErrors] = useState({});
   const [fname, setFname] = useState(userInfo?.fname || "");
@@ -35,6 +36,7 @@ const MemberPayment = () => {
   const [cvv, setCvv] = useState("");
   const [expirationDate, setExpirationDate] = useState("");
   const [apiError, setApiError] = useState(null);
+  console.log("apiError", apiError);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {

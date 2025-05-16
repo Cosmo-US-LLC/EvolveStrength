@@ -32,10 +32,8 @@ const DOBPicker = (props) => {
   const month = currentDate.getMonth();
 
   const getDaysInMonth = (y, m) => new Date(y, m + 1, 0).getDate();
-  const getStartDay = (y, m) => new Date(y, m, 1).getDay();
 
   const daysInMonth = getDaysInMonth(year, month);
-  const startDay = getStartDay(year, month);
 
   const handlePrevMonth = () => {
     setCurrentDate(new Date(year, month - 1, 1));
@@ -58,9 +56,15 @@ const DOBPicker = (props) => {
   };
 
   const handleSelectDate = (day) => {
-    const date = new Date(year, month, day);
-    setDob(date);
-    updateErrs("dob", date);
+    const selected = new Date(year, month, day);
+
+    if (selected > today) {
+      // Future date - do not allow selection
+      return;
+    }
+
+    setDob(selected);
+    updateErrs("dob", selected);
     setShowCalendar(false);
   };
 
@@ -145,7 +149,7 @@ const DOBPicker = (props) => {
 
           <div
             ref={calendarRef}
-            className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-[90%] max-w-md bg-[#1A1A1A] border border-[#FFFFFF] p-4 text-white shadow-lg"
+            className="absolute top-[30%] left-[5%] -translate-x-[0%] -translate-y-[110%] transform z-50 w-[327px] max-w-md bg-[#1A1A1A] border border-[#FFFFFF] p-4 text-white shadow-lg"
           >
             <div className="flex items-center justify-between mb-3">
               <button
@@ -241,18 +245,24 @@ const DOBPicker = (props) => {
             </div>
 
             <div className="grid grid-cols-7 gap-1 text-sm">
-              {Array.from({ length: startDay }).map((_, i) => (
-                <div key={`blank-${i}`} />
-              ))}
               {Array.from({ length: daysInMonth }).map((_, i) => {
                 const day = i + 1;
+
+                const isSelected =
+                  dob &&
+                  dob.getDate() === day &&
+                  dob.getMonth() === month &&
+                  dob.getFullYear() === year;
+
+                const showTodayHighlight = !dob && isToday(day);
+
                 return (
                   <div
                     key={day}
                     onClick={() => handleSelectDate(day)}
                     className={`w-9 h-9 flex items-center justify-center rounded-lg cursor-pointer 
                     ${
-                      isToday(day)
+                      isSelected || showTodayHighlight
                         ? "bg-[#2DDE28] text-black"
                         : "hover:bg-[#2DDE28] hover:text-black"
                     }`}

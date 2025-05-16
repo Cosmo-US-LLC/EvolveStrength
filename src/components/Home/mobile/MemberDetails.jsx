@@ -46,6 +46,11 @@ const MemberDetails = () => {
     };
   }, []);
 
+  const formatAddress = (address) => {
+    // Remove any special characters that are not allowed by the API
+    return address.replace(/[^\w\s/#-]/g, "").slice(0, 44); // Limit to 44 characters
+  };
+
   const handlePostalCodeFocus = async () => {
     if (!autocompleteInitialized && postalCodeRef.current) {
       try {
@@ -90,6 +95,7 @@ const MemberDetails = () => {
               .filter(Boolean)
               .join(", ");
           }
+          const cleanedAddress = formatAddress(formattedAddress);
 
           if (postalCode) {
             postalCodeRef.current.value = postalCode;
@@ -98,9 +104,9 @@ const MemberDetails = () => {
           }
 
           if (formattedAddress) {
-            addressRef.current.value = formattedAddress;
-            setAddress(formattedAddress);
-            updateErrs("address", formattedAddress);
+            addressRef.current.value = cleanedAddress;
+            setAddress(cleanedAddress);
+            updateErrs("address", cleanedAddress);
           }
         });
 
@@ -140,10 +146,12 @@ const MemberDetails = () => {
             }
           }
 
+          const cleanedAddress = formatAddress(formattedAddress);
+
           if (formattedAddress) {
-            addressRef.current.value = formattedAddress;
-            setAddress(formattedAddress);
-            updateErrs("address", formattedAddress);
+            addressRef.current.value = cleanedAddress;
+            setAddress(cleanedAddress);
+            updateErrs("address", cleanedAddress);
           }
 
           if (postalCode) {
@@ -472,7 +480,7 @@ const MemberDetails = () => {
         </div>
 
         <div className="flex flex-row gap-4">
-          <div className="w-full">
+          <div className="w-full relative">
             <DOBPicker
               dob={dob}
               setDob={setDob}
@@ -518,9 +526,9 @@ const MemberDetails = () => {
                   <div
                     key={value}
                     onClick={() => handleSelect(value)}
-                    className={`px-4 py-2 cursor-pointer hover:bg-[#2DDE28] font-[300] hover:text-black 
+                    className={`px-4 py-2 cursor-pointer hover:bg-[#2DDE28]/50 font-[300] hover:text-black 
                 ${
-                  value === gender ? "bg-[#2DDE28] text-black font-[600]" : ""
+                  value === gender ? "bg-[#2DDE28]/50 text-black font-[600]" : ""
                 }`}
                   >
                     {label}
