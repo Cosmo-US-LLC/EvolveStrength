@@ -27,13 +27,22 @@ const MembershipSummaryBoxDesktop = () => {
   const totalAmount = downPaymentValue + scheduleAmountValue;
   const formattedTotalAmount = `$${totalAmount.toFixed(2)}`;
 
-  
-  const today = new Date();
-const futureDate = new Date(today);
-futureDate.setDate(today.getDate() + 15);
+  const dateString =
+    plan === "monthly"
+      ? clubPlanMonthly?.schedules?.[0]?.scheduleDueDate
+      : clubPlanYearly?.schedules?.[0]?.scheduleDueDate;
 
-const options = { year: "numeric", month: "long", day: "numeric" };
-const formattedDate = futureDate.toLocaleDateString("en-US", options);
+  const dateObj = dateString ? new Date(dateString) : null;
+
+  let formattedDate = "";
+
+  if (dateObj && !isNaN(dateObj.getTime())) {
+    const option = { year: "numeric", month: "short", day: "numeric" };
+    formattedDate = new Intl.DateTimeFormat("en-US", option).format(dateObj);
+  } else {
+    // fallback if invalid date
+    formattedDate = "Date not available";
+  }
 
   return (
     <div className="w-[471px] bg-[#000000]/60 backdrop-blur-[10px] p-6 flex flex-col gap-8">

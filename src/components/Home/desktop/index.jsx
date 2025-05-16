@@ -70,9 +70,9 @@ function LocationDesktop() {
 
           <button
             onClick={handleTakeTour}
-            className="w-[141px] bg-[#2DDE28] text-black text-[16px] font-medium h-[50px] button"
+            className="w-[141px] bg-[#2DDE28] text-black text-[16px] font-medium h-[50px] button uppercase"
           >
-            Next
+            Continue
           </button>
         </div>
       </nav>

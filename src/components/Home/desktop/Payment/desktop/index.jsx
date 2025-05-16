@@ -42,6 +42,7 @@ function ReviewAndPay() {
   const [termsAgreed, setTermsAgreed] = useState(false);
   const [termsAgreeded, setTermsAgreeded] = useState(false);
   const [renewAgreed, setRenewAgreed] = useState(false);
+  const [renewAgreeded, setRenewAgreeded] = useState(false);
   const [errors, setErrors] = useState({});
   const [apiError, setApiError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -360,12 +361,12 @@ function ReviewAndPay() {
             onClick={handleJoinNow}
             disabled={
               selectPlan !== "direct_debit"
-                ? !(isHuman && termsAgreeded && confirmed)
+                ? !(isHuman && termsAgreeded && renewAgreeded && confirmed)
                 : !(isHuman && termsAgreed && renewAgreed && confirm)
             }
             className={`w-[141px] ${
               selectPlan !== "direct_debit"
-                ? isHuman && termsAgreeded && confirmed
+                ? isHuman && termsAgreeded && renewAgreeded && confirmed
                   ? "bg-[#2DDE28]"
                   : "bg-gray-400 cursor-not-allowed"
                 : isHuman && termsAgreed && renewAgreed && confirm
@@ -435,6 +436,8 @@ function ReviewAndPay() {
                 setErrors={setErrors}
                 termsAgreed={termsAgreeded}
                 setTermsAgreed={setTermsAgreeded}
+                renewAgreeded={renewAgreeded}
+                setRenewAgreeded={setRenewAgreeded}
               />
             )}
           </div>
@@ -452,7 +455,7 @@ function ReviewAndPay() {
                 onClick={handleJoinNow}
                 className={`button mt-6 ${
                   selectPlan !== "direct_debit"
-                    ? isHuman && termsAgreeded && confirmed
+                    ? isHuman && termsAgreeded && renewAgreeded && confirmed
                       ? "bg-[#2DDE28]"
                       : "bg-gray-400 cursor-not-allowed"
                     : isHuman && termsAgreed && renewAgreed && confirm
@@ -461,7 +464,7 @@ function ReviewAndPay() {
                 } text-black text-[16px] font-medium w-[139px] h-[42px]`}
                 disabled={
                   selectPlan !== "direct_debit"
-                    ? !(isHuman && termsAgreeded && confirmed)
+                    ? !(isHuman && termsAgreeded && renewAgreeded && confirmed)
                     : !(isHuman && termsAgreed && renewAgreed && confirm)
                 }
               >

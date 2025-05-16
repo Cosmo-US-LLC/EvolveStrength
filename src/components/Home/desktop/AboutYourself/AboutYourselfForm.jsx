@@ -1,8 +1,11 @@
 import React from "react";
 import { useState, useRef } from "react";
+import { Listbox } from "@headlessui/react";
 import DOBPickerDesktop from "../../../../utils/DOBPickerDesktop";
 import { loadGoogleMaps } from "../../../../utils/loadGoogleMap";
+import ChevronDownFilled from "../../../../assets/images/desktop/chevron-down-filled.svg";
 // import { PhoneInput } from "react-international-phone";
+// import "react-international-phone/style.css";
 
 const AboutYourselfForm = ({
   formData,
@@ -10,13 +13,21 @@ const AboutYourselfForm = ({
   validationErrors,
   handleChangeDob,
 }) => {
-  console.log("formData.postalCode", formData.postalCode);
   const GOOGLE_MAPS_API_KEY = "AIzaSyC6URLPah7QiL_BHSzJVJTNy_qX6bIK8uU";
   const postalCodeRef = useRef(null);
-  const [autocompleteInitialized, setAutocompleteInitialized] = useState(false);
+  const addressRef = useRef(null);
+
+  const [
+    autocompleteInitializedForPostal,
+    setAutocompleteInitializedForPostal,
+  ] = useState(false);
+  const [
+    autocompleteInitializedForAddress,
+    setAutocompleteInitializedForAddress,
+  ] = useState(false);
 
   const handlePostalCodeFocus = async () => {
-    if (!autocompleteInitialized && postalCodeRef.current) {
+    if (!autocompleteInitializedForPostal && postalCodeRef.current) {
       try {
         const google = await loadGoogleMaps(GOOGLE_MAPS_API_KEY);
 
@@ -28,10 +39,76 @@ const AboutYourselfForm = ({
           }
         );
 
-        autocomplete.setFields(["address_components"]);
+        autocomplete.setFields(["address_components", "formatted_address"]);
 
         autocomplete.addListener("place_changed", () => {
           const place = autocomplete.getPlace();
+          let postalCode = "";
+          let formattedAddress = "";
+
+          if (place.address_components) {
+            for (const component of place.address_components) {
+              if (component.types.includes("postal_code")) {
+                postalCode = component.long_name;
+                break;
+              }
+            }
+          }
+
+          if (place.formatted_address) {
+            formattedAddress = place.formatted_address;
+          } else {
+            const cityComp =
+              place.address_components?.find((c) =>
+                c.types.includes("locality")
+              )?.long_name || "";
+            const provinceComp =
+              place.address_components?.find((c) =>
+                c.types.includes("administrative_area_level_1")
+              )?.long_name || "";
+            formattedAddress = [cityComp, provinceComp]
+              .filter(Boolean)
+              .join(", ");
+          }
+
+          if (postalCode) {
+            postalCodeRef.current.value = postalCode;
+            handleChange("postalCode")({ target: { value: postalCode } });
+          }
+
+          if (formattedAddress) {
+            if (addressRef.current) {
+              addressRef.current.value = formattedAddress;
+            }
+            handleChange("address")({ target: { value: formattedAddress } });
+          }
+        });
+
+        setAutocompleteInitializedForPostal(true);
+      } catch (err) {
+        console.error("Failed to load Google Maps script:", err);
+      }
+    }
+  };
+
+  const handleAddressFocus = async () => {
+    if (!autocompleteInitializedForAddress && addressRef.current) {
+      try {
+        const google = await loadGoogleMaps(GOOGLE_MAPS_API_KEY);
+
+        const autocomplete = new google.maps.places.Autocomplete(
+          addressRef.current,
+          {
+            types: ["address"],
+            componentRestrictions: { country: "ca" },
+          }
+        );
+
+        autocomplete.setFields(["formatted_address", "address_components"]);
+
+        autocomplete.addListener("place_changed", () => {
+          const place = autocomplete.getPlace();
+          const formattedAddress = place.formatted_address || "";
           let postalCode = "";
 
           if (place.address_components) {
@@ -41,25 +118,41 @@ const AboutYourselfForm = ({
                 break;
               }
             }
+          }
 
-            if (postalCode) {
+          if (formattedAddress) {
+            addressRef.current.value = formattedAddress;
+            handleChange("address")({ target: { value: formattedAddress } });
+          }
+
+          if (postalCode) {
+            if (postalCodeRef.current) {
               postalCodeRef.current.value = postalCode;
-              handleChange("postalCode")({ target: { value: postalCode } });
             }
+            handleChange("postalCode")({ target: { value: postalCode } });
           }
         });
 
-        setAutocompleteInitialized(true);
+        setAutocompleteInitializedForAddress(true);
       } catch (err) {
         console.error("Failed to load Google Maps script:", err);
       }
     }
   };
 
+  const genders = [
+    { label: "Gender", value: "" },
+    { label: "Male", value: "Male" },
+    { label: "Female", value: "Female" },
+    { label: "Other", value: "Other" },
+  ];
+  const selectedGender =
+    genders.find((g) => g.value === formData.gender) || genders[0];
+
   return (
     <div className="max-w-[600px] w-full space-y-4" style={{ height: "520px" }}>
       <p className="text-white font-[kanit] font-[600] text-[16px] leading-[16px] tracking-[0.76px] uppercase">
-       Your Basic Info
+        Your Basic Info
       </p>
 
       <div className="flex gap-4">
@@ -147,10 +240,16 @@ const AboutYourselfForm = ({
           // className={`w-full border px-4 py-3 placeholder-[#999999] text-white font-[vazirmatn] text-[16px] bg-[#000000]/60 backdrop-blur-[10px] ${
           //   validationErrors.number ? "border-[#c20000]" : "border-white/40"
           // }`}
-          className={`w-full border px-4 py-3 placeholder-[#999999] text-white font-[vazirmatn] text-[16px] backdrop-blur-[10px] !focus:outline-none !focus:ring-0 !focus-visible:border-none flex`}
+          className={`w-full border px-4 py-3 placeholder-[#999999] text-white font-[vazirmatn] text-[16px] bg-[#000000]/60 backdrop-blur-[10px] ${
+            validationErrors.number ? "border-[#c20000]" : "border-white/40"
+          }`}
           international={false} // Disables international country selection dropdown
-          defaultCountry="US" // Set a default country code if required (e.g., US)
-          country="US"
+          defaultCountry="CA" // Set a default country code if required (e.g., US)
+          country="CA"
+          inputProps={{
+            className:
+              "react-international-phone-input flex-1 !bg-transparent !border-none !text-[16px] !font-[vazirmatn] !text-white placeholder-[#999999] focus:outline-none", 
+          }}
         />
         {validationErrors.number && (
           <p className="text-[#c20000] text-sm mt-1">
@@ -161,9 +260,11 @@ const AboutYourselfForm = ({
 
       <div>
         <input
+          ref={addressRef}
           type="text"
           placeholder="Mailing Address"
           value={formData.address}
+          onFocus={handleAddressFocus}
           onChange={handleChange("address")}
           className={`w-full border px-4 py-3 placeholder-[#999999] text-white font-[vazirmatn] text-[16px] bg-[#000000]/60 backdrop-blur-[10px] ${
             validationErrors.address ? "border-[#c20000]" : "border-white/40"
@@ -234,7 +335,7 @@ const AboutYourselfForm = ({
       </div>
 
       <div className="flex gap-4">
-        <div className="flex-1">
+        <div className="flex-1 relative">
           <DOBPickerDesktop
             dob={formData.selectedDate}
             setDob={(date) => handleChangeDob("selectedDate")(date)}
@@ -248,26 +349,53 @@ const AboutYourselfForm = ({
         </div>
 
         <div className="flex-1">
-          <select
-            className={`w-full border px-4 py-3 placeholder-[#999999] font-[vazirmatn] text-[16px] appearance-none bg-[#000000]/60 backdrop-blur-[10px] ${
-              validationErrors.gender ? "border-[#c20000]" : "border-white/40"
-            } ${formData.gender ? "text-white" : "text-[#999]"}`}
-            value={formData.gender}
-            onChange={handleChange("gender")}
-          >
-            <option className="text-black" value="">
-              Gender
-            </option>
-            <option className="text-black" value="Male">
-              Male
-            </option>
-            <option className="text-black" value="Female">
-              Female
-            </option>
-            <option className="text-black" value="Other">
-              Other
-            </option>
-          </select>
+          <div className="relative w-full max-w-xs">
+            <Listbox
+              as="div"
+              value={selectedGender}
+              onChange={(val) => {
+                handleChange("gender")({ target: { value: val.value } });
+              }}
+            >
+              {({ open }) => (
+                <>
+                  <Listbox.Button
+                    className={`w-full border px-4 py-3 placeholder-[#999999] font-[vazirmatn] text-[16px] bg-[#000000]/60 backdrop-blur-[10px] text-left flex justify-between items-center ${
+                      validationErrors.gender
+                        ? "border-[#c20000]"
+                        : "border-white/40"
+                    } ${formData.gender ? "text-white" : "text-[#999]"}`}
+                  >
+                    <span>{selectedGender.label}</span>
+                    <img
+                      src={ChevronDownFilled}
+                      alt="Dropdown Icon"
+                      className={`w-6 h-6 transition-transform duration-300 ${
+                        open ? "rotate-180" : "rotate-0"
+                      }`}
+                    />
+                  </Listbox.Button>
+
+                  <Listbox.Options className="absolute z-50 mt-1 max-h-40 w-full overflow-auto rounded border border-[#656c72] bg-black/80 backdrop-blur-xl text-white font-[vazirmatn]">
+                    {genders.map((gender) => (
+                      <Listbox.Option
+                        key={gender.value}
+                        value={gender}
+                        className={({ active }) =>
+                          `cursor-pointer select-none p-3 ${
+                            active ? "bg-[#2DDE28]/20" : "bg-transparent"
+                          }`
+                        }
+                      >
+                        {gender.label}
+                      </Listbox.Option>
+                    ))}
+                  </Listbox.Options>
+                </>
+              )}
+            </Listbox>
+          </div>
+
           {validationErrors.gender && (
             <p className="text-[#c20000] text-sm mt-1">
               {validationErrors.gender}

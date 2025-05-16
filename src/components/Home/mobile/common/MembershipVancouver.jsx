@@ -3,7 +3,6 @@ import ChevronArrow from "../../../../assets/images/mobile/member-ship/up-down-a
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import { useSelector } from "react-redux";
-import { formatDate } from "../../../../libs/utils";
 
 const MembershipVancouver = (props) => {
   const navigate = useNavigate();
@@ -29,16 +28,22 @@ const MembershipVancouver = (props) => {
   const totalAmount = downPaymentValue + scheduleAmountValue;
   const formattedTotalAmount = `$${totalAmount.toFixed(2)}`;
 
+  const dateString =
+    plan === "monthly"
+      ? clubPlanMonthly?.schedules?.[0]?.scheduleDueDate
+      : clubPlanYearly?.schedules?.[0]?.scheduleDueDate;
 
-  const today = new Date();
-const futureDate = new Date(today);
-futureDate.setDate(today.getDate() + 15);
+  const dateObj = dateString ? new Date(dateString) : null;
 
-const options = { year: "numeric", month: "long", day: "numeric" };
-const formattedDate = futureDate.toLocaleDateString("en-US", options);
+  let formattedDates = "";
 
- 
-
+  if (dateObj && !isNaN(dateObj.getTime())) {
+    const option = { year: "numeric", month: "short", day: "numeric" };
+    formattedDates = new Intl.DateTimeFormat("en-US", option).format(dateObj);
+  } else {
+    // fallback if invalid date
+    formattedDates = "Date not available";
+  }
 
   return (
     <div
@@ -169,7 +174,7 @@ const formattedDate = futureDate.toLocaleDateString("en-US", options);
           </div>
           <div className="flex justify-between">
             <span className="text-white font-[vazirmatn] text-[16px] font-normal leading-[20.382px] capitalize">
-             {`Due on ${formattedDate}`}
+              {`Due on ${formattedDates}`}
             </span>
             <span className="text-white font-[vazirmatn] text-[16px] font-normal leading-[20.382px] capitalize">
               {addOnDetails &&

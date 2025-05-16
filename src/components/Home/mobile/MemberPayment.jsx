@@ -371,7 +371,7 @@ const MemberPayment = () => {
       <MembershipVancouver />
 
       <div className="flex flex-col">
-        <p className="text-white font-[kanit] pb-1 text-[16px] font-normal uppercase leading-[16px]">
+        <p className="text-white font-[kanit] pb-1 text-[16px] font-[600] uppercase leading-[16px]">
           Choose your payment option
         </p>
 

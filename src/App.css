@@ -52,6 +52,24 @@
   background-position-y: 20px;
 }
 
+.custom-calendar {
+  top: 50%;
+  left: 26%;
+}
+
+@media (min-width: 1536px) {
+  .custom-calendar {
+    left: 28% !important;
+  }
+}
+
+@media (min-width: 1920px) {
+  .custom-calendar {
+    left: 26% !important;
+    top: 55%;
+  }
+}
+
 
 
 
