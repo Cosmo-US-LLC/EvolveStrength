@@ -23,25 +23,11 @@ const CardPaymentForm = ({
   paymentMethod,
 }) => {
   const [termsPage, setTermsPage] = useState(false);
+    const [agree, setAgree] = useState(false);
+    const [holder, setHolder] = useState(false);
   const {
-    plan,
-    clubPlanMonthly,
-    clubPlanYearly,
     isLoading,
-    addOnDetails,
-    clubLocationPostal,
   } = useSelector((state) => state.plan);
-
-  const downPayment = (plan === "monthly" ? clubPlanMonthly : clubPlanYearly)
-    ?.downPayments?.[0]?.total;
-  const scheduleAmount = (plan === "monthly" ? clubPlanMonthly : clubPlanYearly)
-    ?.schedules?.[1]?.scheduleAmount;
-  const downPaymentValue =
-    parseFloat(downPayment?.replace(/[^0-9.-]+/g, "")) || 0;
-  const scheduleAmountValue =
-    parseFloat(scheduleAmount?.replace(/[^0-9.-]+/g, "")) || 0;
-  const totalAmount = downPaymentValue + scheduleAmountValue;
-  const formattedTotalAmount = `$${totalAmount.toFixed(2)}`;
 
   const [confirm, setConfirm] = useState(false);
   const [privacyPage, setPrivacyPage] = useState(false);
@@ -186,8 +172,8 @@ const CardPaymentForm = ({
         <input
           type="checkbox"
           className="mt-1 accent-[#2DDE28]"
-          // checked={agree}
-          onChange={(e) => setAgree(e.target.checked)}
+          checked={holder}
+          onChange={(e) => setHolder(e.target.checked)}
         />
         <span>
           I authorize Evolve Strength to charge my credit or debit card for
@@ -199,7 +185,7 @@ const CardPaymentForm = ({
         <input
           type="checkbox"
           className="mt-1 accent-[#2DDE28]"
-          // checked={agree}
+          checked={agree}
           onChange={(e) => setAgree(e.target.checked)}
         />
         <span>
@@ -212,7 +198,7 @@ const CardPaymentForm = ({
       <label className="flex items-start gap-2 text-[14px] font-[vazirmatn] text-[#D8D8D8] font-[400] mt-4">
         <input
           type="checkbox"
-          className="mt-1"
+          className="mt-1 accent-[#2DDE28]"
           checked={confirm}
           // disabled={!(termsPage && privacyPage)}
           onChange={(e) => setConfirm(e.target.checked)}
@@ -253,7 +239,7 @@ const CardPaymentForm = ({
           className="cursor-pointer flex justify-center items-center w-full h-[42px] mt-4 px-0 pt-[12.801px] pb-[13.199px] 
           bg-[#2DDE28] border border-[#2DDE28] font-[kanit] text-black text-[16px] font-medium 
           leading-[16px] uppercase font-kanit transition-all hover:opacity-90 active:scale- disabled:opacity-60"
-          disabled={isLoading || !confirm}
+          disabled={isLoading || !holder || !agree || !confirm}
         >
           Pay Now
         </button>

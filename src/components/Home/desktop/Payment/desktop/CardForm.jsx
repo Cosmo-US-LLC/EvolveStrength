@@ -197,7 +197,7 @@ function CardForm({
             id="accountHolder"
             checked={termsAgreed}
             onChange={() => setTermsAgreed(!termsAgreed)}
-            className="mr-2"
+            className="mr-2 accent-[#2DDE28]"
             style={{ marginTop: "3.5px" }}
           />
           <label
@@ -215,7 +215,7 @@ function CardForm({
             id="accountHolder"
             checked={renewAgreeded}
             onChange={() => setRenewAgreeded(!renewAgreeded)}
-            className="mr-2"
+            className="mr-2 accent-[#2DDE28]"
             style={{ marginTop: "3.5px" }}
           />
           <label
@@ -235,7 +235,7 @@ function CardForm({
             checked={confirm}
             // disabled={!(termPage && privacy)}
             onChange={() => setConfirm(!confirm)}
-            className="mr-2"
+            className="mr-2 accent-[#2DDE28]"
             style={{ marginTop: "3.5px" }}
           />
           <label

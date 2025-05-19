@@ -267,7 +267,7 @@ const MemberPayment = () => {
       const response = await fetch(
         `${
           import.meta.env.VITE_APP_API_URL
-        }/submitAgreement?location=${clubLocationPostal}`,
+        }submitAgreement?location=${clubLocationPostal}`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -318,7 +318,7 @@ const MemberPayment = () => {
     }
 
     const response = await fetch(
-      `${import.meta.env.VITE_APP_API_URL}/createPerson`,
+      `${import.meta.env.VITE_APP_API_URL}createPerson`,
       {
         method: "POST",
         headers: {
