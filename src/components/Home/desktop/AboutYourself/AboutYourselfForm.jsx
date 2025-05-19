@@ -152,6 +152,7 @@ const AboutYourselfForm = ({
   };
 
   const [isOpen, setIsOpen] = useState(false);
+  console.log("isOpen", isOpen);
   const [gender, setGender] = useState(formData.gender || ""); // Add gender state
   const dropdownRef = useRef(null);
 
@@ -163,8 +164,14 @@ const AboutYourselfForm = ({
   ];
 
   // Function to handle dropdown toggle
-  const toggleDropdown = () => {
-    setIsOpen((prev) => !prev);
+  const toggleDropdown = (e) => {
+    e.stopPropagation(); // Prevent outside click from interfering
+
+    // Properly toggle the state based on current value
+    setIsOpen((prev) => {
+      console.log("Toggling dropdown, current state:", prev);
+      return !prev;
+    });
   };
 
   // Function to handle selection of gender
@@ -176,18 +183,19 @@ const AboutYourselfForm = ({
 
   const selectedLabel =
     genderOptions.find((opt) => opt.value === gender)?.label || "Gender";
-    
+
   useEffect(() => {
-    function handleClickOutside(event) {
-      if (modalRef.current && !modalRef.current.contains(event.target)) {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setIsOpen(false);
       }
-    }
+    };
 
-    document.addEventListener("mousedown", handleClickOutside);
+    // Attach the listener only once
+    document.addEventListener("click", handleClickOutside);
 
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("click", handleClickOutside);
     };
   }, []);
 
