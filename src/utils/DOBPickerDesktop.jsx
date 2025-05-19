@@ -258,13 +258,15 @@ const DOBPickerDesktop = (props) => {
               {Array.from({ length: daysInMonth }).map((_, i) => {
                 const day = i + 1;
 
+                // Check if dob is a valid Date object
+                const isDateObject = dob instanceof Date && !isNaN(dob);
                 const isSelected =
-                  dob &&
+                  isDateObject &&
                   dob.getDate() === day &&
                   dob.getMonth() === month &&
                   dob.getFullYear() === year;
 
-                const showTodayHighlight = !dob && isToday(day);
+                const showTodayHighlight = !isDateObject && isToday(day);
 
                 return (
                   <div
