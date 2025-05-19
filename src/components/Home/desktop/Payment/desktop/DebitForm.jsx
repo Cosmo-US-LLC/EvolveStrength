@@ -283,7 +283,7 @@ function DebitForm({
             id="accountHolder"
             checked={termsAgreed}
             onChange={() => setTermsAgreed(!termsAgreed)}
-            className="mr-2"
+            className="mr-2 accent-[#2DDE28]"
             style={{ marginTop: "3.5px" }}
           />
           <label
@@ -301,7 +301,7 @@ function DebitForm({
             id="renewAgreed"
             checked={renewAgreed}
             onChange={() => setRenewAgreed(!renewAgreed)}
-            className="mr-2"
+            className="mr-2 accent-[#2DDE28]"
             style={{ marginTop: "3.5px" }}
           />
           <label
@@ -322,7 +322,7 @@ function DebitForm({
             checked={confirm}
             // disabled={!(termsPage && privacyPage)}
             onChange={() => setConfirm(!confirm)}
-            className="mr-2"
+            className="mr-2 accent-[#2DDE28]"
             style={{ marginTop: "3.5px" }}
           />
           <label
