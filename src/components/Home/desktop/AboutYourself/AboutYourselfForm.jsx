@@ -16,6 +16,8 @@ const AboutYourselfForm = ({
   const GOOGLE_MAPS_API_KEY = "AIzaSyC6URLPah7QiL_BHSzJVJTNy_qX6bIK8uU";
   const postalCodeRef = useRef(null);
   const addressRef = useRef(null);
+  const provinceRef = useRef(null);
+  const cityRef = useRef(null);
   const modalRef = useRef(null);
   const [hovered, setHovered] = useState(null);
 
@@ -34,6 +36,7 @@ const AboutYourselfForm = ({
   };
 
   const handlePostalCodeFocus = async () => {
+    console.log("Postal focus")
     if (!autocompleteInitializedForPostal && postalCodeRef.current) {
       try {
         const google = await loadGoogleMaps(GOOGLE_MAPS_API_KEY);
@@ -49,15 +52,33 @@ const AboutYourselfForm = ({
         autocomplete.setFields(["address_components", "formatted_address"]);
 
         autocomplete.addListener("place_changed", () => {
+          console.warn("POSTAL FOCUS LISTEN")
           const place = autocomplete.getPlace();
           let postalCode = "";
           let formattedAddress = "";
+          let province = "";
+          let city = "";
 
           if (place.address_components) {
             for (const component of place.address_components) {
               if (component.types.includes("postal_code")) {
                 postalCode = component.long_name;
-                break;
+                // break;
+                continue;
+              }
+              if (component.types.includes("administrative_area_level_1")) {
+                province = component.long_name;
+                // break;
+                continue;
+              }
+              if (component.types.includes("administrative_area_level_3")) {
+                city = component.long_name;
+                // break;
+                continue;
+              } else if (component.types.includes("locality")) {
+                city = component.long_name;
+                // break;
+                continue;
               }
             }
           }
@@ -89,7 +110,20 @@ const AboutYourselfForm = ({
             if (addressRef.current) {
               addressRef.current.value = cleanedAddress;
             }
+            // alert("Changing Address from postal")
             handleChange("address")({ target: { value: cleanedAddress } });
+          }
+          if (province) {
+            if (provinceRef.current) {
+              provinceRef.current.value = province;
+            }
+            handleChange("province")({ target: { value: province } });
+          }
+          if (city) {
+            if (cityRef.current) {
+              cityRef.current.value = city;
+            }
+            handleChange("city")({ target: { value: city } });
           }
         });
 
@@ -101,6 +135,7 @@ const AboutYourselfForm = ({
   };
 
   const handleAddressFocus = async () => {
+    console.log("address autocomplete")
     if (!autocompleteInitializedForAddress && addressRef.current) {
       try {
         const google = await loadGoogleMaps(GOOGLE_MAPS_API_KEY);
@@ -116,15 +151,33 @@ const AboutYourselfForm = ({
         autocomplete.setFields(["formatted_address", "address_components"]);
 
         autocomplete.addListener("place_changed", () => {
+          console.warn("ADDRESS FOCUS LISTEN")
           const place = autocomplete.getPlace();
           const formattedAddress = place.formatted_address || "";
           let postalCode = "";
+          let province = "";
+          let city = "";
 
           if (place.address_components) {
             for (const component of place.address_components) {
               if (component.types.includes("postal_code")) {
                 postalCode = component.long_name;
-                break;
+                // break;
+                continue;
+              }
+              if (component.types.includes("administrative_area_level_1")) {
+                province = component.long_name;
+                // break;
+                continue;
+              }
+              if (component.types.includes("administrative_area_level_3")) {
+                city = component.long_name;
+                // break;
+                continue;
+              } else if (component.types.includes("locality")) {
+                city = component.long_name;
+                // break;
+                continue;
               }
             }
           }
@@ -140,7 +193,22 @@ const AboutYourselfForm = ({
             if (postalCodeRef.current) {
               postalCodeRef.current.value = postalCode;
             }
+            // alert("Changing Postal from Address")
+            console.log("Changing Postal from Address")
+            console.log(place)
             handleChange("postalCode")({ target: { value: postalCode } });
+          }
+          if (province) {
+            if (provinceRef.current) {
+              provinceRef.current.value = province;
+            }
+            handleChange("province")({ target: { value: province } });
+          }
+          if (city) {
+            if (cityRef.current) {
+              cityRef.current.value = city;
+            }
+            handleChange("city")({ target: { value: city } });
           }
         });
 
@@ -152,7 +220,7 @@ const AboutYourselfForm = ({
   };
 
   const [isOpen, setIsOpen] = useState(false);
-  console.log("isOpen", isOpen);
+  // console.log("isOpen", isOpen);
   const [gender, setGender] = useState(formData.gender || ""); // Add gender state
   const dropdownRef = useRef(null);
 
@@ -329,6 +397,7 @@ const AboutYourselfForm = ({
 
       <div>
         <input
+          ref={provinceRef}
           type="text"
           placeholder="Province"
           value={formData.province}
@@ -347,6 +416,7 @@ const AboutYourselfForm = ({
       <div className="flex gap-4">
         <div className="flex-1">
           <input
+            ref={cityRef}
             type="text"
             placeholder="City"
             value={formData.city}

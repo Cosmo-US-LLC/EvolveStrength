@@ -25,6 +25,9 @@ const MemberDetails = () => {
   const GOOGLE_MAPS_API_KEY = "AIzaSyC6URLPah7QiL_BHSzJVJTNy_qX6bIK8uU";
   const postalCodeRef = useRef(null);
   const addressRef = useRef(null);
+  const provinceRef = useRef(null);
+  const cityRef = useRef(null);
+
   const dropdownRef = useRef(null);
   const [autocompleteInitialized, setAutocompleteInitialized] = useState(false);
   const [
@@ -70,12 +73,29 @@ const MemberDetails = () => {
           const place = autocomplete.getPlace();
           let postalCode = "";
           let formattedAddress = "";
+          let province = "";
+          let city = "";
 
           if (place.address_components) {
             for (const component of place.address_components) {
               if (component.types.includes("postal_code")) {
                 postalCode = component.long_name;
-                break;
+                // break;
+                continue;
+              }
+              if (component.types.includes("administrative_area_level_1")) {
+                province = component.long_name;
+                // break;
+                continue;
+              }
+              if (component.types.includes("administrative_area_level_3")) {
+                city = component.long_name;
+                // break;
+                continue;
+              } else if (component.types.includes("locality")) {
+                city = component.long_name;
+                // break;
+                continue;
               }
             }
           }
@@ -108,6 +128,21 @@ const MemberDetails = () => {
             setAddress(cleanedAddress);
             updateErrs("address", cleanedAddress);
           }
+          
+          if (province) {
+            if (provinceRef.current) {
+              provinceRef.current.value = province;
+            }
+            setProvince(province)
+            // handleChange("province")({ target: { value: province } });
+          }
+          if (city) {
+            if (cityRef.current) {
+              cityRef.current.value = city;
+            }
+            setCity(city)
+            // handleChange("city")({ target: { value: city } });
+          }
         });
 
         setAutocompleteInitialized(true);
@@ -136,12 +171,29 @@ const MemberDetails = () => {
           const place = autocomplete.getPlace();
           const formattedAddress = place.formatted_address || "";
           let postalCode = "";
+          let province = "";
+          let city = "";
 
           if (place.address_components) {
             for (const component of place.address_components) {
               if (component.types.includes("postal_code")) {
                 postalCode = component.long_name;
-                break;
+                // break;
+                continue;
+              }
+              if (component.types.includes("administrative_area_level_1")) {
+                province = component.long_name;
+                // break;
+                continue;
+              }
+              if (component.types.includes("administrative_area_level_3")) {
+                city = component.long_name;
+                // break;
+                continue;
+              } else if (component.types.includes("locality")) {
+                city = component.long_name;
+                // break;
+                continue;
               }
             }
           }
@@ -158,6 +210,20 @@ const MemberDetails = () => {
             postalCodeRef.current.value = postalCode;
             setPostal(postalCode);
             updateErrs("postal", postalCode);
+          }
+          if (province) {
+            if (provinceRef.current) {
+              provinceRef.current.value = province;
+            }
+            setProvince(province)
+            // handleChange("province")({ target: { value: province } });
+          }
+          if (city) {
+            if (cityRef.current) {
+              cityRef.current.value = city;
+            }
+            setCity(city);
+            // handleChange("city")({ target: { value: city } });
           }
         });
 
@@ -528,7 +594,9 @@ const MemberDetails = () => {
                     onClick={() => handleSelect(value)}
                     className={`px-4 py-2 cursor-pointer hover:bg-[#2DDE28]/50 font-[300] hover:text-black 
                 ${
-                  value === gender ? "bg-[#2DDE28]/50 text-black font-[600]" : ""
+                  value === gender
+                    ? "bg-[#2DDE28]/50 text-black font-[600]"
+                    : ""
                 }`}
                   >
                     {label}
