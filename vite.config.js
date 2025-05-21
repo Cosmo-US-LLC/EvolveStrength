@@ -15,6 +15,7 @@ export default defineConfig({
   server: {
     host: "0.0.0.0", // Allow external network access, use localhost for local access only
     port: 4173, // Ensure it matches the port where the app is running
+    allowedHosts: ["subscription.evolvestrength.ca"]
   },
   preview: {
     allowedHosts: ["subscription.evolvestrength.ca"], // Add your custom domain here
