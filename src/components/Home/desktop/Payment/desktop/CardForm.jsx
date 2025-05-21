@@ -169,7 +169,7 @@ function CardForm({
                 className={`p-3 bg-[#000000]/60 backdrop-blur-[10px] border font-[vazirmatn] text-[16px] text-white placeholder-[#999999] ${
                   errors.expirationDate ? "border-red-500" : "border-[#999999]"
                 }`}
-                placeholder="Expiration Date"
+                placeholder="Expiration Date (MM/YY)"
               />
               {errors.expirationDate && (
                 <p className="text-[#c20000] mt-1 text-sm">

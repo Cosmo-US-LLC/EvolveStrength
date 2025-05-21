@@ -135,7 +135,7 @@ const CardPaymentForm = ({
           <div className="w-full">
             <input
               type="text"
-              placeholder="Expiration Date"
+              placeholder="Expiration Date (MM/YY)"
               value={expirationDate}
               onChange={(e) => {
                 let value = e.target.value;
