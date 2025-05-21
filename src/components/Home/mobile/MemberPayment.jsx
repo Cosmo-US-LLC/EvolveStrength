@@ -192,7 +192,7 @@ const MemberPayment = () => {
 
       const payload = {
         paymentPlanId:
-          plan == "monthly" ? clubPlans[0]?.planId : clubPlans[1]?.planId || "",
+          plan == "monthly" ? clubPlans[1]?.planId : clubPlans[0]?.planId || "",
         planValidationHash:
           plan == "monthly"
             ? clubPlanMonthly?.planValidation

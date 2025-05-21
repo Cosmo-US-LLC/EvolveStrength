@@ -212,14 +212,14 @@ function CardForm({
         <div className="flex items-start mt-4 mb-6">
           <input
             type="checkbox"
-            id="accountHolder"
+            id="acknowledge"
             checked={renewAgreeded}
             onChange={() => setRenewAgreeded(!renewAgreeded)}
             className="mr-2 accent-[#2DDE28]"
             style={{ marginTop: "3.5px" }}
           />
           <label
-            htmlFor="accountHolder"
+            htmlFor="acknowledge"
             className="text-[16px] font-[400] font-[vazirmatn] ml-2"
           >
             I acknowledge and agree that my membership will automatically renew
