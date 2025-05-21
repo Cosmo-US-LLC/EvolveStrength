@@ -56,6 +56,7 @@ const AboutYourselfForm = ({
           const place = autocomplete.getPlace();
           let postalCode = "";
           let formattedAddress = "";
+          let shortAddress = "";
           let province = "";
           let city = "";
 
@@ -63,6 +64,16 @@ const AboutYourselfForm = ({
             for (const component of place.address_components) {
               if (component.types.includes("postal_code")) {
                 postalCode = component.long_name;
+                // break;
+                continue;
+              }
+              if (component.types.includes("street_number")) {
+                shortAddress = component.long_name;
+                // break;
+                continue;
+              }
+              if (component.types.includes("route")) {
+                shortAddress = shortAddress + " " + component.long_name;
                 // break;
                 continue;
               }
@@ -106,13 +117,21 @@ const AboutYourselfForm = ({
 
           const cleanedAddress = formatAddress(formattedAddress);
 
-          if (formattedAddress) {
+          if (shortAddress) {
+            if (addressRef.current) {
+              addressRef.current.value = shortAddress;
+            }
+            handleChange("address")({ target: { value: shortAddress } });
+            console.warn("1 - 1st condition")
+          } else if (formattedAddress) {
             if (addressRef.current) {
               addressRef.current.value = cleanedAddress;
             }
-            // alert("Changing Address from postal")
             handleChange("address")({ target: { value: cleanedAddress } });
+            console.warn("1 - 2nd condition")
           }
+          console.log("Changing Address from Postal")
+          console.log(place)
           if (province) {
             if (provinceRef.current) {
               provinceRef.current.value = province;
@@ -155,6 +174,7 @@ const AboutYourselfForm = ({
           const place = autocomplete.getPlace();
           const formattedAddress = place.formatted_address || "";
           let postalCode = "";
+          let shortAddress = "";
           let province = "";
           let city = "";
 
@@ -162,6 +182,16 @@ const AboutYourselfForm = ({
             for (const component of place.address_components) {
               if (component.types.includes("postal_code")) {
                 postalCode = component.long_name;
+                // break;
+                continue;
+              }
+              if (component.types.includes("street_number")) {
+                shortAddress = component.long_name;
+                // break;
+                continue;
+              }
+              if (component.types.includes("route")) {
+                shortAddress = shortAddress + " " + component.long_name;
                 // break;
                 continue;
               }
@@ -184,9 +214,16 @@ const AboutYourselfForm = ({
 
           const cleanedAddress = formatAddress(formattedAddress);
 
-          if (formattedAddress) {
+          if (shortAddress) {
+            if (addressRef.current) {
+              addressRef.current.value = shortAddress;
+            }
+            handleChange("address")({ target: { value: shortAddress } });
+            console.warn("2 - 1st condition")
+          } else if (formattedAddress) {
             addressRef.current.value = cleanedAddress;
             handleChange("address")({ target: { value: cleanedAddress } });
+            console.warn("2 - 2nd condition")
           }
 
           if (postalCode) {

@@ -73,6 +73,7 @@ const MemberDetails = () => {
           const place = autocomplete.getPlace();
           let postalCode = "";
           let formattedAddress = "";
+          let shortAddress = "";
           let province = "";
           let city = "";
 
@@ -80,6 +81,16 @@ const MemberDetails = () => {
             for (const component of place.address_components) {
               if (component.types.includes("postal_code")) {
                 postalCode = component.long_name;
+                // break;
+                continue;
+              }
+              if (component.types.includes("street_number")) {
+                shortAddress = component.long_name;
+                // break;
+                continue;
+              }
+              if (component.types.includes("route")) {
+                shortAddress = shortAddress + " " + component.long_name;
                 // break;
                 continue;
               }
@@ -123,7 +134,11 @@ const MemberDetails = () => {
             updateErrs("postal", postalCode);
           }
 
-          if (formattedAddress) {
+          if (shortAddress) {
+            addressRef.current.value = shortAddress;
+            setAddress(shortAddress);
+            updateErrs("address", shortAddress);
+          } else if (formattedAddress) {
             addressRef.current.value = cleanedAddress;
             setAddress(cleanedAddress);
             updateErrs("address", cleanedAddress);
@@ -171,6 +186,7 @@ const MemberDetails = () => {
           const place = autocomplete.getPlace();
           const formattedAddress = place.formatted_address || "";
           let postalCode = "";
+          let shortAddress = "";
           let province = "";
           let city = "";
 
@@ -178,6 +194,16 @@ const MemberDetails = () => {
             for (const component of place.address_components) {
               if (component.types.includes("postal_code")) {
                 postalCode = component.long_name;
+                // break;
+                continue;
+              }
+              if (component.types.includes("street_number")) {
+                shortAddress = component.long_name;
+                // break;
+                continue;
+              }
+              if (component.types.includes("route")) {
+                shortAddress = shortAddress + " " + component.long_name;
                 // break;
                 continue;
               }
@@ -200,7 +226,11 @@ const MemberDetails = () => {
 
           const cleanedAddress = formatAddress(formattedAddress);
 
-          if (formattedAddress) {
+          if (shortAddress) {
+            addressRef.current.value = shortAddress;
+            setAddress(shortAddress);
+            updateErrs("address", shortAddress);
+          } else if (formattedAddress) {
             addressRef.current.value = cleanedAddress;
             setAddress(cleanedAddress);
             updateErrs("address", cleanedAddress);
