@@ -65,7 +65,8 @@ const LocationDetails = () => {
 
   useEffect(() => {
     if (clubPlanMonthly && clubPlanYearly && !localLoad) {
-      navigate(`/membership-plan`);
+      navigate(`/membership`);
+      // navigate(`/membership-plan`);
     }
   }, [clubPlanMonthly, clubPlanYearly]);
   // const selectedLocation = Cookies.get("location");
@@ -144,7 +145,8 @@ const LocationDetails = () => {
             <li
               key={idx}
               className="flex items-center gap-3 px-2 py-[10px] 
-                 border-[0.158px] border-[#3A3A3A] bg-white/5 "
+                 border-[0.158px] border-transparent bg-white/0 "
+                //  border-[0.158px] border-[#3A3A3A] bg-white/5 "
             >
               <img src={item.icon} alt={item.label} className="h-7 w-7" />
               <span className="text-[#F8F8F8] font-[vazirmatn] text-center text-[12px] font-[500] leading-[21.512px] uppercase">

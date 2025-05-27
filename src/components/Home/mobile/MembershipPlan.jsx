@@ -32,7 +32,8 @@ const MembershipPlan = () => {
     addOnDetails,
   } = useSelector((state) => state.plan);
   function continueToMember() {
-    navigate("/member-details");
+    navigate("/about-yourself");
+    // navigate("/member-details");
   }
 
   return (

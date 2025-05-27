@@ -23,7 +23,7 @@ const MemberPayment = () => {
     clubPlanYearly,
     addOnDetails,
   } = useSelector((state) => state.plan);
-  console.log("userInfo", userInfo);
+  // console.log("userInfo", userInfo);
 
   const [errors, setErrors] = useState({});
   const [fname, setFname] = useState(userInfo?.fname || "");
@@ -36,12 +36,13 @@ const MemberPayment = () => {
   const [cvv, setCvv] = useState("");
   const [expirationDate, setExpirationDate] = useState("");
   const [apiError, setApiError] = useState(null);
-  console.log("apiError", apiError);
+  // console.log("apiError", apiError);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (!userInfo) {
-      navigate("/member-details");
+      navigate("/about-yourself");
+      // navigate("/member-details");
     }
   }, []);
 
@@ -192,11 +193,24 @@ const MemberPayment = () => {
 
       const payload = {
         paymentPlanId:
-          plan == "monthly" ? clubPlans[1]?.planId : clubPlans[0]?.planId || "",
+          plan == "monthly"
+            ? clubPlans[0]?.planName?.toLowerCase()?.includes("12 month")
+              ? clubPlans[1]?.planId
+              : clubPlans[0]?.planId
+            : (clubPlans[0]?.planName?.toLowerCase()?.includes("12 month")
+                ? clubPlans[0]?.planId
+                : clubPlans[1]?.planId) || "",
         planValidationHash:
           plan == "monthly"
-            ? clubPlanMonthly?.planValidation
-            : clubPlanYearly?.planValidation || "",
+            ? clubPlans[0]?.planName?.toLowerCase()?.includes("12 month")
+              ? clubPlanYearly?.planValidation
+              : clubPlanMonthly?.planValidation
+            : (clubPlans[0]?.planName?.toLowerCase()?.includes("12 month")
+                ? clubPlanMonthly?.planValidation
+                : clubPlanYearly?.planValidation) || "",
+        // clubPlans[1]?.planName?.toLowerCase()?.includes("12 month")
+        //   ? clubPlanMonthly?.planValidation
+        //   : clubPlanYearly?.planValidation || "",
         campaignId: "730E227DC96B7F9EE05302E014ACD689",
         activePresale: "true",
         sendAgreementEmail: "true",
@@ -237,6 +251,9 @@ const MemberPayment = () => {
           pushNotification: "true",
         },
       };
+
+      console.log(plan, payload);
+      return;
 
       if (paymentMethod !== "direct") {
         payload.todayBillingInfo = {

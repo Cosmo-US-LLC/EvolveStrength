@@ -355,7 +355,9 @@ function ReviewAndPay() {
         }`}
       >
         <div className="flex items-center justify-between w-full max-w-[1280px] mx-auto">
-          <img src={logo} alt="Logo" className="w-[175px] h-auto" />
+          <a href="https://www.evolvestrength.ca/">
+            <img src={logo} alt="Logo" className="w-[175px] h-auto" />
+          </a>
 
           <button
             onClick={handleJoinNow}

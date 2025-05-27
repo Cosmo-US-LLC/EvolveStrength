@@ -124,6 +124,8 @@ const planSlice = createSlice({
       .addMatcher(
         plansApi.endpoints.getClubPlans.matchFulfilled,
         (state, action) => {
+          // console.log("getClubPlans fulfilled", action.payload.plans[0].planName.includes("12 Month") ? action.payload.plans : [action.payload.plans[1], action.payload.plans[0]]);
+          // state.clubPlans = action.payload.plans[0].planName.includes("12 Month") ? action.payload.plans : [action.payload.plans[1], action.payload.plans[0]];
           state.clubPlans = action.payload.plans;
           state.clubPlanMonthly = null;
           state.addOnDetails = false,

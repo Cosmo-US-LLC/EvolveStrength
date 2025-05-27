@@ -43,6 +43,9 @@ function App() {
                 <div className="max-lg:hidden">
                   <MembershipDesktop />
                 </div>
+                <div className="lg:hidden">
+                  <MembershipPlan />
+                </div>
               </>
             }
           />
@@ -53,6 +56,9 @@ function App() {
                 <div className="max-lg:hidden">
                   <AboutYourself />
                 </div>
+                <div className="lg:hidden">
+                  <MemberDetails />
+                </div>
               </>
             }
           />
@@ -62,6 +68,9 @@ function App() {
               <>
                 <div className="max-lg:hidden">
                   <ReviewAndPay />
+                </div>
+                <div className="lg:hidden">
+                  <MemberPayment />
                 </div>
               </>
             }
@@ -77,9 +86,9 @@ function App() {
             }
           />
           <Route path="/location-details" element={<LocationDetails />} />
-          <Route path="/membership-plan" element={<MembershipPlan />} />
-          <Route path="/member-details" element={<MemberDetails />} />
-          <Route path="/member-Payment" element={<MemberPayment />} />
+          {/* <Route path="/membership-plan" element={<MembershipPlan />} /> */}
+          {/* <Route path="/member-details" element={<MemberDetails />} /> */}
+          {/* <Route path="/member-Payment" element={<MemberPayment />} /> */}
           <Route path="/confirmation" element={<ConfirmationPage />} />
           <Route path="/loader" element={<Loader />} />
         </Route>

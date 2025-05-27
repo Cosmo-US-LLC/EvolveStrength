@@ -378,7 +378,8 @@ const MemberDetails = () => {
       gender,
     };
     dispatch(setUserInfo(payload));
-    navigate("/member-Payment");
+    navigate("/review-and-pay");
+    // navigate("/member-Payment");
   }
 
   const handleSelect = (value) => {
