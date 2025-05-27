@@ -252,8 +252,8 @@ const MemberPayment = () => {
         },
       };
 
-      console.log(plan, payload);
-      return;
+      // console.log(plan, payload);
+      // return;
 
       if (paymentMethod !== "direct") {
         payload.todayBillingInfo = {
