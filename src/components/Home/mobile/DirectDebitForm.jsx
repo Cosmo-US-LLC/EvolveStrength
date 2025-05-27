@@ -325,6 +325,7 @@ const DirectDebitForm = ({
                 !termPage ? "font-[600]" : "font-[400]"
               }`}
               onClick={() => setTermPage(true)}
+              target="_blank"
             >
               Terms And Conditions
             </a>{" "}
@@ -335,6 +336,7 @@ const DirectDebitForm = ({
                 !privacy ? "font-[600]" : "font-[400]"
               }`}
               onClick={() => setPrivacy(true)}
+              target="_blank"
             >
               Privacy Policy
             </a>

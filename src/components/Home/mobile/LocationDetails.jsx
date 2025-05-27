@@ -96,7 +96,7 @@ const LocationDetails = () => {
           })
         ).unwrap();
 
-        console?.log("Setting on index:", index, "result:", result);
+        // console?.log("Setting on index:", index, "result:", result);
         // index === 0
         //   ? dispatch(setClubPlanMonthly(result))
         //   : dispatch(setClubPlanYearly(result));

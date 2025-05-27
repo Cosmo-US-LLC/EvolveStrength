@@ -193,9 +193,11 @@ const MemberPayment = () => {
 
       const payload = {
         paymentPlanId:
-          plan == "monthly" ? clubPlans[0]?.planName?.toLowerCase()?.includes("12 month")? clubPlans[1]?.planId:clubPlans[0]?.planId : clubPlans[0]?.planId || "",
+          plan == "monthly"
+            ? clubPlanMonthly?.planId
+            : clubPlanYearly?.planId || "",
         planValidationHash:
-          plan == "monthly" && clubPlans[1]?.planName?.toLowerCase()?.includes("12 month")
+          plan == "monthly"
             ? clubPlanMonthly?.planValidation
             : clubPlanYearly?.planValidation || "",
         campaignId: "730E227DC96B7F9EE05302E014ACD689",
@@ -239,8 +241,8 @@ const MemberPayment = () => {
         },
       };
 
-      // console.log(plan, payload);
-      // return;
+      console.log(plan, payload);
+      return;
 
       if (paymentMethod !== "direct") {
         payload.todayBillingInfo = {
