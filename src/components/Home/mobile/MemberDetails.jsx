@@ -623,10 +623,10 @@ const MemberDetails = () => {
                   <div
                     key={value}
                     onClick={() => handleSelect(value)}
-                    className={`px-4 py-2 cursor-pointer hover:bg-[#2DDE28]/50 font-[300] hover:text-black 
+                    className={`px-4 py-2 cursor-pointer hover:bg-[#2DDE28] font-[300] hover:text-black 
                 ${
                   value === gender
-                    ? "bg-[#2DDE28]/50 text-black font-[600]"
+                    ? "bg-[#2DDE28] text-black font-[600]"
                     : ""
                 }`}
                   >

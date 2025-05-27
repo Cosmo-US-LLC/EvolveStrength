@@ -193,24 +193,11 @@ const MemberPayment = () => {
 
       const payload = {
         paymentPlanId:
-          plan == "monthly"
-            ? clubPlans[0]?.planName?.toLowerCase()?.includes("12 month")
-              ? clubPlans[1]?.planId
-              : clubPlans[0]?.planId
-            : (clubPlans[0]?.planName?.toLowerCase()?.includes("12 month")
-                ? clubPlans[0]?.planId
-                : clubPlans[1]?.planId) || "",
+          plan == "monthly" ? clubPlans[0]?.planName?.toLowerCase()?.includes("12 month")? clubPlans[1]?.planId:clubPlans[0]?.planId : clubPlans[0]?.planId || "",
         planValidationHash:
-          plan == "monthly"
-            ? clubPlans[0]?.planName?.toLowerCase()?.includes("12 month")
-              ? clubPlanYearly?.planValidation
-              : clubPlanMonthly?.planValidation
-            : (clubPlans[0]?.planName?.toLowerCase()?.includes("12 month")
-                ? clubPlanMonthly?.planValidation
-                : clubPlanYearly?.planValidation) || "",
-        // clubPlans[1]?.planName?.toLowerCase()?.includes("12 month")
-        //   ? clubPlanMonthly?.planValidation
-        //   : clubPlanYearly?.planValidation || "",
+          plan == "monthly" && clubPlans[1]?.planName?.toLowerCase()?.includes("12 month")
+            ? clubPlanMonthly?.planValidation
+            : clubPlanYearly?.planValidation || "",
         campaignId: "730E227DC96B7F9EE05302E014ACD689",
         activePresale: "true",
         sendAgreementEmail: "true",

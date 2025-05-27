@@ -96,17 +96,24 @@ const LocationDetails = () => {
           })
         ).unwrap();
 
-        {
-          clubLocationPostal === 40248 || clubLocationPostal === 40327
-            ? // If the postal code matches, check the index
-              index === 0
-              ? dispatch(setClubPlanYearly(result))
-              : dispatch(setClubPlanMonthly(result))
-            : // If the postal code doesn't match, check the index
-            index === 0
-            ? dispatch(setClubPlanMonthly(result))
-            : dispatch(setClubPlanYearly(result));
-        }
+        console?.log("Setting on index:", index, "result:", result);
+        // index === 0
+        //   ? dispatch(setClubPlanMonthly(result))
+        //   : dispatch(setClubPlanYearly(result));
+        result?.planName?.includes("12 Month")
+          ? dispatch(setClubPlanYearly(result))
+          : dispatch(setClubPlanMonthly(result));
+        // {
+        //   clubLocationPostal === 40248 || clubLocationPostal === 40327
+        //     ? // If the postal code matches, check the index
+        //       index === 0
+        //       ? dispatch(setClubPlanYearly(result))
+        //       : dispatch(setClubPlanMonthly(result))
+        //     : // If the postal code doesn't match, check the index
+        //     index === 0
+        //     ? dispatch(setClubPlanMonthly(result))
+        //     : dispatch(setClubPlanYearly(result));
+        // }
 
         // navigate(`/membership-plan${searchParams}&startDate=${formattedDate}`);
       } catch (err) {
@@ -146,7 +153,7 @@ const LocationDetails = () => {
               key={idx}
               className="flex items-center gap-3 px-2 py-[10px] 
                  border-[0.158px] border-transparent bg-white/0 "
-                //  border-[0.158px] border-[#3A3A3A] bg-white/5 "
+              //  border-[0.158px] border-[#3A3A3A] bg-white/5 "
             >
               <img src={item.icon} alt={item.label} className="h-7 w-7" />
               <span className="text-[#F8F8F8] font-[vazirmatn] text-center text-[12px] font-[500] leading-[21.512px] uppercase">

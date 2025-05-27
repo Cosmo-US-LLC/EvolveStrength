@@ -56,17 +56,22 @@ function MembershipDesktop() {
               })
             ).unwrap();
 
-            {
-              clubLocationPostal === 40248 || clubLocationPostal === 40327
-                ? // If the postal code matches, check the index
-                  index === 0
-                  ? dispatch(setClubPlanYearly(result))
-                  : dispatch(setClubPlanMonthly(result))
-                : // If the postal code doesn't match, check the index
-                index === 0
-                ? dispatch(setClubPlanMonthly(result))
-                : dispatch(setClubPlanYearly(result));
-            }
+            console?.log("Setting on Desktop index:", index, "result:", result);
+
+            result?.planName?.includes("12 Month")
+              ? dispatch(setClubPlanYearly(result))
+              : dispatch(setClubPlanMonthly(result));
+            // {
+            //   clubLocationPostal === 40248 || clubLocationPostal === 40327
+            //     ? // If the postal code matches, check the index
+            //       index === 0
+            //       ? dispatch(setClubPlanYearly(result))
+            //       : dispatch(setClubPlanMonthly(result))
+            //     : // If the postal code doesn't match, check the index
+            //     index === 0
+            //     ? dispatch(setClubPlanMonthly(result))
+            //     : dispatch(setClubPlanYearly(result));
+            // }
           } catch (err) {
             console.error(
               `Failed to fetch plan details for club ${club.planId}:`,

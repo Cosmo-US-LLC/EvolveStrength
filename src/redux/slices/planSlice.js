@@ -37,13 +37,17 @@ const planSlice = createSlice({
     setAddOnDetails(state, action) {
       state.addOnDetails = action.payload;
     },
-    setClubPlans(state, action) {
-      state.clubPlans = action.payload;
+    setClubPlans(state, action) {      
+      let plansArr = action.payload[0]?.planName.includes("12 Month") ? [action.payload[1], action.payload[0]] : [action.payload[0], action.payload[1]]
+      state.clubPlans = plansArr;
+      // state.clubPlans = action.payload;
     },
     setClubPlanMonthly(state, action) {
+      console.log("Setting clubPlanMonthly:", action.payload);
       state.clubPlanMonthly = action.payload;
     },
     setClubPlanYearly(state, action) {
+      console.log("Setting clubPlanYearly:", action.payload);
       state.clubPlanYearly = action.payload;
     },
     setStartDate(state, action) {
@@ -124,13 +128,25 @@ const planSlice = createSlice({
       .addMatcher(
         plansApi.endpoints.getClubPlans.matchFulfilled,
         (state, action) => {
+          let plansArr = action.payload.plans[0]?.planName.includes("12 Month") ? [action.payload.plans[1], action.payload.plans[0]] : [action.payload.plans[0], action.payload.plans[1]]
+          // console.log("getClubPlans fulfilled", plansArr)
+          console.log("getClubPlans fulfilled", plansArr[0]?.planName.includes("12 Month"), plansArr[1]?.planName.includes("12 Month"));
           // console.log("getClubPlans fulfilled", action.payload.plans[0].planName.includes("12 Month") ? action.payload.plans : [action.payload.plans[1], action.payload.plans[0]]);
           // state.clubPlans = action.payload.plans[0].planName.includes("12 Month") ? action.payload.plans : [action.payload.plans[1], action.payload.plans[0]];
-          state.clubPlans = action.payload.plans;
+          console.log(plansArr)
+          state.clubPlans = plansArr;
+          state.plan = "monthly";
+          // state.clubLocation = "";
+          // state.clubLocationPostal = null;
+          // state.clubLocationId = null;
+          state.addOnDetails = false;
+          // state.clubPlans = [];
           state.clubPlanMonthly = null;
-          state.addOnDetails = false,
           state.clubPlanYearly = null;
+          state.startDate = "";
+          state.userInfo = null;
           state.isLoading = false;
+          state.error = null;
         }
       )
       // Handle error state for getClubPlans
