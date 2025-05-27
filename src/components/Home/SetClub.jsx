@@ -104,8 +104,8 @@ function SetClub() {
   }, [clubLocationPostal]);
 
   return (
-    <div className="text-white">
-      {location}
+    <div>
+      {/* {location} */}
       <Loader />
     </div>
   );
