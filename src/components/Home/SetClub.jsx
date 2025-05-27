@@ -106,7 +106,7 @@ function SetClub() {
   return (
     <div>
       {/* {location} */}
-      <Loader />
+      <Loader text={"Fetching Membership Plans"} />
     </div>
   );
 }

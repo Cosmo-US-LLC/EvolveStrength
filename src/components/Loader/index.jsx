@@ -18,7 +18,7 @@
 
 import React from "react";
 
-const Loader = ({ show = true, showMobile = true }) => {
+const Loader = ({ show = true, showMobile = true, text=false }) => {
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-black">
       <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-[#2DDE28]"></div>
@@ -27,6 +27,9 @@ const Loader = ({ show = true, showMobile = true }) => {
       )}
       {!showMobile && (
         <h1 className="text-[28px] text-[#2DDE28]">Processing Payment</h1>
+      )}
+      {text && (
+        <h1 className="text-[24px] lg:text-[40px] text-[#FFF] font-black mt-10">{text}</h1>
       )}
     </div>
   );
