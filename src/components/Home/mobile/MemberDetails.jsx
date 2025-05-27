@@ -100,11 +100,11 @@ const MemberDetails = () => {
                 continue;
               }
               if (component.types.includes("administrative_area_level_3")) {
-                city = component.long_name;
+                city = component.long_name?.replaceAll('é', 'e');
                 // break;
                 continue;
               } else if (component.types.includes("locality")) {
-                city = component.long_name;
+                city = component.long_name?.replaceAll('é', 'e');
                 // break;
                 continue;
               }
@@ -184,6 +184,7 @@ const MemberDetails = () => {
 
         autocomplete.addListener("place_changed", () => {
           const place = autocomplete.getPlace();
+          console?.log(place)
           const formattedAddress = place.formatted_address || "";
           let postalCode = "";
           let shortAddress = "";
@@ -213,11 +214,11 @@ const MemberDetails = () => {
                 continue;
               }
               if (component.types.includes("administrative_area_level_3")) {
-                city = component.long_name;
+                city = component.long_name?.replaceAll('é', 'e');
                 // break;
                 continue;
               } else if (component.types.includes("locality")) {
-                city = component.long_name;
+                city = component.long_name?.replaceAll('é', 'e');
                 // break;
                 continue;
               }
