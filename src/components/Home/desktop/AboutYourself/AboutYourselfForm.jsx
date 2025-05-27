@@ -68,26 +68,26 @@ const AboutYourselfForm = ({
                 continue;
               }
               if (component.types.includes("street_number")) {
-                shortAddress = component.long_name;
+                shortAddress = (component.long_name)?.replaceAll('é', 'e');
                 // break;
                 continue;
               }
               if (component.types.includes("route")) {
-                shortAddress = shortAddress + " " + component.long_name;
+                shortAddress = (shortAddress + " " + component.long_name)?.replaceAll('é', 'e');
                 // break;
                 continue;
               }
               if (component.types.includes("administrative_area_level_1")) {
-                province = component.long_name;
+                province = component.long_name?.replaceAll('é', 'e');
                 // break;
                 continue;
               }
               if (component.types.includes("administrative_area_level_3")) {
-                city = component.long_name;
+                city = component.long_name?.replaceAll('é', 'e');
                 // break;
                 continue;
               } else if (component.types.includes("locality")) {
-                city = component.long_name;
+                city = component.long_name?.replaceAll('é', 'e');
                 // break;
                 continue;
               }
@@ -186,26 +186,26 @@ const AboutYourselfForm = ({
                 continue;
               }
               if (component.types.includes("street_number")) {
-                shortAddress = component.long_name;
+                shortAddress = component.long_name?.replaceAll('é', 'e');
                 // break;
                 continue;
               }
               if (component.types.includes("route")) {
-                shortAddress = shortAddress + " " + component.long_name;
+                shortAddress = (shortAddress + " " + component.long_name)?.replaceAll('é', 'e');
                 // break;
                 continue;
               }
               if (component.types.includes("administrative_area_level_1")) {
-                province = component.long_name;
+                province = component.long_name?.replaceAll('é', 'e');
                 // break;
                 continue;
               }
               if (component.types.includes("administrative_area_level_3")) {
-                city = component.long_name;
+                city = component.long_name?.replaceAll('é', 'e');
                 // break;
                 continue;
               } else if (component.types.includes("locality")) {
-                city = component.long_name;
+                city = component.long_name?.replaceAll('é', 'e');
                 // break;
                 continue;
               }
