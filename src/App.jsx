@@ -16,6 +16,7 @@ import Congratulations from "./components/Home/desktop/Congratulations";
 import ScrollToTop from "./utils/ScrollToTop";
 import NotFoundPage from "./pages/NotFoundPage";
 import Loader from "./components/Loader";
+import SetClub from "./components/Home/SetClub";
 
 function App() {
   return (
@@ -33,6 +34,14 @@ function App() {
                 <div className="lg:hidden">
                   <EvolveStrengthHome />
                 </div>
+              </>
+            }
+          />
+          <Route
+            path="/membership-plans"
+            element={
+              <>
+                  <SetClub />
               </>
             }
           />

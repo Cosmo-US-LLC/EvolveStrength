@@ -7,11 +7,11 @@ export const plansApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: `${import.meta.env.VITE_APP_API_URL}` }),
   endpoints: (builder) => ({
     getClubPlans: builder.query({
-      query: (location) => `/getClubInfo?location=${location}`,
+      query: (location) => `/getClubInfo?location=${parseInt(location)}`,
     }),
     getClubPlanDetails: builder.query({
       query: ({ location, planId }) =>
-        `/getPlanDetails?location=${location}&planId=${planId}`,
+        `/getPlanDetails?location=${parseInt(location)}&planId=${planId}`,
     }),
   }),
 });

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import StepperDesktop from "../../commen/StepperDesktop";
 import MembershipPlanSelector from "./MembershipPlanSelector";
 import MembershipSummaryBoxDesktop from "./MembershipSummaryBoxDesktop";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import useScrollDirection from "../../../../../hooks/useScrollDirection";
 import Loader from "../../../../Loader";
 import { useDispatch, useSelector } from "react-redux";
@@ -25,6 +25,7 @@ function MembershipDesktop() {
   const navigate = useNavigate();
   const scrollDirection = useScrollDirection();
   const dispatch = useDispatch();
+  const searchParams = useSearchParams();
   const { clubLocation, clubLocationPostal, clubPlans } = useSelector(
     (state) => state.plan
   );
