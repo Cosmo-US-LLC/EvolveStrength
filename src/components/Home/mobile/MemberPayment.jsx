@@ -349,7 +349,7 @@ const MemberPayment = () => {
     const person = data?.people_create_response;
 
     if (person?.id) {
-      navigate("/confirmation");
+      navigate("/congratulations");
     } else {
       console.warn("Person creation failed or missing ID.");
     }

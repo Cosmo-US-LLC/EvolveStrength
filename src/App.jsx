@@ -91,6 +91,9 @@ function App() {
                 <div className="max-lg:hidden">
                   <Congratulations />
                 </div>
+                <div className="lg:hidden">
+                  <ConfirmationPage />
+                </div>
               </>
             }
           />
@@ -98,7 +101,7 @@ function App() {
           {/* <Route path="/membership-plan" element={<MembershipPlan />} /> */}
           {/* <Route path="/member-details" element={<MemberDetails />} /> */}
           {/* <Route path="/member-Payment" element={<MemberPayment />} /> */}
-          <Route path="/confirmation" element={<ConfirmationPage />} />
+          {/* <Route path="/confirmation" element={<ConfirmationPage />} /> */}
           <Route path="/loader" element={<Loader />} />
         </Route>
         <Route path="*" element={<NotFoundPage />} />
