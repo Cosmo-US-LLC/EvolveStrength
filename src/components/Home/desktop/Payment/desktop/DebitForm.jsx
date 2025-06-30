@@ -15,38 +15,34 @@ function DebitForm({
   setAccountNumber,
   verifyAccountNumber,
   setVerifyAccountNumber,
-  confirm,
-  setConfirm,
+  // confirm,
+  // setConfirm,
   errors,
   setErrors,
-  renewAgreed,
-  setRenewAgreed,
-  termsAgreed,
-  setTermsAgreed,
-}) {
-  const [termsPage, setTermsPage] = useState(false);
-  const [privacyPage, setPrivacyPage] = useState(false);
+  // renewAgreed,
+  // setRenewAgreed,
+  // termsAgreed,
+  // setTermsAgreed,
 
+  debitHolder,
+  debitAcknowledge,
+  debitConfirm,
+  setDebitHolder,
+  setDebitAcknowledge,
+  setDebitConfirm,
+}) {
   return (
     <div
       className="max-w-[600px] space-y-4 text-white"
       style={{ height: "700px" }}
     >
-      {/* <h1 className="text-[40px] font-[500] leading-[42px] font-[kanit] capitalize mb-6 text-left mt-4">
-        Set Your Bi-Weekly Payment Of <br />{" "}
-        {addOnDetails &&
-        (clubLocationPostal === 40248 || clubLocationPostal === 40327)
-          ? formattedTotalAmount
-          : (plan === "monthly" ? clubPlanMonthly : clubPlanYearly)
-              ?.scheduleTotalAmount || "$--.--"}
-      </h1> */}
       <p className="mb-6 mt-6 text-left text-[#FFFFFF] font-[vazirmatn] text-[16px] font-regular">
         Please enter your payment details for your bi-weekly payment to help us
         start your membership. This payment method will also be used for future
         fees.
       </p>
 
-      <form>
+      <div>
         <div className="grid grid-cols-1 gap-4 mb-6 md:grid-cols-2">
           <div className="flex flex-col">
             <input
@@ -99,6 +95,7 @@ function DebitForm({
               <input
                 type="text"
                 id="transitNumber"
+                name="transitNumber"
                 value={transitNumber}
                 onChange={(e) => {
                   let value = e.target.value;
@@ -126,6 +123,7 @@ function DebitForm({
               <input
                 type="text"
                 id="institutionNumber"
+                name="institutionNumber"
                 value={institutionNumber}
                 onChange={(e) => {
                   let value = e.target.value;
@@ -198,6 +196,7 @@ function DebitForm({
               <input
                 type="text"
                 id="accountNumber"
+                name="accountNumber"
                 value={accountNumber}
                 onChange={(e) => {
                   let value = e.target.value;
@@ -239,6 +238,7 @@ function DebitForm({
             <input
               type="text"
               id="verifyAccountNumber"
+              name="verifyAccountNumber"
               value={verifyAccountNumber}
               onChange={(e) => {
                 let value = e.target.value;
@@ -281,8 +281,9 @@ function DebitForm({
           <input
             type="checkbox"
             id="accountHolder"
-            checked={termsAgreed}
-            onChange={() => setTermsAgreed(!termsAgreed)}
+            name="accountHolder"
+            checked={debitHolder}
+            onChange={(e) => setDebitHolder(e.target.checked)}
             className="mr-2 accent-[#2DDE28]"
             style={{ marginTop: "3.5px" }}
           />
@@ -299,8 +300,9 @@ function DebitForm({
           <input
             type="checkbox"
             id="renewAgreed"
-            checked={renewAgreed}
-            onChange={() => setRenewAgreed(!renewAgreed)}
+            name="renewAgreed"
+            checked={debitAcknowledge}
+            onChange={(e) => setDebitAcknowledge(e.target.checked)}
             className="mr-2 accent-[#2DDE28]"
             style={{ marginTop: "3.5px" }}
           />
@@ -319,9 +321,10 @@ function DebitForm({
           <input
             type="checkbox"
             id="terms"
-            checked={confirm}
-            // disabled={!(termsPage && privacyPage)}
-            onChange={() => setConfirm(!confirm)}
+            name="terms"
+            checked={debitConfirm}
+            disabled={!(debitHolder && debitAcknowledge)}
+            onChange={(e) => setDebitConfirm(e.target.checked)}
             className="mr-2 accent-[#2DDE28]"
             style={{ marginTop: "3.5px" }}
           />
@@ -331,33 +334,25 @@ function DebitForm({
           >
             Please confirm you have read our{" "}
             <a
-              onClick={() => setTermsPage(true)}
+              // onClick={() => setTermsPage(true)}
               href="https://join.evolvestrength.ca/terms-and-conditions/"
               target="_blank"
-              className={` ${
-                !termsPage
-                  ? "font-[600] text-blue-600"
-                  : "font-[400] text-blue-400"
-              }`}
+              className={"font-[400] text-blue-500"}
             >
               Terms And Conditions
             </a>{" "}
             &{" "}
             <a
-              onClick={() => setPrivacyPage(true)}
+              // onClick={() => setPrivacyPage(true)}
               href="https://join.evolvestrength.ca/privacy-policy/"
               target="_blank"
-              className={` ${
-                !privacyPage
-                  ? "font-[600] text-blue-600"
-                  : "font-[400] text-blue-400"
-              }`}
+              className={"font-[400] text-blue-500"}
             >
               Privacy Policy
             </a>
           </label>
         </div>
-      </form>
+      </div>
     </div>
   );
 }

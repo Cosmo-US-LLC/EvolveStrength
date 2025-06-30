@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import MembershipSummaryBoxDesktop from "../../Membership/desktop/MembershipSummaryBoxDesktop";
 
 import StepperDesktop from "../../commen/StepperDesktop";
@@ -11,6 +11,35 @@ import useScrollDirection from "../../../../../hooks/useScrollDirection";
 import { useSelector } from "react-redux";
 import logo from "../../../../../assets/images/desktop/logo_navbar.svg";
 import Loader from "../../../../Loader";
+import { z } from "zod";
+import { usePaymentInputs } from "react-payment-inputs";
+
+const form1Schema = z.object({
+  firstName: z.string().trim().min(1, { message: "First name is required" }),
+  lastName: z.string().trim().min(1, { message: "Last name is required" }),
+  cardNumber: z.string().trim().optional(),
+  expiryDate: z
+    .string()
+    .trim()
+    .optional(),
+  cvc: z.string().trim().optional(),
+  accountHolder: z.literal("on", {
+    errorMap: () => ({ message: "Account holder authorization is required" }),
+  }),
+  terms: z.literal("on", {
+    errorMap: () => ({ message: "You must accept the Terms and Conditions" }),
+  }),
+  acknowledge: z.literal("on", {
+    errorMap: () => ({ message: "You must acknowledge the statement" }),
+  }),
+});
+
+const form2Schema = z.object({
+  firstName: z.string().trim().min(1, { message: "First name is required" }),
+  lastName: z.string().trim().min(1, { message: "Last name is required" }),
+  routingNumber: z.string().min(1, "Routing number is required"),
+  accountNumber: z.string().min(1, "Bank account is required"),
+});
 
 function ReviewAndPay() {
   const [selectPlan, setSelectPlan] = useState("card");
@@ -30,6 +59,10 @@ function ReviewAndPay() {
   const [lastName, setLastName] = useState(userInfo?.lname || "");
   const [firstCardName, setFirstCardName] = useState(userInfo?.fname || "");
   const [lastCardName, setLastCardName] = useState(userInfo?.lname || "");
+
+  const [termPage, setTermPage] = useState(false);
+  const [privacy, setPrivacy] = useState(false);
+
   const [transitNumber, setTransitNumber] = useState("");
   const [institutionNumber, setInstitutionNumber] = useState("");
   const [accountNumber, setAccountNumber] = useState("");
@@ -37,15 +70,66 @@ function ReviewAndPay() {
   const [confirm, setConfirm] = useState(false);
   const [confirmed, setConfirmed] = useState(false);
   const [cardNumber, setCardNumber] = useState("");
-  const [cvv, setCvv] = useState("");
-  const [expirationDate, setExpirationDate] = useState("");
+  const [cvc, setCvv] = useState("");
+  const [expiryDate, setExpirationDate] = useState("");
   const [termsAgreed, setTermsAgreed] = useState(false);
-  const [termsAgreeded, setTermsAgreeded] = useState(false);
+  // const [termsAgreeded, setTermsAgreeded] = useState(false);
   const [renewAgreed, setRenewAgreed] = useState(false);
-  const [renewAgreeded, setRenewAgreeded] = useState(false);
+  // const [renewAgreeded, setRenewAgreeded] = useState(false);
   const [errors, setErrors] = useState({});
   const [apiError, setApiError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+
+  // /////////////////////////////////////////////////////
+  const [cardAuthorize, setCardAuthorize] = useState(false);
+  const [cardAcknowledge, setCardAcknowledge] = useState(false);
+  const [cardConfirm, setCardConfirm] = useState(false);
+  // /////////////////////////////////////////////////////
+  const [debitHolder, setDebitHolder] = useState(false);
+  const [debitAcknowledge, setDebitAcknowledge] = useState(false);
+  const [debitConfirm, setDebitConfirm] = useState(false);
+  // /////////////////////////////////////////////////////
+
+  const {
+    getCardNumberProps,
+    getExpiryDateProps,
+    getCVCProps,
+    getCardImageProps,
+    meta,
+  } = usePaymentInputs();
+
+  // const [isDisabled, setIsDisabled] = useState(
+  //   Object.keys(meta.erroredInputs)
+  //     ?.map((objKey) => meta.erroredInputs[objKey] == "undefined" && objKey)
+  //     .filter(Boolean)?.length > 0 ||
+  //     Object.keys(meta.touchedInputs)
+  //       ?.map((objKey) => meta.touchedInputs[objKey] == true)
+  //       .filter(Boolean)?.length < 3 ||
+  //     !isHuman ||
+  //     !cardConfirm ||
+  //     !cardAcknowledge ||
+  //     !cardAuthorize
+  // );
+  // const [isDisabled2, setIsDisabled2] = useState(
+  //   !isHuman || !debitHolder || !debitAcknowledge || !debitConfirm
+  // );
+
+  // useEffect(() => {
+  //   setIsDisabled(
+  //     Object.keys(meta.erroredInputs)
+  //       ?.map((objKey) =>
+  //         meta.erroredInputs[objKey] == undefined ? false : true
+  //       )
+  //       .filter(Boolean)?.length > 0 ||
+  //       Object.keys(meta.touchedInputs)
+  //         ?.map((objKey) => meta.touchedInputs[objKey] == true)
+  //         .filter(Boolean)?.length < 3 ||
+  //       !isHuman ||
+  //       !cardConfirm ||
+  //       !cardAcknowledge ||
+  //       !cardAuthorize
+  //   );
+  // }, [meta, isHuman, cardConfirm, cardAcknowledge, cardAuthorize]);
 
   const location = clubLocationPostal;
   const planId =
@@ -54,11 +138,7 @@ function ReviewAndPay() {
     plan === "monthly"
       ? clubPlanMonthly?.planValidation
       : clubPlanYearly?.planValidation;
-  const fName = userInfo?.fname;
-  const lName = userInfo?.lname;
-  const formattedLastName = lName.charAt(0).toUpperCase();
-  const email = userInfo?.email;
-  const gender = userInfo?.gender;
+
   let number = userInfo?.phone;
   const accountId = clubLocationId;
 
@@ -120,7 +200,7 @@ function ReviewAndPay() {
   const stateCode = provinceMap[provinceName?.trim()] || "";
 
   const routingNumber = `0${institutionNumber}${transitNumber}`;
-  const [expMonth, expYearRaw] = expirationDate.split("/");
+  const [expMonth, expYearRaw] = expiryDate.split("/");
   const expYear = expYearRaw?.length === 2 ? `20${expYearRaw}` : expYearRaw;
 
   let schedules = ["Dues"];
@@ -130,76 +210,6 @@ function ReviewAndPay() {
     addOnDetails === true
   ) {
     schedules = ["Dues", "Towel"];
-  }
-
-  const payload = {
-    paymentPlanId: planId || "",
-    planValidationHash: planValidate || "",
-    campaignId: "730E227DC96B7F9EE05302E014ACD689",
-    activePresale: "true",
-    sendAgreementEmail: "true",
-    agreementContactInfo: {
-      firstName: fName || "John",
-      middleInitial: formattedLastName || "",
-      lastName: lName || "Doe",
-      email: email || "",
-      gender: gender || "",
-      homePhone: "",
-      cellPhone: digitsOnly || "9495898283",
-      workPhone: "",
-      birthday: selectedDate || "",
-      wellnessProgramId: "",
-      barcode: "",
-      agreementAddressInfo: {
-        addressLine1: address || "",
-        addressLine2: "",
-        city: city || "",
-        state: stateCode || "ON",
-        country: "CA",
-        zipCode: formattedPostalCode || "",
-      },
-      emergencyContact: {
-        ecFirstName: "",
-        ecLastName: "",
-        ecPhone: "",
-        ecPhoneExtension: "",
-      },
-    },
-    todayBillingInfo: {},
-    draftBillingInfo: {},
-    schedules: schedules,
-    marketingPreferences: {
-      email: "true",
-      sms: "true",
-      directMail: "true",
-      pushNotification: "true",
-    },
-  };
-
-  if (selectPlan !== "direct_debit") {
-    payload.todayBillingInfo = {
-      isTodayBillingSameAsDraft: "true",
-      todayCcCvvCode: cvv || "",
-      todayCcBillingZip: formattedPostalCode || "",
-    };
-
-    payload.draftBillingInfo.draftCreditCard = {
-      creditCardFirstName: firstCardName || "John",
-      creditCardLastName: lastCardName || "Doe",
-      creditCardType: "visa",
-      creditCardAccountNumber: cardNumber || "",
-      creditCardExpMonth: expMonth || "00",
-      creditCardExpYear: expYear || "",
-    };
-    // 👉 Debit (Bank Account) flow
-  } else if (selectPlan === "direct_debit") {
-    payload.draftBillingInfo.draftBankAccount = {
-      draftAccountFirstName: firstName || "John",
-      draftAccountLastName: lastName || "Doe",
-      draftAccountRoutingNumber: routingNumber || "",
-      draftAccountNumber: accountNumber || "",
-      draftAccountType: "Checking",
-    };
   }
 
   const createPeople = async () => {
@@ -213,9 +223,9 @@ function ReviewAndPay() {
           },
           body: JSON.stringify({
             club_id: clubLocationPostal,
-            first_name: fName || "John",
-            last_name: lName || "Doe",
-            email: email || "",
+            first_name: userInfo?.fname || "John",
+            last_name: userInfo?.lname || "Doe",
+            email: userInfo?.email || "",
             birthday: selectedDate || "",
             phone_mobile: number || "",
             address: address || "",
@@ -240,13 +250,84 @@ function ReviewAndPay() {
     }
   };
 
-  const getAgreementInfo = async () => {
+  const getAgreementInfo = async (data) => {
     setIsLoading(true);
+
+    const payload = {
+      paymentPlanId: planId || "",
+      planValidationHash: planValidate || "",
+      campaignId: "730E227DC96B7F9EE05302E014ACD689",
+      activePresale: "true",
+      sendAgreementEmail: "true",
+      agreementContactInfo: {
+        firstName: userInfo?.fname || "John",
+        middleInitial: userInfo?.lname.charAt(0).toUpperCase() || "",
+        lastName: userInfo?.lname || "Doe",
+        email: userInfo?.email || "",
+        gender: userInfo?.gender || "",
+        homePhone: "",
+        cellPhone: digitsOnly || "9495898283",
+        workPhone: "",
+        birthday: selectedDate || "",
+        wellnessProgramId: "",
+        barcode: "",
+        agreementAddressInfo: {
+          addressLine1: address || "",
+          addressLine2: "",
+          city: city || "",
+          state: stateCode || "ON",
+          country: "CA",
+          zipCode: formattedPostalCode || "",
+        },
+        emergencyContact: {
+          ecFirstName: "",
+          ecLastName: "",
+          ecPhone: "",
+          ecPhoneExtension: "",
+        },
+      },
+      todayBillingInfo: {},
+      draftBillingInfo: {},
+      schedules: schedules,
+      marketingPreferences: {
+        email: "true",
+        sms: "true",
+        directMail: "true",
+        pushNotification: "true",
+      },
+    };
+
+    if (selectPlan !== "direct_debit") {
+      payload.todayBillingInfo = {
+        isTodayBillingSameAsDraft: "true",
+        todayCcCvvCode: data?.cvc.trim() || "",
+        todayCcBillingZip: formattedPostalCode || "",
+      };
+
+      payload.draftBillingInfo.draftCreditCard = {
+        creditCardFirstName: data?.firstName || "John",
+        creditCardLastName: data?.lastName || "Doe",
+        creditCardType: meta?.cardType?.type.trim(),
+        creditCardAccountNumber: data?.cardNumber?.replace(/\s+/g, "") || "",
+        creditCardExpMonth: parseInt(data?.expiryDate?.split("/")[0].trim()) || "00",
+        creditCardExpYear: parseInt(`20${data?.expiryDate?.split("/")[1].trim()}`) || "",
+      };
+      // 👉 Debit (Bank Account) flow
+    } else if (selectPlan === "direct_debit") {
+      payload.draftBillingInfo.draftBankAccount = {
+        draftAccountFirstName: data?.firstName || "John",
+        draftAccountLastName: data?.lastName || "Doe",
+        draftAccountRoutingNumber: data?.routingNumber || "",
+        draftAccountNumber: data?.accountNumber || "",
+        draftAccountType: "Checking",
+      };
+    }
+
     try {
       const response = await fetch(
         `${
           import.meta.env.VITE_APP_API_URL
-        }submitAgreement?location=${location}`,
+        }/submitAgreement?location=${location}`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -297,58 +378,50 @@ function ReviewAndPay() {
         newErrors.verifyAccountNumber = "Please re-enter your account number.";
       else if (accountNumber !== verifyAccountNumber)
         newErrors.verifyAccountNumber = "Account numbers do not match.";
-    } else {
-      if (!firstCardName.trim())
-        newErrors.firstCardName = "First name is required.";
-      if (!lastCardName.trim())
-        newErrors.lastCardName = "Last name is required.";
-      if (!cardNumber.trim()) newErrors.cardNumber = "Card number is required.";
-      else if (cardNumber.length !== 16)
-        newErrors.cardNumber = "Card number must be 16 digits.";
-
-      if (!cvv.trim()) newErrors.cvv = "CVV is required.";
-      else if (cvv.length !== 3) newErrors.cvv = "CVV must be 3 digits.";
-
-      if (!expirationDate.trim()) {
-        newErrors.expirationDate = "Expiration date is required.";
-      } else if (expirationDate.length < 5) {
-        newErrors.expirationDate = "Expiration date is invalid.";
-      } else {
-        // Extract the month and year from the expirationDate (MM/YY format)
-        const [month, year] = expirationDate.split("/");
-
-        // Get the current month and year
-        const currentDate = new Date();
-        const currentMonth = currentDate.getMonth() + 1; // months are 0-indexed, so add 1
-        const currentYear = currentDate.getFullYear() % 100; // get last two digits of the current year
-
-        // Convert the extracted expiration month and year to integers
-        const expirationMonth = parseInt(month, 10);
-        const expirationYear = parseInt(year, 10);
-
-        // Check if the expiration date is before the current date
-        if (
-          expirationYear < currentYear ||
-          (expirationYear === currentYear && expirationMonth < currentMonth)
-        ) {
-          newErrors.expirationDate = "This card has expired.";
-        }
-      }
     }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleJoinNow = () => {
-    if (!validateFields()) return;
-    getAgreementInfo();
+  const handleJoinNow = (e) => {
+    // console.log(meta)
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const data = Object.fromEntries(formData.entries());
+
+    let activeSchema;
+    if (selectPlan != "direct_debit") {
+      activeSchema = form1Schema;
+    } else if (selectPlan == "direct_debit") {
+      activeSchema = form2Schema;
+    }
+
+    const result = activeSchema.safeParse(data);
+
+    console.log(meta);
+    console.log("Flattened error:", result?.error?.flatten());
+
+    if (!result.success) {
+      setErrors(result.error.flatten().fieldErrors);
+      return;
+    }
+
+    setErrors({});
+    console.log("Validated data:", result.data);
+
+    // return;
+    // if (!validateFields()) return;
+    getAgreementInfo(result.data);
   };
 
   if (isLoading) return <Loader show={false} />;
 
   return (
-    <div className="relative w-full review_and_pay_bg">
+    <form
+      onSubmit={handleJoinNow}
+      className="relative w-full review_and_pay_bg"
+    >
       <nav
         className={`fixed top-0 py-4 bg-[#000000] shadow-md z-50 w-full flex items-center transition-transform duration-300 ${
           scrollDirection === "down" ? "-translate-y-full" : "translate-y-0"
@@ -360,21 +433,22 @@ function ReviewAndPay() {
           </a>
 
           <button
-            onClick={handleJoinNow}
-            disabled={
-              selectPlan !== "direct_debit"
-                ? !(isHuman && termsAgreeded && renewAgreeded && confirmed)
-                : !(isHuman && termsAgreed && renewAgreed && confirm)
-            }
-            className={`w-[141px] ${
-              selectPlan !== "direct_debit"
-                ? isHuman && termsAgreeded && renewAgreeded && confirmed
-                  ? "bg-[#2DDE28]"
-                  : "bg-gray-400 cursor-not-allowed"
-                : isHuman && termsAgreed && renewAgreed && confirm
-                ? "bg-[#2DDE28]"
-                : "bg-gray-400 cursor-not-allowed"
-            } text-black text-[16px] font-medium h-[50px] button`}
+            type="submit"
+            className={`button mt-6 bg-[#2DDE28] text-black text-[16px] font-medium w-[139px] h-[42px]`}
+            // disabled={
+            //   selectPlan !== "direct_debit"
+            //     ? isDisabled
+            //     : !(isHuman && termsAgreed && renewAgreed && confirm)
+            // }
+            // className={`w-[141px] ${
+            //   selectPlan !== "direct_debit"
+            //     ? !isDisabled
+            //       ? "bg-[#2DDE28]"
+            //       : "bg-gray-400 !cursor-not-allowed"
+            //     : isHuman && termsAgreed && renewAgreed && confirm
+            //     ? "bg-[#2DDE28]"
+            //     : "bg-gray-400 cursor-not-allowed"
+            // } text-black text-[16px] font-medium h-[50px] button`}
           >
             PAY NOW
           </button>
@@ -411,14 +485,14 @@ function ReviewAndPay() {
                 setAccountNumber={setAccountNumber}
                 verifyAccountNumber={verifyAccountNumber}
                 setVerifyAccountNumber={setVerifyAccountNumber}
-                confirm={confirm}
-                setConfirm={setConfirm}
                 errors={errors}
                 setErrors={setErrors}
-                termsAgreed={termsAgreed}
-                setTermsAgreed={setTermsAgreed}
-                renewAgreed={renewAgreed}
-                setRenewAgreed={setRenewAgreed}
+                debitHolder={debitHolder}
+                debitAcknowledge={debitAcknowledge}
+                debitConfirm={debitConfirm}
+                setDebitHolder={setDebitHolder}
+                setDebitAcknowledge={setDebitAcknowledge}
+                setDebitConfirm={setDebitConfirm}
               />
             ) : (
               <CardForm
@@ -426,20 +500,24 @@ function ReviewAndPay() {
                 setFirstCardName={setFirstCardName}
                 lastCardName={lastCardName}
                 setLastCardName={setLastCardName}
-                cardNumber={cardNumber}
-                setCardNumber={setCardNumber}
-                cvv={cvv}
-                setCvv={setCvv}
-                expirationDate={expirationDate}
-                setExpirationDate={setExpirationDate}
+                termPage={termPage}
+                setTermPage={setTermPage}
+                privacy={privacy}
+                setPrivacy={setPrivacy}
                 confirm={confirmed}
                 setConfirm={setConfirmed}
                 errors={errors}
                 setErrors={setErrors}
-                termsAgreed={termsAgreeded}
-                setTermsAgreed={setTermsAgreeded}
-                renewAgreeded={renewAgreeded}
-                setRenewAgreeded={setRenewAgreeded}
+                getCardNumberProps={getCardNumberProps}
+                getExpiryDateProps={getExpiryDateProps}
+                getCVCProps={getCVCProps}
+                meta={meta}
+                cardAuthorize={cardAuthorize}
+                cardAcknowledge={cardAcknowledge}
+                cardConfirm={cardConfirm}
+                setCardAuthorize={setCardAuthorize}
+                setCardAcknowledge={setCardAcknowledge}
+                setCardConfirm={setCardConfirm}
               />
             )}
           </div>
@@ -454,21 +532,22 @@ function ReviewAndPay() {
             />
             <div className="flex flex-col items-end justify-end w-full mt-6">
               <button
-                onClick={handleJoinNow}
-                className={`button mt-6 ${
-                  selectPlan !== "direct_debit"
-                    ? isHuman && termsAgreeded && renewAgreeded && confirmed
-                      ? "bg-[#2DDE28]"
-                      : "bg-gray-400 cursor-not-allowed"
-                    : isHuman && termsAgreed && renewAgreed && confirm
-                    ? "bg-[#2DDE28]"
-                    : "bg-gray-400 cursor-not-allowed"
-                } text-black text-[16px] font-medium w-[139px] h-[42px]`}
-                disabled={
-                  selectPlan !== "direct_debit"
-                    ? !(isHuman && termsAgreeded && renewAgreeded && confirmed)
-                    : !(isHuman && termsAgreed && renewAgreed && confirm)
-                }
+                type="submit"
+                className={`button mt-6 bg-[#2DDE28] text-black text-[16px] font-medium w-[139px] h-[42px]`}
+                // className={`button mt-6 ${
+                //   selectPlan !== "direct_debit"
+                //     ? !isDisabled
+                //       ? "bg-[#2DDE28]"
+                //       : "bg-gray-400 !cursor-not-allowed"
+                //     : isHuman && termsAgreed && renewAgreed && confirm
+                //     ? "bg-[#2DDE28]"
+                //     : "bg-gray-400 cursor-not-allowed"
+                // } text-black text-[16px] font-medium w-[139px] h-[42px]`}
+                // disabled={
+                //   selectPlan !== "direct_debit"
+                //     ? isDisabled
+                //     : !(isHuman && termsAgreed && renewAgreed && confirm)
+                // }
               >
                 PAY NOW
               </button>
@@ -481,7 +560,7 @@ function ReviewAndPay() {
           </div>
         </div>
       </div>
-    </div>
+    </form>
   );
 }
 
