@@ -66,6 +66,13 @@ const form2Schema = z
     path: ["verifyAccountNumber"],
   });
 
+const cardTypeMap = {
+  visa: "visa",
+  mastercard: "mastercard",
+  amex: "americanexpress",
+  discover: "discover",
+};
+
 function ReviewAndPay() {
   const [selectPlan, setSelectPlan] = useState("card");
   const {
@@ -121,9 +128,7 @@ function ReviewAndPay() {
     getCVCProps,
     getCardImageProps,
     meta,
-  } = usePaymentInputs({
-    acceptedCards: ["visa", "mastercard", "amex"],
-  });
+  } = usePaymentInputs();
 
   // const [isDisabled, setIsDisabled] = useState(
   //   Object.keys(meta.erroredInputs)
@@ -168,6 +173,8 @@ function ReviewAndPay() {
 
   let number = userInfo?.phone;
   const accountId = clubLocationId;
+
+  // console.log(meta)
 
   const digitsOnly = number.replace(/\D/g, "");
   if (digitsOnly.length === 10) {
@@ -334,7 +341,10 @@ function ReviewAndPay() {
       payload.draftBillingInfo.draftCreditCard = {
         creditCardFirstName: data?.firstName || "John",
         creditCardLastName: data?.lastName || "Doe",
-        creditCardType: meta?.cardType?.type.trim(),
+        creditCardType: meta.cardType
+          ? cardTypeMap[meta.cardType.type] || "unsupported"
+          : null,
+        // creditCardType: meta?.cardType?.type.trim(),
         creditCardAccountNumber: data?.cardNumber?.replace(/\s+/g, "") || "",
         creditCardExpMonth:
           parseInt(data?.expiryDate?.split("/")[0].trim()) || "00",

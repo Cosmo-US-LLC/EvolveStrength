@@ -65,6 +65,13 @@ const form2Schema = z
     path: ["verifyAccountNumber"],
   });
 
+const cardTypeMap = {
+  visa: "visa",
+  mastercard: "mastercard",
+  amex: "americanexpress",
+  discover: "discover",
+};
+
 const MemberPayment = () => {
   const navigate = useNavigate();
   const [paymentMethod, setPaymentMethod] = useState("card");
@@ -92,26 +99,24 @@ const MemberPayment = () => {
   const [apiError, setApiError] = useState(null);
   // console.log("apiError", apiError);
   const [isLoading, setIsLoading] = useState(false);
-  
-    // /////////////////////////////////////////////////////
-    const [cardAuthorize, setCardAuthorize] = useState(false);
-    const [cardAcknowledge, setCardAcknowledge] = useState(false);
-    const [cardConfirm, setCardConfirm] = useState(false);
-    // /////////////////////////////////////////////////////
-    const [debitHolder, setDebitHolder] = useState(false);
-    const [debitAcknowledge, setDebitAcknowledge] = useState(false);
-    const [debitConfirm, setDebitConfirm] = useState(false);
-    // /////////////////////////////////////////////////////
-  
-    const {
-      getCardNumberProps,
-      getExpiryDateProps,
-      getCVCProps,
-      getCardImageProps,
-      meta,
-    } = usePaymentInputs({
-      acceptedCards: ["visa", "mastercard", "amex"],
-    });
+
+  // /////////////////////////////////////////////////////
+  const [cardAuthorize, setCardAuthorize] = useState(false);
+  const [cardAcknowledge, setCardAcknowledge] = useState(false);
+  const [cardConfirm, setCardConfirm] = useState(false);
+  // /////////////////////////////////////////////////////
+  const [debitHolder, setDebitHolder] = useState(false);
+  const [debitAcknowledge, setDebitAcknowledge] = useState(false);
+  const [debitConfirm, setDebitConfirm] = useState(false);
+  // /////////////////////////////////////////////////////
+
+  const {
+    getCardNumberProps,
+    getExpiryDateProps,
+    getCVCProps,
+    getCardImageProps,
+    meta,
+  } = usePaymentInputs();
 
   useEffect(() => {
     if (!userInfo) {
@@ -224,7 +229,7 @@ const MemberPayment = () => {
     //   return;
     // }
     // setErrors([]);
-    
+
     e.preventDefault();
     const formData = new FormData(e.target);
     const dataP = Object.fromEntries(formData.entries());
@@ -248,13 +253,14 @@ const MemberPayment = () => {
 
     setErrors({});
     console.log("Validated data:", result.data);
-    const data = result?.data
+    const data = result?.data;
     setIsLoading(true);
 
     try {
       const routingNumber = `0${data?.institutionNumber}${data?.transitNumber}`;
       const [expMonth, expYearRaw] = data?.expiryDate?.split("/");
-      const expYear = expYearRaw?.length === 2 ? (`20${expYearRaw}`).trim() : expYearRaw;
+      const expYear =
+        expYearRaw?.length === 2 ? `20${expYearRaw}`.trim() : expYearRaw;
       const formattedPostalCode = (`${userInfo?.postal}` || "")
         .toUpperCase()
         .replace(/\s+/g, "")
@@ -352,10 +358,14 @@ const MemberPayment = () => {
         payload.draftBillingInfo.draftCreditCard = {
           creditCardFirstName: data?.firstName || "John",
           creditCardLastName: data?.firstName || "Doe",
-          creditCardType: meta?.cardType?.type.trim(),
+          creditCardType: meta.cardType
+          ? cardTypeMap[meta.cardType.type] || "unsupported"
+          : null,
           creditCardAccountNumber: data?.cardNumber?.replace(/\s+/g, "") || "",
-          creditCardExpMonth: parseInt(data?.expiryDate?.split("/")[0].trim()) || "00",
-          creditCardExpYear: parseInt(`20${data?.expiryDate?.split("/")[1].trim()}`) || "",
+          creditCardExpMonth:
+            parseInt(data?.expiryDate?.split("/")[0].trim()) || "00",
+          creditCardExpYear:
+            parseInt(`20${data?.expiryDate?.split("/")[1].trim()}`) || "",
         };
         // 👉 Debit (Bank Account) flow
       } else if (paymentMethod === "direct") {
@@ -560,7 +570,6 @@ const MemberPayment = () => {
           updateErrs={updateErrs}
           apiError={apiError}
           paymentMethod={paymentMethod}
-          
           getCardNumberProps={getCardNumberProps}
           getExpiryDateProps={getExpiryDateProps}
           getCardImageProps={getCardImageProps}
