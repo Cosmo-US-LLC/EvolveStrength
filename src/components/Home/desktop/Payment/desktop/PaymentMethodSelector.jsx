@@ -6,11 +6,11 @@ import credit_icon_inactive from "../../../../../assets/images/desktop/credit_ic
 
 const PaymentMethodSelector = ({ selectPlan, setSelectPlan }) => {
   return (
-    <div className="flex flex-row items-center mt-4 p-2 bg-[#000000]/60 backdrop-blur-[20px] w-[607px] h-[72px] border border-[1px] border-[#464646]">
+    <div className="flex flex-row items-center mt-4 p-2 bg-[#000000]/60 backdrop-blur-[20px] w-fit h-[72px] border border-[1px] border-[#464646]">
       {/* DIRECT DEBIT */}
 
       <div
-        onClick={() => setSelectPlan("card")}
+        // onClick={() => setSelectPlan("card")}
         className={`cursor-pointer w-[326px] h-[59px] flex items-center justify-center ${
           selectPlan === "card" ? "bg-[#2DDE28]" : "bg-transparent"
         }`}
@@ -31,7 +31,7 @@ const PaymentMethodSelector = ({ selectPlan, setSelectPlan }) => {
         </p>
       </div>
 
-      <div
+      {/* <div
         onClick={() => setSelectPlan("direct_debit")}
         className={`cursor-pointer w-[326px] h-[59px] flex items-center justify-center ${
           selectPlan === "direct_debit" ? "bg-[#2DDE28]" : "bg-transparent"
@@ -55,7 +55,7 @@ const PaymentMethodSelector = ({ selectPlan, setSelectPlan }) => {
         >
           DIRECT DEBIT
         </p>
-      </div>
+      </div> */}
     </div>
   );
 };

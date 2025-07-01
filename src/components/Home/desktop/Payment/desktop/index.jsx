@@ -516,15 +516,15 @@ function ReviewAndPay() {
         <p className="text-[#2DDE28] font-[kanit] text-[79px] font-[700] leading-[66px] tracking-[-1.329px] uppercase">
           Pay
         </p>
-        <div className="flex flex-row justify-between mt-16">
+        <div className="flex flex-row justify-between mt-6">
           <div>
             {/* <p className=" text-white text-[16px] font-[kanit] font-[600] leading-[16px] uppercase">
               Choose your payment option
-            </p>
+            </p> */}
             <PaymentMethodSelector
               selectPlan={selectPlan}
               setSelectPlan={setSelectPlan}
-            /> */}
+            />
             {selectPlan === "direct_debit" ? (
               <DebitForm
                 firstName={firstName}

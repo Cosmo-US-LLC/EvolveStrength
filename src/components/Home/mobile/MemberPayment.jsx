@@ -476,15 +476,15 @@ const MemberPayment = () => {
 
       <MembershipVancouver />
 
-      {/* <div className="flex flex-col">
-        <p className="text-white font-[kanit] pb-1 text-[16px] font-[600] uppercase leading-[16px]">
+      <div className="flex flex-col">
+        {/* <p className="text-white font-[kanit] pb-1 text-[16px] font-[600] uppercase leading-[16px]">
           Choose your payment option
-        </p>
+        </p> */}
 
-        <div className="flex p-1 overflow-hidden border border-white/40">
-          <button
-            onClick={() => setPaymentMethod("card")}
-            className={`cursor-pointer w-1/2 py-2 text-[14px] font-[500] font-[vazirmatn] uppercase flex items-center justify-center space-x-2 ${
+        <div className="flex p-1 overflow-hidden border border-white/40 w-1/2">
+          <div
+            // onClick={() => setPaymentMethod("card")}
+            className={`cursor-pointer w-full py-2 text-[14px] font-[500] font-[vazirmatn] uppercase flex items-center justify-center space-x-2 ${
               paymentMethod === "card"
                 ? "bg-[#2DDE28] text-black"
                 : "text-white"
@@ -500,8 +500,8 @@ const MemberPayment = () => {
               className="w-4 h-4"
             />
             <span>Card pay</span>
-          </button>
-          <button
+          </div>
+          {/* <button
             onClick={() => setPaymentMethod("direct")}
             className={`cursor-pointer w-1/2 py-2 text-[14px] font-[500] font-[vazirmatn] uppercase flex items-center justify-center gap-2 ${
               paymentMethod === "direct"
@@ -519,9 +519,9 @@ const MemberPayment = () => {
               className="w-4 h-4"
             />
             <span>Direct Debit</span>
-          </button>
+          </button> */}
         </div>
-      </div> */}
+      </div>
 
       {paymentMethod === "direct" ? (
         <DirectDebitForm
