@@ -58,6 +58,7 @@ function AboutYourself() {
 
   const validateForm = () => {
     const errors = {};
+    const allowedPattern = /^[A-Za-z0-9 /#]{1,44}$/;
 
     if (!formData.firstName.trim()) errors.firstName = "First name is required";
     if (!formData.lastName.trim()) errors.lastName = "Last name is required";
@@ -79,6 +80,9 @@ function AboutYourself() {
     }
     if (!formData.address.trim())
       errors.address = "Mailing address is required";
+    if (!allowedPattern.test(formData.address.trim()))
+      errors.address = "Mailing address expected format between 1 and 44 alphanumeric characters, spaces, forward slashes(/), or pound signs(#).";
+      // errors.address = "Mailing address can only contain letters, digits, spaces, /, # and -";
     if (!formData.province.trim()) errors.province = "Province is required";
     if (!formData.city.trim()) errors.city = "City is required";
     if (!formData.postalCode.trim()) {
@@ -105,7 +109,9 @@ function AboutYourself() {
         lname: formData.lastName,
         email: formData.email,
         phone: formData.number,
-        address: formData.address,
+        address: formData.address
+          .replaceAll("é", "e")
+          .replace(/[^\w\s/#-]/g, ""),
         province: formData.province,
         city: formData.city,
         postal: formData.postalCode,

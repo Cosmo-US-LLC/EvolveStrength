@@ -32,7 +32,7 @@ const AboutYourselfForm = ({
 
   const formatAddress = (address) => {
     // Remove any special characters that are not allowed by the API
-    return address.replace(/[^\w\s/#-]/g, "").slice(0, 44); // Limit to 44 characters
+    return address.replaceAll('é', 'e').replace(/[^A-Za-z0-9 /#]/g, "").slice(0, 44); // Limit to 44 characters
   };
 
   const handlePostalCodeFocus = async () => {
@@ -69,25 +69,30 @@ const AboutYourselfForm = ({
               }
               if (component.types.includes("street_number")) {
                 shortAddress = (component.long_name)?.replaceAll('é', 'e');
+                shortAddress = (component.long_name)?.replace(/[^A-Za-z0-9 /#]/g, "");
                 // break;
                 continue;
               }
               if (component.types.includes("route")) {
                 shortAddress = (shortAddress + " " + component.long_name)?.replaceAll('é', 'e');
+                shortAddress = (shortAddress + " " + component.long_name)?.replace(/[^A-Za-z0-9 /#]/g, "");
                 // break;
                 continue;
               }
               if (component.types.includes("administrative_area_level_1")) {
                 province = component.long_name?.replaceAll('é', 'e');
+                province = component.long_name?.replace(/[^A-Za-z0-9 /#]/g, "");
                 // break;
                 continue;
               }
               if (component.types.includes("administrative_area_level_3")) {
                 city = component.long_name?.replaceAll('é', 'e');
+                city = component.long_name?.replace(/[^A-Za-z0-9 /#]/g, "");
                 // break;
                 continue;
               } else if (component.types.includes("locality")) {
                 city = component.long_name?.replaceAll('é', 'e');
+                city = component.long_name?.replace(/[^A-Za-z0-9 /#]/g, "");
                 // break;
                 continue;
               }
@@ -187,25 +192,29 @@ const AboutYourselfForm = ({
               }
               if (component.types.includes("street_number")) {
                 shortAddress = component.long_name?.replaceAll('é', 'e');
+                shortAddress = component.long_name?.replace(/[^A-Za-z0-9 /#]/g, "");
                 // break;
                 continue;
               }
               if (component.types.includes("route")) {
                 shortAddress = (shortAddress + " " + component.long_name)?.replaceAll('é', 'e');
+                shortAddress = (shortAddress + " " + component.long_name)?.replace(/[^A-Za-z0-9 /#]/g, "");
                 // break;
                 continue;
               }
               if (component.types.includes("administrative_area_level_1")) {
                 province = component.long_name?.replaceAll('é', 'e');
+                province = component.long_name?.replace(/[^A-Za-z0-9 /#]/g, "");
                 // break;
                 continue;
               }
               if (component.types.includes("administrative_area_level_3")) {
                 city = component.long_name?.replaceAll('é', 'e');
+                city = component.long_name?.replace(/[^A-Za-z0-9 /#]/g, "");
                 // break;
                 continue;
               } else if (component.types.includes("locality")) {
-                city = component.long_name?.replaceAll('é', 'e');
+                city = component.long_name?.replace(/[^A-Za-z0-9 /#]/g, "");
                 // break;
                 continue;
               }

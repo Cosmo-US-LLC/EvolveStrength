@@ -51,7 +51,7 @@ const MemberDetails = () => {
 
   const formatAddress = (address) => {
     // Remove any special characters that are not allowed by the API
-    return address.replace(/[^\w\s/#-]/g, "").slice(0, 44); // Limit to 44 characters
+    return address.replace(/[^A-Za-z0-9 /#]/g, "").slice(0, 44); // Limit to 44 characters
   };
 
   const handlePostalCodeFocus = async () => {
@@ -86,25 +86,30 @@ const MemberDetails = () => {
               }
               if (component.types.includes("street_number")) {
                 shortAddress = component.long_name?.replaceAll('é', 'e');
+                shortAddress = component.long_name?.replace(/[^A-Za-z0-9 /#]/g, "");
                 // break;
                 continue;
               }
               if (component.types.includes("route")) {
                 shortAddress = (shortAddress + " " + component.long_name)?.replaceAll('é', 'e');
+                shortAddress = (shortAddress + " " + component.long_name)?.replace(/[^A-Za-z0-9 /#]/g, "");
                 // break;
                 continue;
               }
               if (component.types.includes("administrative_area_level_1")) {
                 province = component.long_name?.replaceAll('é', 'e');
+                province = component.long_name?.replace(/[^A-Za-z0-9 /#]/g, "");
                 // break;
                 continue;
               }
               if (component.types.includes("administrative_area_level_3")) {
                 city = component.long_name?.replaceAll('é', 'e');
+                city = component.long_name?.replace(/[^A-Za-z0-9 /#]/g, "");
                 // break;
                 continue;
               } else if (component.types.includes("locality")) {
                 city = component.long_name?.replaceAll('é', 'e');
+                city = component.long_name?.replace(/[^A-Za-z0-9 /#]/g, "");
                 // break;
                 continue;
               }
@@ -200,25 +205,30 @@ const MemberDetails = () => {
               }
               if (component.types.includes("street_number")) {
                 shortAddress = component.long_name?.replaceAll('é', 'e');
+                shortAddress = component.long_name?.replace(/[^A-Za-z0-9 /#]/g, "");
                 // break;
                 continue;
               }
               if (component.types.includes("route")) {
                 shortAddress = (shortAddress + " " + component.long_name)?.replaceAll('é', 'e');
+                shortAddress = (shortAddress + " " + component.long_name)?.replace(/[^A-Za-z0-9 /#]/g, "");
                 // break;
                 continue;
               }
               if (component.types.includes("administrative_area_level_1")) {
                 province = component.long_name?.replaceAll('é', 'e');
+                province = component.long_name?.replace(/[^A-Za-z0-9 /#]/g, "");
                 // break;
                 continue;
               }
               if (component.types.includes("administrative_area_level_3")) {
                 city = component.long_name?.replaceAll('é', 'e');
+                city = component.long_name?.replace(/[^A-Za-z0-9 /#]/g, "");
                 // break;
                 continue;
               } else if (component.types.includes("locality")) {
                 city = component.long_name?.replaceAll('é', 'e');
+                city = component.long_name?.replace(/[^A-Za-z0-9 /#]/g, "");
                 // break;
                 continue;
               }
@@ -316,6 +326,7 @@ const MemberDetails = () => {
 
   const validateForm = () => {
     const errors = {};
+    const allowedPattern = /^[A-Za-z0-9 /#]{1,44}$/;
 
     if (!fname.trim()) errors.fname = "First name is required.";
     if (!lname.trim()) errors.lname = "Last name is required.";
@@ -338,6 +349,9 @@ const MemberDetails = () => {
     }
 
     if (!address.trim()) errors.address = "Address is required.";
+    if (!allowedPattern.test(address.trim()))
+      errors.address = "Mailing address expected format between 1 and 44 alphanumeric characters, spaces, forward slashes(/), or pound signs(#).";
+      // errors.address = "Mailing address can only contain letters, digits, spaces, /, # and -";
     if (!province.trim()) errors.province = "Province is required.";
     if (!city.trim()) errors.city = "City is required.";
     if (!postal.trim()) errors.postal = "Postal code is required.";
