@@ -163,7 +163,7 @@ function CardForm({
             <div className="flex flex-col">
               <input
                 {...getCVCProps()}
-                placeholder="CVC"
+                // placeholder="CVC"
                 className={`p-3 pb-2 pt-[14px] bg-[#000000]/60 backdrop-blur-[10px] font-[vazirmatn] text-[16px] border text-white placeholder-[#999999] ${
                   errors.cvc ||
                   (meta?.touchedInputs?.cvc && meta?.erroredInputs?.cvc)
