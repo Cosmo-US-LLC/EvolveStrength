@@ -4,6 +4,7 @@ import mcIcon from "../../../assets/images/mobile/payment/credit2.svg";
 import lockIcon from "../../../assets/images/mobile/payment/credit3.svg";
 import lockIcon2 from "../../../assets/images/mobile/payment/credit4.svg";
 import { useSelector } from "react-redux";
+import images from "react-payment-inputs/images";
 
 const CardPaymentForm = ({
   makeAgreement,
@@ -13,7 +14,7 @@ const CardPaymentForm = ({
   setLname,
   cardNumber,
   setCardNumber,
-  cvv,
+  cvc,
   setCvv,
   expirationDate,
   setExpirationDate,
@@ -21,19 +22,29 @@ const CardPaymentForm = ({
   updateErrs,
   apiError,
   paymentMethod,
-}) => {
-  const [termsPage, setTermsPage] = useState(false);
-    const [agree, setAgree] = useState(false);
-    const [holder, setHolder] = useState(false);
-  const {
-    isLoading,
-  } = useSelector((state) => state.plan);
 
-  const [confirm, setConfirm] = useState(false);
-  const [privacyPage, setPrivacyPage] = useState(false);
+  getCardNumberProps,
+  getExpiryDateProps,
+  getCVCProps,
+  getCardImageProps,
+  meta,
+  cardAuthorize,
+  cardAcknowledge,
+  cardConfirm,
+  setCardAuthorize,
+  setCardAcknowledge,
+  setCardConfirm,
+}) => {
+  // const [termsPage, setTermsPage] = useState(false);
+  // const [agree, setAgree] = useState(false);
+  // const [holder, setHolder] = useState(false);
+  const { isLoading } = useSelector((state) => state.plan);
+
+  // const [confirm, setConfirm] = useState(false);
+  // const [privacyPage, setPrivacyPage] = useState(false);
 
   return (
-    <div className="flex flex-col gap-4">
+    <form onSubmit={makeAgreement} className="flex flex-col gap-4">
       <div className="text-white ">
         {/* <p className="text-white text-[18px] font-medium leading-[42px] capitalize">
           Set Your Bi-Weekly Payment Of&nbsp;
@@ -57,6 +68,8 @@ const CardPaymentForm = ({
             <input
               type="text"
               placeholder="First Name"
+              id="firstName"
+              name="firstName"
               value={fname}
               onChange={(e) => {
                 setFname(e.target.value);
@@ -74,6 +87,8 @@ const CardPaymentForm = ({
           <div className="w-full">
             <input
               type="text"
+              id="lastName"
+              name="lastName"
               placeholder="Last Name"
               value={lname}
               onChange={(e) => {
@@ -91,22 +106,39 @@ const CardPaymentForm = ({
         </div>
 
         <div className="w-full">
-          <input
-            type="text"
-            placeholder="Card Number"
-            value={cardNumber}
-            onChange={(e) => {
-              const value = e.target.value.replace(/[^0-9]/g, "");
-              setCardNumber(value);
-              updateErrs("cardNumber");
-            }}
-            maxLength={16}
-            className={`w-full px-4 py-3 bg-black border border-[#999] text-white text-[16px] font-[400] placeholder-[#999999] text-left rounded-none ${
-              errors?.cardNumber && "!border-red-500"
-            }`}
-          />
-          {errors?.cardNumber && (
-            <p className="text-red-500 text-[12px] mt-1">{errors.cardNumber}</p>
+          <div className="flex items-center relative">
+            <input
+              type="text"
+              placeholder="Card Number"
+              {...getCardNumberProps()}
+              // value={cardNumber}
+              // onChange={(e) => {
+              //   const value = e.target.value.replace(/[^0-9]/g, "");
+              //   setCardNumber(value);
+              //   updateErrs("cardNumber");
+              // }}
+              // maxLength={16}
+              className={`w-full px-4 py-3 bg-black border border-[#999] text-white text-[16px] font-[400] placeholder-[#999999] text-left rounded-none ${
+                (errors?.cardNumber ||
+                  (meta?.touchedInputs?.cardNumber &&
+                    meta?.erroredInputs?.cardNumber)) &&
+                "!border-red-500"
+              }`}
+            />
+            <div className="absolute right-5 w-fit h-full flex items-center">
+              <svg
+                {...getCardImageProps({ images })}
+                alt="Card type"
+                className="h-6"
+              />
+            </div>
+          </div>
+          {(errors?.cardNumber ||
+            (meta?.touchedInputs?.cardNumber &&
+              meta?.erroredInputs?.cardNumber)) && (
+            <p className="text-red-500 text-[12px] mt-1">
+              {errors.cardNumber || meta?.erroredInputs?.cardNumber}
+            </p>
           )}
         </div>
 
@@ -114,43 +146,57 @@ const CardPaymentForm = ({
           <div className="w-full">
             <input
               type="text"
-              placeholder="CVV"
-              value={cvv}
-              onChange={(e) => {
-                // Only allow numbers
-                const value = e.target.value.replace(/[^0-9]/g, ""); // Remove non-numeric characters
-                setCvv(value); // Set the cleaned numeric value
-                updateErrs("cvv"); // Update error state if necessary
-              }}
-              maxLength={3}
+              placeholder="MM/YY"
+              {...getExpiryDateProps()}
+              // placeholder="Expiration Date (MM/YY)"
+              // value={expirationDate}
+              // onChange={(e) => {
+              //   let value = e.target.value;
+              //   value = value.replace(/[^0-9/]/g, "");
+              //   setExpirationDate(value);
+              //   updateErrs("expirationDate");
+              // }}
+              // maxLength={5}
               className={`w-full px-4 py-3 bg-black border border-[#999] text-white text-[16px] font-[400] placeholder-[#999999] text-left rounded-none ${
-                errors?.cvv && "!border-red-500"
+                (errors?.expiryDate ||
+                  (meta?.touchedInputs?.expiryDate &&
+                    meta?.erroredInputs?.expiryDate)) &&
+                "!border-red-500"
               }`}
             />
-            {errors?.cvv && (
-              <p className="text-red-500 text-[12px] mt-1">{errors.cvv}</p>
+            {(errors?.expiryDate ||
+              (meta?.touchedInputs?.expiryDate &&
+                meta?.erroredInputs?.expiryDate)) && (
+              <p className="text-red-500 text-[12px] mt-1">
+                {errors.expiryDate || meta?.erroredInputs?.expiryDate}
+              </p>
             )}
           </div>
 
           <div className="w-full">
             <input
               type="text"
-              placeholder="Expiration Date (MM/YY)"
-              value={expirationDate}
-              onChange={(e) => {
-                let value = e.target.value;
-                value = value.replace(/[^0-9/]/g, "");
-                setExpirationDate(value);
-                updateErrs("expirationDate");
-              }}
-              maxLength={5}
+              // placeholder="CVC"
+              name="cvc"
+              {...getCVCProps()}
+              // value={cvc}
+              // onChange={(e) => {
+              //   // Only allow numbers
+              //   const value = e.target.value.replace(/[^0-9]/g, ""); // Remove non-numeric characters
+              //   setCvv(value); // Set the cleaned numeric value
+              //   updateErrs("cvc"); // Update error state if necessary
+              // }}
+              // maxLength={3}
               className={`w-full px-4 py-3 bg-black border border-[#999] text-white text-[16px] font-[400] placeholder-[#999999] text-left rounded-none ${
-                errors?.expirationDate && "!border-red-500"
+                (errors?.cvc ||
+                  (meta?.touchedInputs?.cvc && meta?.erroredInputs?.cvc)) &&
+                "!border-red-500"
               }`}
             />
-            {errors?.expirationDate && (
+            {(errors?.cvc ||
+              (meta?.touchedInputs?.cvc && meta?.erroredInputs?.cvc)) && (
               <p className="text-red-500 text-[12px] mt-1">
-                {errors.expirationDate}
+                {errors.cvc || meta?.erroredInputs?.cvc}
               </p>
             )}
           </div>
@@ -168,65 +214,92 @@ const CardPaymentForm = ({
           <img src={lockIcon2} alt="Lock" className="h-10 w-14" />
         </div>
       </div>
-      <label className="flex items-start gap-3 text-[14px] text-[#D8D8D8] font-[vazirmatn] cursor-pointer">
-        <input
-          type="checkbox"
-          className="mt-1 accent-[#2DDE28]"
-          checked={holder}
-          onChange={(e) => setHolder(e.target.checked)}
-        />
-        <span>
-          I authorize Evolve Strength to charge my credit or debit card for
-          membership fees
-        </span>
-      </label>
 
-      <label className="flex items-start gap-3 text-[14px] text-[#D8D8D8] font-[vazirmatn] cursor-pointer">
-        <input
-          type="checkbox"
-          className="mt-1 accent-[#2DDE28]"
-          checked={agree}
-          onChange={(e) => setAgree(e.target.checked)}
-        />
-        <span>
-          I acknowledge and agree that my membership will automatically renew
-          biweekly unless I cancel as outlined in the membership contract or if
-          the contract specifies a shorter renewal period.
-        </span>
-      </label>
+      <div>
+        <label className="flex items-start gap-3 text-[14px] text-[#D8D8D8] font-[vazirmatn] cursor-pointer">
+          <input
+            type="checkbox"
+            id="accountHolder"
+            name="accountHolder"
+            className="mt-1 accent-[#2DDE28]"
+            checked={cardAuthorize}
+            onChange={(e) => setCardAuthorize(e.target.checked)}
+          />
+          <span>
+            I authorize Evolve Strength to charge my credit or debit card for
+            membership fees
+          </span>
+        </label>
+        {errors.accountHolder && (
+          <p className="text-[#f90303] text-xs">{errors.accountHolder}</p>
+        )}
+      </div>
 
-      <label className="flex items-start gap-2 text-[14px] font-[vazirmatn] text-[#D8D8D8] font-[400] mt-4">
-        <input
-          type="checkbox"
-          className="mt-1 accent-[#2DDE28]"
-          checked={confirm}
-          // disabled={!(termsPage && privacyPage)}
-          onChange={(e) => setConfirm(e.target.checked)}
-        />
-        <span>
-          Please confirm you have read our{" "}
-          <a
-            href="https://join.evolvestrength.ca/terms-and-conditions/"
-            target="_blank"
-            className={`text-[#2DDE28] ${
-              !termsPage ? "font-[600]" : "font-[400]"
-            }`}
-            onClick={() => setTermsPage(true)}
-          >
-            Terms And Conditions
-          </a>{" "}
-          &{" "}
-          <a
-            href="https://join.evolvestrength.ca/privacy-policy/"
-            className={`text-[#2DDE28] ${
-              !privacyPage ? "font-[600]" : "font-[400]"
-            }`}
-            onClick={() => setPrivacyPage(true)}
-          >
-            Privacy Policy
-          </a>
-        </span>
-      </label>
+      <div>
+        <label className="flex items-start gap-3 text-[14px] text-[#D8D8D8] font-[vazirmatn] cursor-pointer">
+          <input
+            type="checkbox"
+            id="acknowledge"
+            name="acknowledge"
+            className="mt-1 accent-[#2DDE28]"
+            checked={cardAcknowledge}
+            onChange={(e) => setCardAcknowledge(e.target.checked)}
+          />
+          <span>
+            I acknowledge and agree that my membership will automatically renew
+            biweekly unless I cancel as outlined in the membership contract or
+            if the contract specifies a shorter renewal period.
+          </span>
+        </label>
+        {errors.acknowledge && (
+          <p className="text-[#f90303] text-xs">{errors.acknowledge}</p>
+        )}
+      </div>
+
+      <div>
+        <label className="flex items-start gap-2 text-[14px] font-[vazirmatn] text-[#D8D8D8] font-[400] mt-4">
+          <input
+            type="checkbox"
+            className="mt-1 accent-[#2DDE28]"
+            id="terms"
+            name="terms"
+            checked={cardConfirm}
+            // disabled={!(termsPage && privacyPage)}
+            disabled={!(cardAcknowledge && cardAuthorize)}
+            onChange={(e) => setCardConfirm(e.target.checked)}
+          />
+          <span>
+            Please confirm you have read our{" "}
+            <a
+              href="https://join.evolvestrength.ca/terms-and-conditions/"
+              target="_blank"
+              className="text-[#2DDE28]"
+              // className={`text-[#2DDE28] ${
+              //   !termsPage ? "font-[600]" : "font-[400]"
+              // }`}
+              // onClick={() => setTermsPage(true)}
+            >
+              Terms And Conditions
+            </a>{" "}
+            &{" "}
+            <a
+              href="https://join.evolvestrength.ca/privacy-policy/"
+              target="_blank"
+              className="text-[#2DDE28]"
+              // className={`text-[#2DDE28] ${
+              //   !privacyPage ? "font-[600]" : "font-[400]"
+              // }`}
+              // onClick={() => setPrivacyPage(true)}
+            >
+              Privacy Policy
+            </a>
+          </span>
+        </label>
+        {errors.terms && (
+          <p className="text-[#f90303] text-xs">{errors.terms}</p>
+        )}
+      </div>
+
       <div className="flex flex-col items-center">
         {apiError && paymentMethod == "card" && (
           <span className="w-full text-sm text-center text-red-500">
@@ -235,16 +308,18 @@ const CardPaymentForm = ({
         )}
 
         <button
-          onClick={() => makeAgreement()}
+          type="submit"
+          // onClick={() => makeAgreement()}
           className="cursor-pointer flex justify-center items-center w-full h-[42px] mt-4 px-0 pt-[12.801px] pb-[13.199px] 
           bg-[#2DDE28] border border-[#2DDE28] font-[kanit] text-black text-[16px] font-medium 
           leading-[16px] uppercase font-kanit transition-all hover:opacity-90 active:scale- disabled:opacity-60"
-          disabled={isLoading || !holder || !agree || !confirm}
+          // disabled={isLoading || !holder || !agree || !confirm}
+          disabled={isLoading}
         >
           Pay Now
         </button>
       </div>
-    </div>
+    </form>
   );
 };
 

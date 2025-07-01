@@ -10,6 +10,60 @@ import credit_icon_inactive from "../../../assets/images/desktop/credit_icon_ina
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Loader from "../../Loader";
+import { z } from "zod";
+import { usePaymentInputs } from "react-payment-inputs";
+
+const form1Schema = z.object({
+  firstName: z.string().trim().min(1, { message: "First name is required" }),
+  lastName: z.string().trim().min(1, { message: "Last name is required" }),
+  cardNumber: z.string().trim().min(1, "Card number is required"),
+  expiryDate: z.string().trim().min(1, "Expiry Date is required"),
+  cvc: z.string().trim().min(1, "CVC is required"),
+  accountHolder: z.literal("on", {
+    errorMap: () => ({ message: "Account holder authorization is required" }),
+  }),
+  terms: z.literal("on", {
+    errorMap: () => ({ message: "You must accept the Terms and Conditions" }),
+  }),
+  acknowledge: z.literal("on", {
+    errorMap: () => ({ message: "You must acknowledge the statement" }),
+  }),
+});
+
+const form2Schema = z
+  .object({
+    firstName: z.string().trim().min(1, { message: "First name is required" }),
+    lastName: z.string().trim().min(1, { message: "Last name is required" }),
+    transitNumber: z
+      .string()
+      // .min(1, "Transit Number is required")
+      .length(5, "Transit Number should be exactly 5 digits long"),
+    institutionNumber: z
+      .string()
+      // .min(1, "Institution Number is required"),
+      .length(3, "Institution Number should be exactly 3 digits long"),
+    accountNumber: z
+      .string()
+      .min(7, "Account Number should be at least 5 digits long")
+      .max(12, "Account Number cannot be longer than 12 digits"),
+    verifyAccountNumber: z
+      .string()
+      .min(7, "Verify Account should be at least 5 digits long")
+      .max(12, "Verify Account Number cannot be longer than 12 digits"),
+    accountHolder2: z.literal("on", {
+      errorMap: () => ({ message: "Account holder authorization is required" }),
+    }),
+    renewAgreed: z.literal("on", {
+      errorMap: () => ({ message: "You must acknowledge the statement" }),
+    }),
+    terms2: z.literal("on", {
+      errorMap: () => ({ message: "You must accept the Terms and Conditions" }),
+    }),
+  })
+  .refine((data) => data.accountNumber === data.verifyAccountNumber, {
+    message: "Account numbers must match",
+    path: ["verifyAccountNumber"],
+  });
 
 const MemberPayment = () => {
   const navigate = useNavigate();
@@ -38,6 +92,26 @@ const MemberPayment = () => {
   const [apiError, setApiError] = useState(null);
   // console.log("apiError", apiError);
   const [isLoading, setIsLoading] = useState(false);
+  
+    // /////////////////////////////////////////////////////
+    const [cardAuthorize, setCardAuthorize] = useState(false);
+    const [cardAcknowledge, setCardAcknowledge] = useState(false);
+    const [cardConfirm, setCardConfirm] = useState(false);
+    // /////////////////////////////////////////////////////
+    const [debitHolder, setDebitHolder] = useState(false);
+    const [debitAcknowledge, setDebitAcknowledge] = useState(false);
+    const [debitConfirm, setDebitConfirm] = useState(false);
+    // /////////////////////////////////////////////////////
+  
+    const {
+      getCardNumberProps,
+      getExpiryDateProps,
+      getCVCProps,
+      getCardImageProps,
+      meta,
+    } = usePaymentInputs({
+      acceptedCards: ["visa", "mastercard", "amex"],
+    });
 
   useEffect(() => {
     if (!userInfo) {
@@ -142,21 +216,45 @@ const MemberPayment = () => {
 
   const stateCode = provinceMap[provinceName?.trim()] || "";
 
-  const makeAgreement = async () => {
-    const errorStatus = validateForm();
-    if (errorStatus && Object.keys(errorStatus).length > 0) {
-      console.warn("Please fix the form errors.");
-      setErrors(errorStatus);
+  const makeAgreement = async (e) => {
+    // const errorStatus = validateForm();
+    // if (errorStatus && Object.keys(errorStatus).length > 0) {
+    //   console.warn("Please fix the form errors.");
+    //   setErrors(errorStatus);
+    //   return;
+    // }
+    // setErrors([]);
+    
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const dataP = Object.fromEntries(formData.entries());
+
+    let activeSchema;
+    if (paymentMethod !== "direct") {
+      activeSchema = form1Schema;
+    } else if (paymentMethod == "direct") {
+      activeSchema = form2Schema;
+    }
+
+    const result = activeSchema.safeParse(dataP);
+
+    console.log(meta);
+    console.log("Flattened error:", result?.error?.flatten());
+
+    if (!result.success) {
+      setErrors(result.error.flatten().fieldErrors);
       return;
     }
-    setErrors([]);
 
+    setErrors({});
+    console.log("Validated data:", result.data);
+    const data = result?.data
     setIsLoading(true);
 
     try {
-      const routingNumber = `0${institutionNumber}${transitNumber}`;
-      const [expMonth, expYearRaw] = expirationDate.split("/");
-      const expYear = expYearRaw?.length === 2 ? `20${expYearRaw}` : expYearRaw;
+      const routingNumber = `0${data?.institutionNumber}${data?.transitNumber}`;
+      const [expMonth, expYearRaw] = data?.expiryDate?.split("/");
+      const expYear = expYearRaw?.length === 2 ? (`20${expYearRaw}`).trim() : expYearRaw;
       const formattedPostalCode = (`${userInfo?.postal}` || "")
         .toUpperCase()
         .replace(/\s+/g, "")
@@ -247,17 +345,17 @@ const MemberPayment = () => {
       if (paymentMethod !== "direct") {
         payload.todayBillingInfo = {
           isTodayBillingSameAsDraft: "true",
-          todayCcCvvCode: cvv || "",
+          todayCcCvvCode: data?.cvc || "",
           todayCcBillingZip: formattedPostalCode || "",
         };
 
         payload.draftBillingInfo.draftCreditCard = {
-          creditCardFirstName: fname || "John",
-          creditCardLastName: lname || "Doe",
-          creditCardType: "visa",
-          creditCardAccountNumber: cardNumber || "",
-          creditCardExpMonth: expMonth || "00",
-          creditCardExpYear: expYear || "",
+          creditCardFirstName: data?.firstName || "John",
+          creditCardLastName: data?.firstName || "Doe",
+          creditCardType: meta?.cardType?.type.trim(),
+          creditCardAccountNumber: data?.cardNumber?.replace(/\s+/g, "") || "",
+          creditCardExpMonth: parseInt(data?.expiryDate?.split("/")[0].trim()) || "00",
+          creditCardExpYear: parseInt(`20${data?.expiryDate?.split("/")[1].trim()}`) || "",
         };
         // 👉 Debit (Bank Account) flow
       } else if (paymentMethod === "direct") {
@@ -273,15 +371,15 @@ const MemberPayment = () => {
       const response = await fetch(
         `${
           import.meta.env.VITE_APP_API_URL
-        }submitAgreement?location=${clubLocationPostal}`,
+        }/submitAgreement?location=${clubLocationPostal}`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
         }
       );
-      const data = await response.json();
-      const message = data?.data?.restResponse?.status?.message;
+      const dataR = await response.json();
+      const message = dataR?.data?.restResponse?.status?.message;
 
       if (message && message.toLowerCase() === "success") {
         createPeople();
@@ -290,7 +388,7 @@ const MemberPayment = () => {
       }
       // navigate("/confirmation");
     } catch (error) {
-      console.error("Error fetching club information:", error.message);
+      console.error("Error fetching club information:", error, error.message);
     } finally {
       setIsLoading(false);
     }
@@ -378,7 +476,7 @@ const MemberPayment = () => {
 
       <MembershipVancouver />
 
-      <div className="flex flex-col">
+      {/* <div className="flex flex-col">
         <p className="text-white font-[kanit] pb-1 text-[16px] font-[600] uppercase leading-[16px]">
           Choose your payment option
         </p>
@@ -423,7 +521,7 @@ const MemberPayment = () => {
             <span>Direct Debit</span>
           </button>
         </div>
-      </div>
+      </div> */}
 
       {paymentMethod === "direct" ? (
         <DirectDebitForm
@@ -462,6 +560,18 @@ const MemberPayment = () => {
           updateErrs={updateErrs}
           apiError={apiError}
           paymentMethod={paymentMethod}
+          
+          getCardNumberProps={getCardNumberProps}
+          getExpiryDateProps={getExpiryDateProps}
+          getCardImageProps={getCardImageProps}
+          getCVCProps={getCVCProps}
+          meta={meta}
+          cardAuthorize={cardAuthorize}
+          cardAcknowledge={cardAcknowledge}
+          cardConfirm={cardConfirm}
+          setCardAuthorize={setCardAuthorize}
+          setCardAcknowledge={setCardAcknowledge}
+          setCardConfirm={setCardConfirm}
         />
       )}
     </div>
