@@ -17,12 +17,9 @@ import { usePaymentInputs } from "react-payment-inputs";
 const form1Schema = z.object({
   firstName: z.string().trim().min(1, { message: "First name is required" }),
   lastName: z.string().trim().min(1, { message: "Last name is required" }),
-  cardNumber: z.string().trim().optional(),
-  expiryDate: z
-    .string()
-    .trim()
-    .optional(),
-  cvc: z.string().trim().optional(),
+  cardNumber: z.string().trim().min(1, "Card number is required"),
+  expiryDate: z.string().trim().min(1, "Expiry Date is required"),
+  cvc: z.string().trim().min(1, "CVC is required"),
   accountHolder: z.literal("on", {
     errorMap: () => ({ message: "Account holder authorization is required" }),
   }),
@@ -34,12 +31,40 @@ const form1Schema = z.object({
   }),
 });
 
-const form2Schema = z.object({
-  firstName: z.string().trim().min(1, { message: "First name is required" }),
-  lastName: z.string().trim().min(1, { message: "Last name is required" }),
-  routingNumber: z.string().min(1, "Routing number is required"),
-  accountNumber: z.string().min(1, "Bank account is required"),
-});
+const form2Schema = z
+  .object({
+    firstName: z.string().trim().min(1, { message: "First name is required" }),
+    lastName: z.string().trim().min(1, { message: "Last name is required" }),
+    transitNumber: z
+      .string()
+      // .min(1, "Transit Number is required")
+      .length(5, "Transit Number should be exactly 5 digits long"),
+    institutionNumber: z
+      .string()
+      // .min(1, "Institution Number is required"),
+      .length(3, "Institution Number should be exactly 3 digits long"),
+    accountNumber: z
+      .string()
+      .min(7, "Account Number should be at least 5 digits long")
+      .max(12, "Account Number cannot be longer than 12 digits"),
+    verifyAccountNumber: z
+      .string()
+      .min(7, "Verify Account should be at least 5 digits long")
+      .max(12, "Verify Account Number cannot be longer than 12 digits"),
+    accountHolder2: z.literal("on", {
+      errorMap: () => ({ message: "Account holder authorization is required" }),
+    }),
+    renewAgreed: z.literal("on", {
+      errorMap: () => ({ message: "You must acknowledge the statement" }),
+    }),
+    terms2: z.literal("on", {
+      errorMap: () => ({ message: "You must accept the Terms and Conditions" }),
+    }),
+  })
+  .refine((data) => data.accountNumber === data.verifyAccountNumber, {
+    message: "Account numbers must match",
+    path: ["verifyAccountNumber"],
+  });
 
 function ReviewAndPay() {
   const [selectPlan, setSelectPlan] = useState("card");
@@ -67,14 +92,14 @@ function ReviewAndPay() {
   const [institutionNumber, setInstitutionNumber] = useState("");
   const [accountNumber, setAccountNumber] = useState("");
   const [verifyAccountNumber, setVerifyAccountNumber] = useState("");
-  const [confirm, setConfirm] = useState(false);
+  // const [confirm, setConfirm] = useState(false);
   const [confirmed, setConfirmed] = useState(false);
-  const [cardNumber, setCardNumber] = useState("");
-  const [cvc, setCvv] = useState("");
-  const [expiryDate, setExpirationDate] = useState("");
-  const [termsAgreed, setTermsAgreed] = useState(false);
+  // const [cardNumber, setCardNumber] = useState("");
+  // const [cvc, setCvv] = useState("");
+  // const [expiryDate, setExpirationDate] = useState("");
+  // const [termsAgreed, setTermsAgreed] = useState(false);
   // const [termsAgreeded, setTermsAgreeded] = useState(false);
-  const [renewAgreed, setRenewAgreed] = useState(false);
+  // const [renewAgreed, setRenewAgreed] = useState(false);
   // const [renewAgreeded, setRenewAgreeded] = useState(false);
   const [errors, setErrors] = useState({});
   const [apiError, setApiError] = useState(null);
@@ -96,7 +121,9 @@ function ReviewAndPay() {
     getCVCProps,
     getCardImageProps,
     meta,
-  } = usePaymentInputs();
+  } = usePaymentInputs({
+    acceptedCards: ["visa", "mastercard", "amex"],
+  });
 
   // const [isDisabled, setIsDisabled] = useState(
   //   Object.keys(meta.erroredInputs)
@@ -199,9 +226,9 @@ function ReviewAndPay() {
 
   const stateCode = provinceMap[provinceName?.trim()] || "";
 
-  const routingNumber = `0${institutionNumber}${transitNumber}`;
-  const [expMonth, expYearRaw] = expiryDate.split("/");
-  const expYear = expYearRaw?.length === 2 ? `20${expYearRaw}` : expYearRaw;
+  // const routingNumber = `0${institutionNumber}${transitNumber}`;
+  // const [expMonth, expYearRaw] = expiryDate.split("/");
+  // const expYear = expYearRaw?.length === 2 ? `20${expYearRaw}` : expYearRaw;
 
   let schedules = ["Dues"];
 
@@ -309,18 +336,45 @@ function ReviewAndPay() {
         creditCardLastName: data?.lastName || "Doe",
         creditCardType: meta?.cardType?.type.trim(),
         creditCardAccountNumber: data?.cardNumber?.replace(/\s+/g, "") || "",
-        creditCardExpMonth: parseInt(data?.expiryDate?.split("/")[0].trim()) || "00",
-        creditCardExpYear: parseInt(`20${data?.expiryDate?.split("/")[1].trim()}`) || "",
+        creditCardExpMonth:
+          parseInt(data?.expiryDate?.split("/")[0].trim()) || "00",
+        creditCardExpYear:
+          parseInt(`20${data?.expiryDate?.split("/")[1].trim()}`) || "",
       };
       // 👉 Debit (Bank Account) flow
     } else if (selectPlan === "direct_debit") {
       payload.draftBillingInfo.draftBankAccount = {
         draftAccountFirstName: data?.firstName || "John",
         draftAccountLastName: data?.lastName || "Doe",
-        draftAccountRoutingNumber: data?.routingNumber || "",
+        draftAccountRoutingNumber:
+          `0${data?.institutionNumber}${data?.transitNumber}` || "",
         draftAccountNumber: data?.accountNumber || "",
         draftAccountType: "Checking",
       };
+      payload.todayBillingInfo.bankAccount = {
+        accountFirstName: data?.firstName || "John",
+        accountLastName: data?.lastName || "Doe",
+        accountRoutingNumber:
+          `0${data?.institutionNumber}${data?.transitNumber}` || "",
+        accountNumber: data?.accountNumber || "",
+        accountType: "Checking",
+      };
+      // "todayBillingInfo": {
+      //   "creditCard": {
+      //       "cardNumber": "4111222233334444", // Use a test card number if provided by API
+      //       "expirationMonth": "12",
+      //       "expirationYear": "2026",
+      //       "cvv": "123",
+      //       "cardHolderName": "Saif A Ali",
+      //       "billingAddress": {
+      //           "addressLine1": "Ottawa ON K1G 6T2 Canada",
+      //           "city": "Ottawa",
+      //           "state": "ON",
+      //           "country": "CA",
+      //           "zipCode": "K1G 6T2"
+      //       }
+      //   }
+      // }
     }
 
     try {
@@ -464,13 +518,13 @@ function ReviewAndPay() {
         </p>
         <div className="flex flex-row justify-between mt-16">
           <div>
-            <p className=" text-white text-[16px] font-[kanit] font-[600] leading-[16px] uppercase">
+            {/* <p className=" text-white text-[16px] font-[kanit] font-[600] leading-[16px] uppercase">
               Choose your payment option
             </p>
             <PaymentMethodSelector
               selectPlan={selectPlan}
               setSelectPlan={setSelectPlan}
-            />
+            /> */}
             {selectPlan === "direct_debit" ? (
               <DebitForm
                 firstName={firstName}
@@ -510,6 +564,7 @@ function ReviewAndPay() {
                 setErrors={setErrors}
                 getCardNumberProps={getCardNumberProps}
                 getExpiryDateProps={getExpiryDateProps}
+                getCardImageProps={getCardImageProps}
                 getCVCProps={getCVCProps}
                 meta={meta}
                 cardAuthorize={cardAuthorize}

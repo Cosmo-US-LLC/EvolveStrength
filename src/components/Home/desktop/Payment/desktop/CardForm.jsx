@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import guarantee_icons from "../../../../../assets/images/desktop/guarantee_icons.svg";
 import { usePaymentInputs } from "react-payment-inputs";
 import images from "react-payment-inputs/images";
+// import visaIcon from "../../../../../assets/images/mobile/payment/dabit1.svg";
+// import mcIcon from "../../../../../assets/images/mobile/payment/credit2.svg";
 
 function CardForm({
   firstCardName,
@@ -29,7 +31,7 @@ function CardForm({
   getCardNumberProps,
   getExpiryDateProps,
   getCVCProps,
-  // getCardImageProps,
+  getCardImageProps,
   meta,
   cardAuthorize,
   cardAcknowledge,
@@ -103,19 +105,30 @@ function CardForm({
 
         <div className="grid grid-cols-1 gap-4 mb-6">
           <div className="flex flex-col">
-            <div className="flex items-center">
+            <div className="flex items-center relative">
               <input
                 {...getCardNumberProps()}
                 placeholder="Card Number"
                 className={`p-3 bg-[#000000]/60 backdrop-blur-[10px] font-[vazirmatn] text-[16px] border text-white w-full placeholder-[#999999] ${
-                  errors.cardNumber || (meta?.touchedInputs?.cardNumber && meta?.erroredInputs?.cardNumber)
+                  errors.cardNumber ||
+                  (meta?.touchedInputs?.cardNumber &&
+                    meta?.erroredInputs?.cardNumber)
                     ? "border-red-500"
                     : "border-[#999999]"
                 }`}
               />
+              <div className="absolute right-5 w-fit h-full flex items-center">
+                <svg
+                  {...getCardImageProps({ images })}
+                  alt="Card type"
+                  className="h-6"
+                />
+              </div>
             </div>
             {/* meta?.erroredInputs */}
-            {(errors.cardNumber || (meta?.touchedInputs?.cardNumber && meta?.erroredInputs?.cardNumber)) && (
+            {(errors.cardNumber ||
+              (meta?.touchedInputs?.cardNumber &&
+                meta?.erroredInputs?.cardNumber)) && (
               <p className="text-[#c20000] mt-1 text-sm">
                 {errors.cardNumber || meta?.erroredInputs?.cardNumber}
               </p>
@@ -130,12 +143,16 @@ function CardForm({
                 {...getExpiryDateProps()}
                 placeholder="MM/YY"
                 className={`p-3 bg-[#000000]/60 backdrop-blur-[10px] border font-[vazirmatn] text-[16px] text-white placeholder-[#999999] ${
-                  errors.expiryDate || (meta?.touchedInputs?.expiryDate && meta?.erroredInputs?.expiryDate)
+                  errors.expiryDate ||
+                  (meta?.touchedInputs?.expiryDate &&
+                    meta?.erroredInputs?.expiryDate)
                     ? "border-red-500"
                     : "border-[#999999]"
                 }`}
               />
-              {(errors.expiryDate || (meta?.touchedInputs?.expiryDate && meta?.erroredInputs?.expiryDate)) && (
+              {(errors.expiryDate ||
+                (meta?.touchedInputs?.expiryDate &&
+                  meta?.erroredInputs?.expiryDate)) && (
                 <p className="text-[#c20000] mt-1 text-sm">
                   {errors.expiryDate || meta?.erroredInputs?.expiryDate}
                 </p>
@@ -148,12 +165,15 @@ function CardForm({
                 {...getCVCProps()}
                 placeholder="CVC"
                 className={`p-3 bg-[#000000]/60 backdrop-blur-[10px] font-[vazirmatn] text-[16px] border text-white placeholder-[#999999] ${
-                  errors.cvc || (meta?.touchedInputs?.cvc && meta?.erroredInputs?.cvc)
+                  errors.cvc ||
+                  (meta?.touchedInputs?.cvc && meta?.erroredInputs?.cvc)
                     ? "border-red-500"
                     : "border-[#999999]"
                 }`}
               />
-              {(errors.cvc || (meta?.touchedInputs?.cvc && meta?.erroredInputs?.cvc)) && (
+              {/* {console.log(getCVCProps())} */}
+              {(errors.cvc ||
+                (meta?.touchedInputs?.cvc && meta?.erroredInputs?.cvc)) && (
                 <p className="text-[#c20000] mt-1 text-sm">
                   {errors.cvc || meta?.erroredInputs?.cvc}
                 </p>
@@ -166,11 +186,16 @@ function CardForm({
           <p className="text-[16px] font-regular font-[vazirmatn]">
             Guaranteed Safe checkout
           </p>
-          <img
-            src={guarantee_icons}
-            alt="guarantee_icons"
-            className="mt-1 cursor-pointer"
-          />
+          <div className="flex items-center gap-3">
+            <img
+              src={guarantee_icons}
+              alt="guarantee_icons"
+              className="mt-1 cursor-pointer"
+            />
+
+            {/* <img src={visaIcon} alt="Visa" className="h-[30px] w-12 mt-0.5" />
+            <img src={mcIcon} alt="MasterCard" className="h-[30px] w-12 mt-0.5" /> */}
+          </div>
         </div>
 
         <div className="mt-4 mb-6">
@@ -192,10 +217,8 @@ function CardForm({
               membership fees.
             </label>
           </div>
-          {(errors.accountHolder) && (
-            <p className="text-[#f90303] text-sm">
-              {errors.accountHolder}
-            </p>
+          {errors.accountHolder && (
+            <p className="text-[#f90303] text-sm">{errors.accountHolder}</p>
           )}
         </div>
 
@@ -214,15 +237,13 @@ function CardForm({
               htmlFor="acknowledge"
               className="text-[16px] font-[400] font-[vazirmatn] ml-2"
             >
-              I acknowledge and agree that my membership will automatically renew
-              biweekly unless I cancel as outlined in the membership contract or
-              if the contract specifies a shorter renewal period.
+              I acknowledge and agree that my membership will automatically
+              renew biweekly unless I cancel as outlined in the membership
+              contract or if the contract specifies a shorter renewal period.
             </label>
           </div>
-          {(errors.acknowledge) && (
-            <p className="text-[#f90303] mt-1 text-sm">
-              {errors.acknowledge}
-            </p>
+          {errors.acknowledge && (
+            <p className="text-[#f90303] mt-1 text-sm">{errors.acknowledge}</p>
           )}
         </div>
 
@@ -262,10 +283,8 @@ function CardForm({
               </a>
             </label>
           </div>
-          {(errors.terms) && (
-            <p className="text-[#f90303] mt-1 text-sm">
-              {errors.terms}
-            </p>
+          {errors.terms && (
+            <p className="text-[#f90303] mt-1 text-sm">{errors.terms}</p>
           )}
         </div>
       </>

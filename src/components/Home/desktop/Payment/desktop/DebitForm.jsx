@@ -48,6 +48,7 @@ function DebitForm({
             <input
               type="text"
               id="firstName"
+              name="firstName"
               value={firstName}
               onChange={(e) => {
                 const value = e.target.value;
@@ -70,6 +71,7 @@ function DebitForm({
             <input
               type="text"
               id="lastName"
+              name="lastName"
               value={lastName}
               onChange={(e) => {
                 const value = e.target.value;
@@ -277,80 +279,101 @@ function DebitForm({
           />
         </div>
 
-        <div className="flex items-start mt-4 mb-6">
-          <input
-            type="checkbox"
-            id="accountHolder"
-            name="accountHolder"
-            checked={debitHolder}
-            onChange={(e) => setDebitHolder(e.target.checked)}
-            className="mr-2 accent-[#2DDE28]"
-            style={{ marginTop: "3.5px" }}
-          />
-          <label
-            htmlFor="accountHolder"
-            className="text-[16px] font-[400] font-[vazirmatn] ml-2"
-          >
-            I am the bank account holder and do not require another person to
-            authorize the debits on this account
-          </label>
+        <div className="mt-4 mb-6">
+          <div className="flex items-start">
+            <input
+              type="checkbox"
+              id="accountHolder2"
+              name="accountHolder2"
+              checked={debitHolder}
+              onChange={(e) => setDebitHolder(e.target.checked)}
+              className="mr-2 accent-[#2DDE28]"
+              style={{ marginTop: "3.5px" }}
+            />
+            <label
+              htmlFor="accountHolder2"
+              className="text-[16px] font-[400] font-[vazirmatn] ml-2"
+            >
+              I am the bank account holder and do not require another person to
+              authorize the debits on this account
+            </label>
+          </div>
+          {(errors.accountHolder2) && (
+            <p className="text-[#f90303] text-sm">
+              {errors.accountHolder2}
+            </p>
+          )}
         </div>
 
-        <div className="flex items-start mb-6">
-          <input
-            type="checkbox"
-            id="renewAgreed"
-            name="renewAgreed"
-            checked={debitAcknowledge}
-            onChange={(e) => setDebitAcknowledge(e.target.checked)}
-            className="mr-2 accent-[#2DDE28]"
-            style={{ marginTop: "3.5px" }}
-          />
-          <label
-            htmlFor="renewAgreed"
-            className="text-[15px] font-[400] font-[vazirmatn] ml-2"
-          >
-            I acknowledge and agree that my membership will automatically renew
-            bi-weekly until I cancel in accordance with the membership contract
-            (unless the membership contract provides for a shorter renewal
-            period)
-          </label>
+        <div className="mb-6">
+          <div className="flex items-start">
+            <input
+              type="checkbox"
+              id="renewAgreed"
+              name="renewAgreed"
+              checked={debitAcknowledge}
+              onChange={(e) => setDebitAcknowledge(e.target.checked)}
+              className="mr-2 accent-[#2DDE28]"
+              style={{ marginTop: "3.5px" }}
+            />
+            <label
+              htmlFor="renewAgreed"
+              className="text-[15px] font-[400] font-[vazirmatn] ml-2"
+            >
+              I acknowledge and agree that my membership will automatically renew
+              bi-weekly until I cancel in accordance with the membership contract
+              (unless the membership contract provides for a shorter renewal
+              period)
+            </label>
+          </div>
+          {(errors.renewAgreed) && (
+            <p className="text-[#f90303] mt-1 text-sm">
+              {errors.renewAgreed}
+            </p>
+          )}
         </div>
 
-        <div className="flex items-start mb-6 ">
-          <input
-            type="checkbox"
-            id="terms"
-            name="terms"
-            checked={debitConfirm}
-            disabled={!(debitHolder && debitAcknowledge)}
-            onChange={(e) => setDebitConfirm(e.target.checked)}
-            className="mr-2 accent-[#2DDE28]"
-            style={{ marginTop: "3.5px" }}
-          />
-          <label
-            htmlFor="terms"
-            className="text-[16px] font-[400] font-[vazirmatn] ml-2"
-          >
-            Please confirm you have read our{" "}
-            <a
-              // onClick={() => setTermsPage(true)}
-              href="https://join.evolvestrength.ca/terms-and-conditions/"
-              target="_blank"
-              className={"font-[400] text-blue-500"}
+        <div className="mb-6">
+          <div className="flex items-start">
+            <input
+              type="checkbox"
+              id="terms2"
+              name="terms2"
+              checked={debitConfirm}
+              disabled={!(debitHolder && debitAcknowledge)}
+              onChange={(e) => setDebitConfirm(e.target.checked)}
+              className="mr-2 accent-[#2DDE28]"
+              style={{ marginTop: "3.5px" }}
+            />
+            <label
+              htmlFor="terms2"
+              className="text-[16px] font-[400] font-[vazirmatn] ml-2"
             >
-              Terms And Conditions
-            </a>{" "}
-            &{" "}
-            <a
-              // onClick={() => setPrivacyPage(true)}
-              href="https://join.evolvestrength.ca/privacy-policy/"
-              target="_blank"
-              className={"font-[400] text-blue-500"}
-            >
-              Privacy Policy
-            </a>
-          </label>
+              Please confirm you have read our{" "}
+              <a
+                // onClick={() => setTermsPage(true)}
+                href="https://join.evolvestrength.ca/terms-and-conditions/"
+                target="_blank"
+                className={"font-[400] text-blue-500"}
+              >
+                Terms And Conditions
+              </a>{" "}
+              &{" "}
+              <a
+                // onClick={() => setPrivacyPage(true)}
+                href="https://join.evolvestrength.ca/privacy-policy/"
+                target="_blank"
+                className={"font-[400] text-blue-500"}
+              >
+                Privacy Policy
+              </a>
+            </label>
+          </div>
+          {(errors.terms2) && (
+              <p className="text-[#f90303] mt-1 text-sm">
+                {errors.terms2}
+              </p>
+            )}
         </div>
       </div>
     </div>
