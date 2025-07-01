@@ -381,7 +381,7 @@ function ReviewAndPay() {
       const response = await fetch(
         `${
           import.meta.env.VITE_APP_API_URL
-        }/submitAgreement?location=${location}`,
+        }submitAgreement?location=${location}`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
