@@ -249,7 +249,7 @@ function ReviewAndPay() {
   const createPeople = async () => {
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_APP_API_URL}/createPerson`,
+        `${import.meta.env.VITE_APP_API_URL}createPerson`,
         {
           method: "POST",
           headers: {
