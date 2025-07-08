@@ -163,6 +163,10 @@ function ReviewAndPay() {
   //   );
   // }, [meta, isHuman, cardConfirm, cardAcknowledge, cardAuthorize]);
 
+  useEffect(() => {
+    setApiError(null);
+  }, []);
+
   const location = clubLocationPostal;
   const planId =
     plan === "monthly" ? clubPlanMonthly?.planId : clubPlanYearly?.planId;
@@ -181,6 +185,7 @@ function ReviewAndPay() {
     // Format as 3-3-4
     number = digitsOnly.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3");
   } else {
+    setApiError("Invalid phone number format");
     console.warn("Invalid phone number format");
     number = "";
   }
@@ -194,6 +199,7 @@ function ReviewAndPay() {
 
     selectedDate = `${month}/${day}/${year}`;
   } else {
+    // setApiError("Invalid or missing selectedDate");
     console.warn("Invalid or missing selectedDate");
   }
   const address = userInfo?.address;
@@ -208,10 +214,6 @@ function ReviewAndPay() {
   const isValidPostalCode = /^[A-Z]\d[A-Z] \d[A-Z]\d$/.test(
     formattedPostalCode
   );
-
-  if (!isValidPostalCode) {
-    console.error("Invalid Canadian postal code format:", formattedPostalCode);
-  }
 
   const provinceMap = {
     Alberta: "AB",
@@ -285,6 +287,15 @@ function ReviewAndPay() {
   };
 
   const getAgreementInfo = async (data) => {
+    if (!isValidPostalCode) {
+      setApiError("Invalid Canadian postal code format");
+      console.error(
+        "Invalid Canadian postal code format:",
+        formattedPostalCode
+      );
+      return;
+    }
+
     setIsLoading(true);
 
     const payload = {
