@@ -270,10 +270,12 @@ const MemberPayment = () => {
         formattedPostalCode
       );
       if (!isValidPostalCode) {
+        setApiError("Invalid Canadian postal code format");
         console.error(
           "Invalid Canadian postal code format:",
           formattedPostalCode
         );
+        return;
       }
       let selectedDate = userInfo?.dob || "";
       if (selectedDate) {
