@@ -59,6 +59,7 @@ function AboutYourself() {
   const validateForm = () => {
     const errors = {};
     const allowedPattern = /^[A-Za-z0-9 /#]{1,44}$/;
+    const allowedPattern2 = /^(?=.{1,23}$)[A-Za-z0-9]+([ '-][A-Za-z0-9]+)*$/;
 
     if (!formData.firstName.trim()) errors.firstName = "First name is required";
     if (!formData.lastName.trim()) errors.lastName = "Last name is required";
@@ -84,11 +85,11 @@ function AboutYourself() {
       errors.address = "Mailing address expected format between 1 and 44 alphanumeric characters, spaces, forward slashes(/), or pound signs(#).";
     // errors.address = "Mailing address can only contain letters, digits, spaces, /, # and -";
     if (!formData.province.trim()) errors.province = "Province is required";
-    if (!allowedPattern.test(formData.province.trim()))
-      errors.province = "Province field expected format between 1 and 44 alphanumeric characters, spaces, forward slashes(/), or pound signs(#).";
+    if (!allowedPattern2.test(formData.province.trim()))
+      errors.province = "Province field expected format between 1 and 23 alphanumeric characters, (spaces, dashes, and apostrophes are allowed to separate).";
     if (!formData.city.trim()) errors.city = "City is required";
-    if (!allowedPattern.test(formData.city.trim()))
-      errors.city = "City field expected format between 1 and 44 alphanumeric characters, spaces, forward slashes(/), or pound signs(#).";
+    if (!allowedPattern2.test(formData.city.trim()))
+      errors.city = "City field expected format between 1 and 23 alphanumeric characters, (spaces, dashes, and apostrophes are allowed to separate).";
     if (!formData.postalCode.trim()) {
       errors.postalCode = "Postal code is required";
     } else if (
