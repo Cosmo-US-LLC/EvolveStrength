@@ -351,9 +351,13 @@ const MemberDetails = () => {
     if (!address.trim()) errors.address = "Address is required.";
     if (!allowedPattern.test(address.trim()))
       errors.address = "Mailing address expected format between 1 and 44 alphanumeric characters, spaces, forward slashes(/), or pound signs(#).";
-      // errors.address = "Mailing address can only contain letters, digits, spaces, /, # and -";
+    // errors.address = "Mailing address can only contain letters, digits, spaces, /, # and -";
     if (!province.trim()) errors.province = "Province is required.";
+    if (!allowedPattern.test(province.trim()))
+      errors.province = "Province field expected format between 1 and 44 alphanumeric characters, spaces, forward slashes(/), or pound signs(#).";
     if (!city.trim()) errors.city = "City is required.";
+    if (!allowedPattern.test(city.trim()))
+      errors.city = "City field expected format between 1 and 44 alphanumeric characters, spaces, forward slashes(/), or pound signs(#).";
     if (!postal.trim()) errors.postal = "Postal code is required.";
     if (!postal.trim()) {
       errors.postal = "Postal code is required";

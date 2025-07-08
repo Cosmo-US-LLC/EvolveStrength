@@ -82,9 +82,13 @@ function AboutYourself() {
       errors.address = "Mailing address is required";
     if (!allowedPattern.test(formData.address.trim()))
       errors.address = "Mailing address expected format between 1 and 44 alphanumeric characters, spaces, forward slashes(/), or pound signs(#).";
-      // errors.address = "Mailing address can only contain letters, digits, spaces, /, # and -";
+    // errors.address = "Mailing address can only contain letters, digits, spaces, /, # and -";
     if (!formData.province.trim()) errors.province = "Province is required";
+    if (!allowedPattern.test(formData.province.trim()))
+      errors.province = "Province field expected format between 1 and 44 alphanumeric characters, spaces, forward slashes(/), or pound signs(#).";
     if (!formData.city.trim()) errors.city = "City is required";
+    if (!allowedPattern.test(formData.city.trim()))
+      errors.city = "City field expected format between 1 and 44 alphanumeric characters, spaces, forward slashes(/), or pound signs(#).";
     if (!formData.postalCode.trim()) {
       errors.postalCode = "Postal code is required";
     } else if (
