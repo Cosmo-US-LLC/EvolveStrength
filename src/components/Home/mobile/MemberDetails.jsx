@@ -529,6 +529,7 @@ const MemberDetails = () => {
               setAddress(e.target.value);
               updateErrs("address", e.target.value);
             }}
+            autoComplete="new-password"
             className={`w-full px-4 py-3 bg-transparent border ${
               errors?.address ? "!border-red-500" : "border-white/40"
             } placeholder-[#999999] text-[16px] font-[400]`}
@@ -547,6 +548,7 @@ const MemberDetails = () => {
               setProvince(e.target.value);
               updateErrs("province", e.target.value);
             }}
+            autoComplete="new-password"
             className={`w-full px-4 py-3 bg-transparent border ${
               errors?.province ? "!border-red-500" : "border-white/40"
             } placeholder-[#999999] text-[16px] font-[400]`}
@@ -566,6 +568,7 @@ const MemberDetails = () => {
                 setCity(e.target.value);
                 updateErrs("city", e.target.value);
               }}
+              autoComplete="new-password"
               className={`w-full px-4 py-3 bg-transparent border ${
                 errors?.city ? "!border-red-500" : "border-white/40"
               } placeholder-[#999999] text-[16px] font-[400]`}
@@ -585,6 +588,7 @@ const MemberDetails = () => {
                 updateErrs("postal", e.target.value);
               }}
               onFocus={handlePostalCodeFocus}
+              autoComplete="new-password"
               ref={postalCodeRef}
               className={`w-full px-4 py-3 bg-transparent border ${
                 errors?.postal ? "!border-red-500" : "border-white/40"

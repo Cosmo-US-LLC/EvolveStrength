@@ -8,10 +8,13 @@ import debit_icon_inactive from "../../../assets/images/desktop/debit_icon_inact
 import credit_icon_active from "../../../assets/images/desktop/credit_icon_active.svg";
 import credit_icon_inactive from "../../../assets/images/desktop/credit_icon_inactive.svg";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Loader from "../../Loader";
 import { z } from "zod";
 import { usePaymentInputs } from "react-payment-inputs";
+import { plansApi } from "../../../redux/services/plan";
+import { setClubPlanMonthly, setClubPlanYearly, setStartDate } from "../../../redux/slices/planSlice";
+import { formatDate } from "../../../libs/utils";
 
 const form1Schema = z.object({
   firstName: z.string().trim().min(1, { message: "First name is required" }),
@@ -74,6 +77,7 @@ const cardTypeMap = {
 
 const MemberPayment = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [paymentMethod, setPaymentMethod] = useState("card");
   const {
     userInfo,
@@ -109,6 +113,7 @@ const MemberPayment = () => {
   const [debitAcknowledge, setDebitAcknowledge] = useState(false);
   const [debitConfirm, setDebitConfirm] = useState(false);
   // /////////////////////////////////////////////////////
+  const [localLoad, setLocalLoad] = useState(true);
 
   const {
     getCardNumberProps,
@@ -123,6 +128,38 @@ const MemberPayment = () => {
       navigate("/about-yourself");
       // navigate("/member-details");
     }
+
+    if (!clubLocationPostal) {
+      window.location.href = "/";
+    }
+
+    const initPlanFunc = async () => {
+      dispatch(setStartDate(formatDate(new Date())));
+
+      for (let [index, club] of clubPlans.entries()) {
+        try {
+          setLocalLoad(true);
+          const result = await dispatch(
+            plansApi.endpoints.getClubPlanDetails.initiate({
+              location: clubLocationPostal,
+              planId: club.planId,
+            })
+          ).unwrap();
+
+          result?.planName?.includes("12 Month")
+            ? dispatch(setClubPlanYearly(result))
+            : dispatch(setClubPlanMonthly(result));
+        } catch (err) {
+          console.error(
+            `Failed to fetch plan details for club ${club.planId}:`,
+            err
+          );
+        } finally {
+          setLocalLoad(false);
+        }
+      }
+    };
+    initPlanFunc();
   }, []);
 
   function updateErrs(valueToRemove) {
@@ -291,8 +328,8 @@ const MemberPayment = () => {
           creditCardFirstName: data?.firstName || "John",
           creditCardLastName: data?.firstName || "Doe",
           creditCardType: meta.cardType
-          ? cardTypeMap[meta.cardType.type] || "unsupported"
-          : null,
+            ? cardTypeMap[meta.cardType.type] || "unsupported"
+            : null,
           creditCardAccountNumber: data?.cardNumber?.replace(/\s+/g, "") || "",
           creditCardExpMonth:
             parseInt(data?.expiryDate?.split("/")[0].trim()) || "00",

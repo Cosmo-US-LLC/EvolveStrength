@@ -7,7 +7,7 @@ const DOBPickerDesktop = (props) => {
     
   const todayDate = new Date();
   const yearsAgo16 = new Date(
-    todayDate.getFullYear() - 16,
+    todayDate.getFullYear() - 18,
     todayDate.getMonth(),
     todayDate.getDate()
   );

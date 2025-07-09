@@ -4,10 +4,16 @@ import calendarIcon from "../assets/images/mobile/location-details/calendar.svg"
 const DOBPicker = (props) => {
   const { title, dob, setDob, errors, updateErrs } = props;
   const today = new Date();
+  const todayDate = new Date();
+  const yearsAgo16 = new Date(
+    todayDate.getFullYear() - 18,
+    todayDate.getMonth(),
+    todayDate.getDate()
+  );
   const minYear = 1900;
-  const maxYear = today.getFullYear();
+  const maxYear = today.getFullYear() - 18;
 
-  const [currentDate, setCurrentDate] = useState(today);
+  const [currentDate, setCurrentDate] = useState(yearsAgo16);
   // const [selectedDate, setSelectedDate] = useState(null);
   const [showCalendar, setShowCalendar] = useState(false);
   const calendarRef = useRef(null);
