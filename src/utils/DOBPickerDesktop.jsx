@@ -4,10 +4,19 @@ import calendarIcon from "../assets/images/mobile/location-details/calendar.svg"
 const DOBPickerDesktop = (props) => {
   const { title, dob, setDob, errors } = props;
   const today = new Date();
-  const minYear = 1900;
-  const maxYear = today.getFullYear();
+    
+  const todayDate = new Date();
+  const yearsAgo16 = new Date(
+    todayDate.getFullYear() - 16,
+    todayDate.getMonth(),
+    todayDate.getDate()
+  );
 
-  const [currentDate, setCurrentDate] = useState(today);
+  const minYear = 1900;
+
+  const maxYear = yearsAgo16.getFullYear();
+
+  const [currentDate, setCurrentDate] = useState(yearsAgo16);
   // const [selectedDate, setSelectedDate] = useState(null);
   const [showCalendar, setShowCalendar] = useState(false);
   const calendarRef = useRef(null);
@@ -164,7 +173,7 @@ const DOBPickerDesktop = (props) => {
             <div className="flex items-center justify-between mb-3">
               <button
                 onClick={handlePrevYear}
-                className="text-[12px] font-[vazirmatn] font-[500] text-[#2DDE28] hover:text-white flex items-center gap-1"
+                className="text-[12px] cursor-pointer font-[vazirmatn] font-[500] text-[#2DDE28] hover:text-white flex items-center gap-1"
                 disabled={year <= minYear}
               >
                 <svg
@@ -184,7 +193,7 @@ const DOBPickerDesktop = (props) => {
               </button>
               <button
                 onClick={handlePrevMonth}
-                className="text-[12px] font-[vazirmatn] font-[500] text-[#2DDE28] hover:text-white flex items-center gap-1"
+                className="text-[12px] cursor-pointer font-[vazirmatn] font-[500] text-[#2DDE28] hover:text-white flex items-center gap-1"
                 disabled={year <= minYear && month <= 0}
               >
                 <svg
@@ -202,12 +211,12 @@ const DOBPickerDesktop = (props) => {
                 </svg>{" "}
                 Month
               </button>
-              <h2 className="text-[12px] font-[500]">
+              <h2 className="text-[13px] font-[500] tracking-widest">
                 {monthNames[month]} {year}
               </h2>
               <button
                 onClick={handleNextMonth}
-                className="text-[12px] font-[vazirmatn] font-[500] text-[#2DDE28] hover:text-white flex items-center gap-1"
+                className="text-[12px] cursor-pointer font-[vazirmatn] font-[500] text-[#2DDE28] hover:text-white flex items-center gap-1"
                 disabled={year >= maxYear && month >= 11}
               >
                 Month
@@ -227,7 +236,7 @@ const DOBPickerDesktop = (props) => {
               </button>
               <button
                 onClick={handleNextYear}
-                className="text-[12px] font-[vazirmatn] font-[500] text-[#2DDE28] hover:text-white flex items-center gap-1"
+                className="text-[12px] cursor-pointer font-[vazirmatn] font-[500] text-[#2DDE28] hover:text-white flex items-center gap-1"
                 disabled={year >= maxYear}
               >
                 Year
@@ -272,14 +281,14 @@ const DOBPickerDesktop = (props) => {
                   <div
                     key={day}
                     onClick={() => handleSelectDate(day)}
-                    className={`w-9 h-9 flex items-center justify-center rounded-lg cursor-pointer 
+                    className={`w-9 h-9 mx-auto flex items-center justify-center rounded-lg cursor-pointer 
                     ${
                       isSelected || showTodayHighlight
                         ? "bg-[#2DDE28] text-black"
                         : "hover:bg-[#2DDE28] hover:text-black"
                     }`}
                   >
-                    {day}
+                    <span>{day}</span>
                   </div>
                 );
               })}

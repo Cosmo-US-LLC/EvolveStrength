@@ -175,7 +175,7 @@ const AboutYourselfForm = ({
         autocomplete.setFields(["formatted_address", "address_components"]);
 
         autocomplete.addListener("place_changed", () => {
-          console.warn("ADDRESS FOCUS LISTEN")
+          console.warn("ADDRESS FOCUS LISTEN 1")
           const place = autocomplete.getPlace();
           const formattedAddress = place.formatted_address || "";
           let postalCode = "";
@@ -183,34 +183,38 @@ const AboutYourselfForm = ({
           let province = "";
           let city = "";
 
+          console.log("Here")
           if (place.address_components) {
+            console.log("Here0")
             for (const component of place.address_components) {
+              console.log("Here1")
               if (component.types.includes("postal_code")) {
                 postalCode = component.long_name;
                 // break;
                 continue;
               }
               if (component.types.includes("street_number")) {
-                shortAddress = component.long_name?.replaceAll('é', 'e');
-                shortAddress = component.long_name?.replace(/[^A-Za-z0-9 /#]/g, "");
+                console.log("Setting street_number", component.long_name?.replaceAll('é', 'e')?.replace(/[^A-Za-z0-9 /#]/g, ""))
+                shortAddress = component.long_name?.replaceAll('é', 'e')?.replace(/[^A-Za-z0-9 /#]/g, "");
+                // shortAddress = component.long_name?.replace(/[^A-Za-z0-9 /#]/g, "");
                 // break;
                 continue;
               }
               if (component.types.includes("route")) {
-                shortAddress = (shortAddress + " " + component.long_name)?.replaceAll('é', 'e');
-                shortAddress = (shortAddress + " " + component.long_name)?.replace(/[^A-Za-z0-9 /#]/g, "");
+                console.log("Setting route", (shortAddress + " " + component.long_name)?.replaceAll('é', 'e')?.replace(/[^A-Za-z0-9 /#]/g, ""))
+                shortAddress = (shortAddress + " " + component.long_name)?.replaceAll('é', 'e')?.replace(/[^A-Za-z0-9 /#]/g, "");
+                // shortAddress = (shortAddress + " " + component.long_name)?.replace(/[^A-Za-z0-9 /#]/g, "");
                 // break;
                 continue;
-              }
-              if (component.types.includes("administrative_area_level_1")) {
-                province = component.long_name?.replaceAll('é', 'e');
-                province = component.long_name?.replace(/[^A-Za-z0-9 /#]/g, "");
+              } else if (component.types.includes("administrative_area_level_1")) {
+                province = component.long_name?.replaceAll('é', 'e')?.replace(/[^A-Za-z0-9 /#]/g, "");
+                // province = component.long_name?.replace(/[^A-Za-z0-9 /#]/g, "");
                 // break;
                 continue;
               }
               if (component.types.includes("administrative_area_level_3")) {
-                city = component.long_name?.replaceAll('é', 'e');
-                city = component.long_name?.replace(/[^A-Za-z0-9 /#]/g, "");
+                city = component.long_name?.replaceAll('é', 'e')?.replace(/[^A-Za-z0-9 /#]/g, "");
+                // city = component.long_name?.replace(/[^A-Za-z0-9 /#]/g, "");
                 // break;
                 continue;
               } else if (component.types.includes("locality")) {
@@ -430,6 +434,7 @@ const AboutYourselfForm = ({
           value={formData.address}
           onFocus={handleAddressFocus}
           onChange={handleChange("address")}
+          autoComplete="new-password"
           className={`w-full border px-4 py-3 placeholder-[#999999] text-white font-[vazirmatn] text-[16px] bg-[#000000]/60 backdrop-blur-[10px] ${
             validationErrors.address ? "border-[#c20000]" : "border-white/40"
           }`}
@@ -448,6 +453,7 @@ const AboutYourselfForm = ({
           placeholder="Province"
           value={formData.province}
           onChange={handleChange("province")}
+          autoComplete="new-password"
           className={`w-full border px-4 py-3 placeholder-[#999999] text-white font-[vazirmatn] text-[16px] bg-[#000000]/60 backdrop-blur-[10px] ${
             validationErrors.province ? "border-[#c20000]" : "border-white/40"
           }`}
@@ -467,6 +473,7 @@ const AboutYourselfForm = ({
             placeholder="City"
             value={formData.city}
             onChange={handleChange("city")}
+            autoComplete="new-password"
             className={`w-full border px-4 py-3 placeholder-[#999999] text-white font-[vazirmatn] text-[16px]  bg-[#000000]/60 backdrop-blur-[10px] ${
               validationErrors.city ? "border-[#c20000]" : "border-white/40"
             }`}
@@ -486,6 +493,7 @@ const AboutYourselfForm = ({
             value={formData.postalCode}
             onFocus={handlePostalCodeFocus}
             onChange={handleChange("postalCode")}
+            autoComplete="new-password"
             className={`w-full border px-4 py-3 placeholder-[#999999] text-white font-[vazirmatn] text-[16px] bg-[#000000]/60 backdrop-blur-[10px] ${
               validationErrors.postalCode
                 ? "border-[#c20000]"

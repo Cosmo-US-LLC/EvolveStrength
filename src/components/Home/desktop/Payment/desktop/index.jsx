@@ -8,11 +8,18 @@ import DebitForm from "./DebitForm";
 import CardForm from "./CardForm";
 import Turnstile from "react-turnstile";
 import useScrollDirection from "../../../../../hooks/useScrollDirection";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import logo from "../../../../../assets/images/desktop/logo_navbar.svg";
 import Loader from "../../../../Loader";
 import { z } from "zod";
 import { usePaymentInputs } from "react-payment-inputs";
+import {
+  setClubPlanMonthly,
+  setClubPlanYearly,
+  setStartDate,
+} from "../../../../../redux/slices/planSlice";
+import { formatDate } from "../../../../../libs/utils";
+import { plansApi } from "../../../../../redux/services/plan";
 
 const form1Schema = z.object({
   firstName: z.string().trim().min(1, { message: "First name is required" }),
@@ -78,6 +85,7 @@ function ReviewAndPay() {
   const {
     clubLocationPostal,
     clubLocationId,
+    clubPlans,
     plan,
     clubPlanMonthly,
     clubPlanYearly,
@@ -86,7 +94,9 @@ function ReviewAndPay() {
   } = useSelector((state) => state.plan);
   const [isHuman, setIsHuman] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const scrollDirection = useScrollDirection();
+
   const [firstName, setFirstName] = useState(userInfo?.fname || "");
   const [lastName, setLastName] = useState(userInfo?.lname || "");
   const [firstCardName, setFirstCardName] = useState(userInfo?.fname || "");
@@ -162,9 +172,42 @@ function ReviewAndPay() {
   //       !cardAuthorize
   //   );
   // }, [meta, isHuman, cardConfirm, cardAcknowledge, cardAuthorize]);
+  const [localLoad, setLocalLoad] = useState(true);
 
   useEffect(() => {
     setApiError(null);
+
+    if (!clubLocationPostal) {
+      window.location.href = "/";
+    }
+
+    const initPlanFunc = async () => {
+      dispatch(setStartDate(formatDate(new Date())));
+
+      for (let [index, club] of clubPlans.entries()) {
+        try {
+          setLocalLoad(true);
+          const result = await dispatch(
+            plansApi.endpoints.getClubPlanDetails.initiate({
+              location: clubLocationPostal,
+              planId: club.planId,
+            })
+          ).unwrap();
+
+          result?.planName?.includes("12 Month")
+            ? dispatch(setClubPlanYearly(result))
+            : dispatch(setClubPlanMonthly(result));
+        } catch (err) {
+          console.error(
+            `Failed to fetch plan details for club ${club.planId}:`,
+            err
+          );
+        } finally {
+          setLocalLoad(false);
+        }
+      }
+    };
+    initPlanFunc();
   }, []);
 
   const location = clubLocationPostal;
@@ -609,7 +652,8 @@ function ReviewAndPay() {
             <div className="flex flex-col items-end justify-end w-full mt-6">
               <button
                 type="submit"
-                className={`button mt-6 bg-[#2DDE28] text-black text-[16px] font-medium w-[139px] h-[42px]`}
+                disabled={localLoad}
+                className={`button mt-6 bg-[#2DDE28] text-black text-[16px] font-medium w-[139px] h-[42px] disabled:pointer-events-none disabled:opacity-50`}
                 // className={`button mt-6 ${
                 //   selectPlan !== "direct_debit"
                 //     ? !isDisabled

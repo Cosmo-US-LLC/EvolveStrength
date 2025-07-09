@@ -18,6 +18,13 @@ function AboutYourself() {
   const scrollDirection = useScrollDirection();
   const [validationErrors, setValidationErrors] = useState({});
 
+  const todayDate = new Date();
+  const yearsAgo16 = new Date(
+    todayDate.getFullYear() - 16,
+    todayDate.getMonth(),
+    todayDate.getDate()
+  );
+
   const [formData, setFormData] = useState({
     firstName: userInfo?.fname || "",
     lastName: userInfo?.lname || "",
