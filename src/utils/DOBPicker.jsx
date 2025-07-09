@@ -11,7 +11,7 @@ const DOBPicker = (props) => {
     todayDate.getDate()
   );
   const minYear = 1900;
-  const maxYear = today.getFullYear() - 18;
+  const maxYear = today.getFullYear();
 
   const [currentDate, setCurrentDate] = useState(yearsAgo16);
   // const [selectedDate, setSelectedDate] = useState(null);

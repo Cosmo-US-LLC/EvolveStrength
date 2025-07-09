@@ -14,7 +14,7 @@ const DOBPickerDesktop = (props) => {
 
   const minYear = 1900;
 
-  const maxYear = yearsAgo16.getFullYear();
+  const maxYear = today.getFullYear();
 
   const [currentDate, setCurrentDate] = useState(yearsAgo16);
   // const [selectedDate, setSelectedDate] = useState(null);
