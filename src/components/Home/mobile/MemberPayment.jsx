@@ -13,7 +13,11 @@ import Loader from "../../Loader";
 import { z } from "zod";
 import { usePaymentInputs } from "react-payment-inputs";
 import { plansApi } from "../../../redux/services/plan";
-import { setClubPlanMonthly, setClubPlanYearly, setStartDate } from "../../../redux/slices/planSlice";
+import {
+  setClubPlanMonthly,
+  setClubPlanYearly,
+  setStartDate,
+} from "../../../redux/slices/planSlice";
 import { formatDate } from "../../../libs/utils";
 
 const form1Schema = z.object({
@@ -364,16 +368,17 @@ const MemberPayment = () => {
         createPeople();
       } else {
         setApiError(message);
+        setIsLoading(false);
       }
       // navigate("/confirmation");
     } catch (error) {
       console.error("Error fetching club information:", error, error.message);
-    } finally {
       setIsLoading(false);
     }
   };
 
   const createPeople = async () => {
+    setIsLoading(true);
     let selectedDate = userInfo?.dob || "";
     if (selectedDate) {
       const dateObj = new Date(selectedDate);
@@ -429,6 +434,7 @@ const MemberPayment = () => {
       navigate("/congratulations");
     } else {
       console.warn("Person creation failed or missing ID.");
+      setIsLoading(false);
     }
   };
 

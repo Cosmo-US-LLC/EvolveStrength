@@ -293,6 +293,7 @@ function ReviewAndPay() {
 
   const createPeople = async () => {
     try {
+      setIsLoading(true);
       const response = await fetch(
         `${import.meta.env.VITE_APP_API_URL}createPerson`,
         {
@@ -322,10 +323,12 @@ function ReviewAndPay() {
       if (person?.id) {
         navigate("/congratulations");
       } else {
+        setIsLoading(false);
         console.warn("Person creation failed or missing ID.");
       }
     } catch (error) {
       console.error("Error creating person:", error.message);
+      setIsLoading(false);
     }
   };
 
@@ -459,13 +462,13 @@ function ReviewAndPay() {
         createPeople();
       } else {
         setApiError(message);
+        setIsLoading(false);
       }
     } catch (error) {
       console.error("Error fetching club information:", error.message);
       setApiError(
         "Failed to submit. Please check your connection and try again."
       );
-    } finally {
       setIsLoading(false);
     }
   };
