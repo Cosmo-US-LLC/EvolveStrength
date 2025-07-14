@@ -139,6 +139,10 @@ const MembershipSummaryBoxDesktop = () => {
           </div>
         </div>
         <p className="text-[#CACACA] pt-6 pb-2 text-[14px] font-regular font-[vazirmatn]">
+          <strong>Members under 18 must join in person.</strong> Online membership sign up isn&apos;t
+          available, but you can still book a free tour.
+        </p>
+        <p className="text-[#CACACA] pt-6 pb-2 text-[14px] font-regular font-[vazirmatn]">
           Please note that you’ll be billed every two weeks (bi-weekly) to keep
           payments easy and manageable.
         </p>

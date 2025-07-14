@@ -185,8 +185,12 @@ const MembershipVancouver = (props) => {
             </span>
           </div>
         </div>
-
-        <p className="text-[#CACACA] font-[vazirmatn] text-[11px] font-normal pt-3 pb-1">
+        <p className="text-[#CACACA] font-[vazirmatn] text-[11px] font-normal pt-3">
+          <strong>Members under 18 must join in person.</strong> Online
+          membership sign up isn&apos;t available, but you can still book a free
+          tour.
+        </p>
+        <p className="text-[#CACACA] font-[vazirmatn] text-[11px] font-normal pt-1 pb-1">
           Please note that you’ll be billed every two weeks (bi-weekly) to keep
           payments easy and manageable.
         </p>
