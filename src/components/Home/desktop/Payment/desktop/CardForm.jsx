@@ -384,8 +384,12 @@ function CardForm({
               type="checkbox"
               id="accountHolder"
               name="accountHolder"
-              checked={cardAuthorize}
-              onChange={(e) => setCardAuthorize(e.target.checked)}
+              checked={cardAuthorize && cardAcknowledge && cardConfirm}
+              onChange={(e) => {
+                setCardAuthorize(e.target.checked);
+                setCardAcknowledge(e.target.checked);
+                setCardConfirm(e.target.checked);
+              }}
               className="mr-2 accent-[#2DDE28]"
               style={{ marginTop: "3.5px" }}
             />
@@ -393,8 +397,28 @@ function CardForm({
               htmlFor="accountHolder"
               className="text-[16px] font-[400] font-[vazirmatn] ml-2"
             >
-              I authorize Evolve Strength to charge my credit or debit card for
-              membership fees.
+              I authorize Evolve Strength to charge my card for membership fees.
+              I understand my membership renews automatically unless I cancel as
+              stated in the contract. I have read and agree to the{" "}
+              <a
+                // onClick={() => setTermPage(true)}
+                href="https://join.evolvestrength.ca/terms-and-conditions/"
+                target="_blank"
+                className={`font-[400] text-[#2DDE28] hover:underline`}
+              >
+                Terms And Conditions
+              </a>{" "}
+              and{" "}
+              <a
+                // onClick={() => setPrivacy(true)}
+                href="https://join.evolvestrength.ca/privacy-policy/"
+                target="_blank"
+                className={`font-[400] text-[#2DDE28] hover:underline`}
+              >
+                Privacy Policy
+              </a>
+              {/* I authorize Evolve Strength to charge my credit or debit card for
+              membership fees. */}
             </label>
           </div>
           {errors.accountHolder && (
@@ -402,7 +426,7 @@ function CardForm({
           )}
         </div>
 
-        <div className="mt-4 mb-6">
+        <div className="mt-4 mb-6 hidden">
           <div className="flex items-start">
             <input
               type="checkbox"
@@ -427,7 +451,7 @@ function CardForm({
           )}
         </div>
 
-        <div className="mb-6">
+        <div className="mb-6 hidden">
           <div className="flex items-start">
             <input
               type="checkbox"

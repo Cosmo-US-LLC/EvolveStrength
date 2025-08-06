@@ -222,12 +222,36 @@ const CardPaymentForm = ({
             id="accountHolder"
             name="accountHolder"
             className="mt-1 accent-[#2DDE28]"
-            checked={cardAuthorize}
-            onChange={(e) => setCardAuthorize(e.target.checked)}
+            checked={cardAuthorize && cardAcknowledge && cardConfirm}
+            onChange={(e) => {
+              setCardAuthorize(e.target.checked);
+              setCardAcknowledge(e.target.checked);
+              setCardConfirm(e.target.checked);
+            }}
           />
           <span>
-            I authorize Evolve Strength to charge my credit or debit card for
-            membership fees
+            I authorize Evolve Strength to charge my card for membership fees. I
+            understand my membership renews automatically unless I cancel as
+            stated in the contract. I have read and agree to the{" "}
+            <a
+              // onClick={() => setTermPage(true)}
+              href="https://join.evolvestrength.ca/terms-and-conditions/"
+              target="_blank"
+              className={`font-[400] text-[#2DDE28] hover:underline`}
+            >
+              Terms And Conditions
+            </a>{" "}
+            and{" "}
+            <a
+              // onClick={() => setPrivacy(true)}
+              href="https://join.evolvestrength.ca/privacy-policy/"
+              target="_blank"
+              className={`font-[400] text-[#2DDE28] hover:underline`}
+            >
+              Privacy Policy
+            </a>
+            {/* I authorize Evolve Strength to charge my credit or debit card for
+            membership fees */}
           </span>
         </label>
         {errors.accountHolder && (
@@ -235,7 +259,7 @@ const CardPaymentForm = ({
         )}
       </div>
 
-      <div>
+      <div className="hidden">
         <label className="flex items-start gap-3 text-[14px] text-[#D8D8D8] font-[vazirmatn] cursor-pointer">
           <input
             type="checkbox"
@@ -256,7 +280,7 @@ const CardPaymentForm = ({
         )}
       </div>
 
-      <div>
+      <div className="hidden">
         <label className="flex items-start gap-2 text-[14px] font-[vazirmatn] text-[#D8D8D8] font-[400] mt-4">
           <input
             type="checkbox"
