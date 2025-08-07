@@ -294,6 +294,16 @@ function ReviewAndPay() {
   const createPeople = async () => {
     try {
       setIsLoading(true);
+    const clubAccountIds = {
+      "06967": "06687", // Edmonton Downtown
+      "06973": "11353", // Calgary Sunridge
+      "06964": "06689", // Edmonton North
+      "40142": "09065", // Calgary Royal Oak
+      "40097": "07882", // Calgary Seton
+      "06962": "06688", // Edmonton South
+      "40248": "10171", // Burnaby Brentwood
+      "40327": "11044", // Vancouver, The Post
+    };
       const response = await fetch(
         `${import.meta.env.VITE_APP_API_URL}createPerson`,
         {
@@ -312,7 +322,7 @@ function ReviewAndPay() {
             city: city || "",
             province: stateCode || "",
             postal_code: formattedPostalCode || "",
-            company_id: clubLocationId || "missing clubLocationId",
+            company_id: clubAccountIds[clubLocationPostal] || clubLocationId || "missing clubLocationId",
           }),
         }
       );
