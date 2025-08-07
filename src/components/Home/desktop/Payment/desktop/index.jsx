@@ -312,7 +312,7 @@ function ReviewAndPay() {
             city: city || "",
             province: stateCode || "",
             postal_code: formattedPostalCode || "",
-            company_id: accountId || "",
+            company_id: clubLocationId || "missing clubLocationId",
           }),
         }
       );
